@@ -1,0 +1,35 @@
+Source: imapsync
+Section: mail
+Priority: optional
+Maintainer: RISKO Gergely <risko@debian.org>
+Build-Depends: cdbs, debhelper
+Build-Depends-Indep: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl
+Standards-Version: 3.7.3
+
+Package: imapsync
+Architecture: all
+Depends: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl
+Description: IMAP synchronization, copy and migration tool
+ The command imapsync is a tool allowing incremental and recursive imap
+ transfer from one mailbox to another.
+ .
+ We sometimes need to transfer mailboxes from one imap server to another.
+ This is called migration.
+ .
+ imapsync is the adequate tool because it reduces the amount of data
+ transferred by not transferring a given message if it is already on both
+ sides. Same headers, same message size and the transfer is done only
+ once. All flags are preserved, unread will stay unread, read will stay
+ read, deleted will stay deleted. You can stop the transfer at any time
+ and restart it later, imapsync is adapted to a bad connection.
+ .
+ You can decide to delete the messages from the source mailbox after a
+ successful transfer (it is a good feature when migrating). In that
+ case, use the --delete option, and run imapsync again with the --expunge
+ option.
+ .
+ You can also just synchronize a mailbox A from another mailbox B in case
+ you just want to keep a "live" copy of B in A (backup).
+ .
+ Similar packages: offlineimap, imapcopy.
+Homepage: http://www.linux-france.org/prj/imapsync/

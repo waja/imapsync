@@ -1,0 +1,3 @@
+This package needs Mail::IMAPSync version 2.2.9 exactly. Because this
+is superseeded in Debian, as a temporary solution a precompiled
+version is installed by this package into /usr/share/imapsync/

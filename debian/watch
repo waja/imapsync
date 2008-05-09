@@ -1,0 +1,3 @@
+version=3
+
+http://www.linux-france.org/prj/imapsync/dist/imapsync-(.*).tgz

@@ -1,0 +1,32 @@
+diff -Nur -x '*.orig' -x '*~' imapsync-1.219/imapsync imapsync-1.219.new/imapsync
+--- imapsync-1.219/imapsync	2007-04-04 11:32:20.000000000 +0200
++++ imapsync-1.219.new/imapsync	2008-01-27 16:17:29.000000000 +0100
+@@ -1,6 +1,8 @@
+ #!/usr/bin/perl
+ 
++use lib '/usr/share/imapsync/';
++
+ =pod
+ 
+ =head1 NAME 
+ 
+@@ -411,6 +411,8 @@
+ #use Test::Simple tests => 1;
+ use Test::More 'no_plan';
+ 
++use lib qw(/usr/share/imapsync);
++
+ eval { require 'usr/include/sysexits.ph' };
+ 
+ 
+--- imapsync-1.241.orig/Makefile
++++ imapsync-1.241/Makefile
+@@ -30,7 +30,7 @@
+ testf: clean_test test
+ 
+ testp :
+-	perl -c $(TARGET)
++	perl -c -Idebian/IMAPClient229 $(TARGET)
+ 
+ ChangeLog: $(TARGET)
+ 	rlog $(TARGET) > ChangeLog
