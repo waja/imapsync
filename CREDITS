@@ -1,0 +1,542 @@
+#!/bin/cat
+
+I thank very much all of these people.
+
+If you want to make a donation to the author, Gilles LAMIRAL:
+
+a) you can use the imapsync wishlist :
+  http://www.amazon.com/gp/registry/wishlist/1C9UNDIH3P7R7/
+  (Use the lowest postal cost)
+
+b) If you can read french, please use the following wishlist :
+  http://amazon.fr/gp/registry/wishlist/37RZF7PPCD7YL
+  (free postal cost)
+
+c) its paypal account gilles.lamiral@laposte.net
+
+
+ 
+Marek Mahut (Fedora Project)
+- Cyrus IMAP4 v2.2.12-Invoca-RPM-2.2.12-8.1.RHEL4 to Zimbra Collaboration Suite 5.0.4.
+- Bug report about "parse_headers want an ARRAY ref"
+- Patch fixing "parse_headers want an ARRAY ref"
+- Packaged imapsync for Fedora imapsync-1.249-1.fc8
+- Gave the book "Intermediate Perl"
+- Thanked for imapsync
+No one did so much, and in one email!
+
+
+Blake Heinemann
+Contributed by giving the book
+"Perl Testing: A Developer's Notebook"
+
+Nathan Mills
+Contributed by giving the book
+"Mapping Hacks"
+
+Patrick Dayton (Medicus Insurance Compagny)
+Contributed by giving the book
+"Perl Hacks"
+
+
+Daniel Kohn
+Contributed by giving the book
+"Combinatorial Optimization: Algorithms and Complexity"
+
+
+Cvitkovich Andres
+Gave a patch to implement
+  * --pidfile option.
+  * --tmpfile  option.
+  * --skipheaderinfolder option.
+Had a successful 550000 users migration with imapsync !
+
+Scott Musser
+Contributed by giving the book
+"The mathematics of Juggling"
+
+George Henry Lenzer
+Contributed by giving the book
+"Higher-Order Perl"
+
+Bryce Schober
+Gave FAQ entry "imapsync ssl on win32".
+Gave FAQ entry "synchronisation to gmail"
+
+Arnt Gulbrandsen
+Found FAQ bug "Flags have to begin with a \ character."
+An imap server (archiveopteryx) coder that test imapsync,
+very rare.
+
+Wonko (http://wonko.com/)
+Wrote a good ruby script doing the same thing than imapsync.
+
+Scott Musser
+Suggested the --delete2folders option.
+
+Axel Rau 
+Success from courier-imap 3.0.3 to archiveopteryx 2.03
+
+Martin Wunderli
+Contributed by giving the book
+"Computers and Intractability". Garey.
+
+Huelbe Garcia
+Contributed by giving the book
+"The Shoelace Book" by Burkard Polster.
+
+Miron Cuperman
+Contributed by giving the book 
+"Beautiful Code: Leading Programmers Explain How They Think"
+
+Demian Rootring
+Failure story with dbmail 0.9 (as a "from" server)
+
+Patrick Ben Koetter
+Gave link to imapmigrate   : http://sourceforge.net/projects/cyrus-utils/
+Will wrote an article about imapsync, imapmigrate, offline-imap
+in German Linuxmagazin http://www.linuxmagazin.de/ January 2008
+
+Julien MARY
+From Dovecot 0.99.14 to Courier 3.0.8 (success)
+
+John Owens
+FAQ "Does imapsync retain the \Answered and $Forwarded flags?"
+From ??? imap server to gmail. Success or failure ?
+
+Lorenz Wallner
+Had success from "GMX IMAP4 StreamProxy" to Courier-IMAP.
+
+Stan Larson
+Contributed by giving the  book "Biting and Humorous Tales of a 
+Software Engineering Manager".
+
+Daniel I. Meiron
+Contributed by giving the  book "Asterisk: The future of Telephony"
+
+Todd Minnella
+Contributed by giving the  book "Agile and Iterative Development".
+
+Balázs Bárány
+Suggested to update documentation about --authuserX:
+avoid use of --authmechX with  --authuserX
+
+Peer Heinlein
+Suggested the --justlogin* options.
+
+Chris Weinhaupl
+Had problems from courier to zimbra
+(failure story ?)
+
+Peer Heinlein
+Had problem with *AsterixFolder
+
+Derek Diget
+Suggested --tmpdir
+
+Asbjørn Clemmensen
+Gave "Deerfield VisNetic MailServer 5.8.6" imap server.
+Found a bug about internal date in Deerfield.
+Made me fix date with Date::Manip
+Finally had success from Deerfield to Dovecot ?
+
+Marc Laporte
+Gave me 30$ and made me register a paypal account.
+
+Clark Allan
+Had \RECENT flag bug problem.
+Tried to migrate from mailenable to Zimbra.
+Futur will tell if imapsync can be a good boy for mailenable.
+
+Kevin Henrikson (Zimbra)
+Gave me many books.    
+
+Paolo Oopla
+FAQ about "99.8% cpu right after start" and --noauthmd5 solution.
+
+Marc Jauvin
+Found 1.217 slower than 1.182 (80s -> 250s, 2400 mail, 90MB)
+
+Neil Brown
+Made a rpm package of imapsync and gave the 
+imapsync.spec file.  
+
+Olaf Menkens
+Valentí Jové
+Had problem with flags and revision 1.201
+
+Heiko Kirsch
+Found the 24 characters bug in username.
+In fact this is 76 in Mail::IMAPClient, md5, MIME::Base64::encode.
+
+Morten W. Petersen
+Asked for the default behavior.
+All folders, recursively.
+
+Tobias Müller
+Found the buddy max inversion mistake in
+the documentation.
+
+Gavin Atkinson
+MailEnable under Windows to Dovecot under FreeBSD
+Not really a success. Just a one run copy.
+MailEnable does not give its headers.
+
+Simon Matter
+Had problem with append_string()
+from Cyrus-IMAPd to Lotus Notes 7.0.2
+
+Samuel Graenacher (Simon's friend)
+Wrote a patch to add flags and date to append_file()
+
+Foo Kok Wai
+MDaemon 9.5.4 success
+Mercury 4.1   success
+UW v12.264    success
+
+Enzo Michelangeli
+Made me try a second LOGIN login on first login failure.
+
+Carlos Roldan
+Made me change login() to login2()
+SmarterMail success
+
+Florin Andrei 
+Suggested to remove the bad behavior with INBOX
+and --prefix2 (prefix2 was ignored)
+Had a good discussion about memory in cyrus ml.
+
+Tashfeen Bhimdi
+IO::Socket::SSL have to be optional
+PLAIN without Capability AUTH=PLAIN is needed.
+
+Jalal
+Found --include and --include unuseful
+Wrote --include or  --include patch
+
+Daniel Ammann
+Made me finally write the --folderrec option.
+Gave OpenMail to Cyrus success
+
+Nicola De Marco
+Had authenticate problems with PLAIN
+and gave me a beautiful donation with the imapsync wishlist.
+
+Arunav Mandal
+Success ?
+from Domino IMAP4 Server Release 7.0.2
+to   Scalix IMAP server 10.0.1.3
+
+Eric Yellin
+Failure from Imail 7.04 (not sure)
+
+Barry W. Hickey
+Success from Microsoft Exchange 5.5 to Zimbra 4.0.4
+
+Damjan Perenic
+Success from cyrus to notes.
+Pb with big messages.
+
+Tom Allison
+Had problem with dovecot and dbmail
+Message-Id Message-ID. So imapsync is 
+now case insensitive with header keywords.
+
+David Abrahams
+Had problem with flags, suggested flag output.
+
+RISKO Gergely
+Maintain imapsync debian package.
+
+Marten Lehmann
+Made me talk about imapsync cpu and memory hungriness.
+Made me remove the exit(1) in case "No CAPABILITY for AUTHENTICATE"
+Found bug : imapsync does not delete messages immediately
+after a successful transfer but the next run.
+
+Paul Fisher
+Bug fix when "user<NUL>authuser<NUL>password" is over 76 characters
+encode_base64 and \n
+
+Christian Michallek
+Success with "David Tobit V8" to dbmail 2.0.9
+
+Robert Penz
+Had problem to migrate from Groupwise 7.0.
+Finally he migrated via outlook connector.
+(It is an imapsync failure).
+
+Doug Gorton
+Fixed bug about variable mess_size_total_skipped.
+
+Jonathan Doughty
+Found problem aboutthe md5 file on linux-france.org
+
+Chris Toledo
+Had problems from iPlanet 5.2 to Groupwise 7.0.
+Solved them with GW7 pack1. See the imapsync FAQ.
+
+Steven Ledwith
+Success from Rockliffe Mailsite 5.3.11 to dovecot-1.0-0.beta2.7 
+Made me write the --regexflag option.
+
+J.R. Taisto
+For syntax faults detection in the documentation.
+
+Stephen Weir
+Made a successful migration from
+"Scalix" to "Eudora WorldMail v2"
+Gave the good option for success (see FAQ)
+
+Kjetil Torgrim Homme
+Gave a jumbo patch adding
+--authuser
+--authmech
+--ssl
+and many improvments.
+
+
+Adam Kosmin
+Succeed to migrate from cyrus with an admin
+account and gave us the example. (see FAQ).
+--authuser1 option
+
+Kurt Hoffmann
+Had a pb with a big message on Zimbra-IMAP.
+Did he finally succed ? Yes
+"a stupid setting in Zimbra that restricts the size of 
+emails that can be uploaded via IMAP"
+
+Robert Terzi
+Seems to have the mbox vs Maildir/ problem
+and gave the --regexmess 's/\AFrom \w  .*\n//'
+solution.
+Had the "Word too large" bug with old UW and
+big folder. Made me add --split1 and --split2 options.
+
+
+Subbarao & Prasanthi Punnamaraju
+Asked how to move emails from InBox to a sub-folder.
+
+Sven Havemann
+Moved from Braunschweig to Graz and asked
+how to move Braunschweig mail sorted into 
+a folder INBOX.Braunschweig
+See FAQ.
+
+Vincent Deffontaines
+Made me talk about --exclude 'fold1|fold2|f3'
+Gave a patch for multiple  --exclude 
+
+Jim Rosenberg
+Had problems with dbmail 2.0.7.
+Gave up too early with bad feedback :-)
+
+Thomas Stegbauer 
+Suggested the mailing list creation.
+
+Stan Novogroudski
+Made me wrote the learn/subscribe script example.
+
+René Pfeiffer
+Paid me 100 euros for just an imapsync success story
+and little help from me. René also wrote a LinuxGazette
+article about imapsync in march 2006
+
+Mike
+Gave "Mdaemon 8.1" success story.
+(Pb with folders containing 2000 messages,
+had to split them to 800 messages)
+
+Nicolai Rasmussen
+Suggested the --minage option and asked
+a friend of him to code it.
+I made it compatible with --maxage too.
+
+Marcos Sungaila
+Reported the "do not consider namespace" bug 
+once again. And I fixed it. I think.
+
+Michael Menge
+Patch made --regextrans2 a multiple option
+
+Arnaud Launay
+Bug about --expunge12 (no option code)
+	 
+Kirk Averett
+Bug about --subscribed option. I stupidly
+commented a map line in release 1.138
+
+Here are the persons who helped me to develop imapsync.
+Feel free to tell me if a name is missing or if you want
+to remove one.
+
+Evert Mouw
+Gave the "Term::ReadKey" module dependency problem.
+
+Roy Hoobler
+Problems with big folders.
+Bug about message sizes.
+
+Michael Muenz
+"no errors (about 80 users)
+from Exchange 5.5 to CyrusIMAPd 2.2.12"
+
+Javier Gomez
+Failure with MailEnable version 1.54
+
+Mark Waters
+Had a problem with --maxsize --skipsize (a bug)
+
+Costa Tsaousis
+Had a problem with a huge mailbox (20000 messages)
+
+Scott Glenn
+Found the bug about --regexmess applied only on the first
+message.
+
+Dag-Erling Smørgrav
+Gave a patch to add --buffersize option.
+Found a bug about acls sync.
+Gave a patch that broke my acls...
+
+Brian Cunnie
+Write good French and a patch
+to allow password input on command line 
+if none by options --password nor --passfile
+
+James Eborall
+Gave "Samsung Contact IMAP server 8.5.0"
+
+Lincoln Zuljewic Silva
+Gave "Domino IMAP4 Server Release 5.0.7"
+
+Dan Wang
+Gave "Novell NetMail and Novell Groupwise"
+Reported bug Novell NetMail flags undef
+
+
+Per olof Ljungmark
+Gave 
+"Netscape Messaging Server 4.15 Patch 7 (built Sep 12 2001))
+Cyrus IMAP4 v2.2.10"
+
+Harald A. Irmer
+Huge migration with mbox format pb.
+Several problems.
+Gave http://home.arcor.de/armin.diehl/imapcopy/imapcopy.html link.
+
+Aleksandar Milivojevic
+Had problems with the flags arrays
+
+Paul Dekkers
+Had a problem with perl on freebsd.
+Had memory problems solved by memory added.
+Suggested --regexmess too, too late :-)
+
+Jean-Michel besnard
+Pb with woody, Mail::ImapClient and fetch_hash
+
+Jamie Neil 
+Gave Groupwise Novell return and howto success.
+Suggested --regexmess option
+
+Norbert Schmidt
+Gave "from a Cyrus-IMAP Server to a Lotus Domino 6.5 IMAP Server".
+Had a problem with Domino \\ separator.
+
+Cliff Lipple
+Gave "from an NT Server running Qualcomm 
+Worldmail to a Mac OS X Server running Cyrus."
+
+Bryce Walter
+Gave "OpenWave to Imail 8.12"
+
+
+David Alix
+Suggested transfer the ACL.
+Suggested order message transfer by uid.
+Gave "Simeon Messaging Server from MessagingDirect" and
+     "Sendmail Advanced Messaging Server (from Sendmail.com)"
+Trying to migrate about 150 GBytes of mailstorage, 33000 mailboxes, 872 users.
+Will he succeed ?
+
+Timothy Falconer 
+Documentation about option --skipheader (one time only)
+Gave "Domino IMAP4 Server Release 5.0.6"
+     UW "IMAP4rev1 2003.338rh"
+
+Reed Sandberg
+Gave "MDaemon 7.0.1 ---> courier-imap-2.2.1"
+Gave the imapsync-undef_arrayref.diff patch.
+Added and wrote option --foldersizes
+Gave link http://sourceforge.net/projects/migrationtool/
+
+Christoph Nagelreiter
+Christoph ran imapsync to migrate from 
+Microsoft MCIS to Cyrus IMAP.
+16000 mailboxes, 15 GB.
+Will he succeed ? YES !
+
+Ivan Zilic Schmidt
+Made me start the FAQ.
+Suggested the --regextrans2 option.
+
+Leon Koch
+Gave Microsoft Exchange 2000 server and
+Domino IMAP4 Server Release 6.5.1
+Had pb with them :-) 
+So I added the BUGS section about "Multiple copies".
+
+Harald Behrens
+Gave MS Exchange Server 5.5 success.
+Had "Message has no header/body separator" error.
+
+Kris Boulez
+Ran imapsync from iPlanet Messaging server 5.1 to a Domino
+(Notes) 6.5 server.
+Suggested --skipheader --skipsize options.
+
+Christophe Labouisse
+Add a pb with dbmail headers (first blank added, sort "Received:")
+
+William Hernandez (fromESS/PR Webmasters)
+Wrote patch for --timeout
+Gave IMail 7.15 new problem/success story
+
+Wim Kerkhoff
+Gave infos about mailutil.
+ 
+Holger Mauermann
+Bug about missing "AUTH=CRAM-MD5" (also copy-paste mistake in login_imap)
+
+Kaspar Brand
+Wrote code implementing options
+ --include <regex>
+ --exclude <regex>
+ --maxsize <int>
+ --maxage  <int>
+and goodies (sort, no accent)
+ 
+Devin Reade
+Bug about destination separator character in source folder names.
+
+Rasjid Wilcox
+Bug about imap servers (DBmail and Bincimap) that don't support namespaces.
+
+Dave Rose
+Bug in help message about nested folders.
+ 
+Paul Boven
+Suggested --subscribe option, a better behavior and gave the patch.
+Suggested --prefix1 option.
+ 
+Tommi Lätti
+Suggested csv file loop (HUGE MIGRATION section) in pod doc.
+
+Vincent W.S. Tam 
+Suggested --subscribed option.
+
+Eric Yung 
+(Suggested --sep1 option) and tested it, and found a bug about it.
+
