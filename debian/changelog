@@ -1,3 +1,14 @@
+imapsync (1.286-1) unstable; urgency=low
+
+  * New Upstream Version (closes: #532566)
+    - Compatible with Mail::IMAPClient 3.x, so removed the 2.2.9 from the
+      package (closes: #469978)
+  * Updated Standards-Version to 3.8.3
+  * Updated debhelper compatibility to version 7 and added a versioned
+    build dependency about it
+
+ -- RISKO Gergely <risko@debian.org>  Sun, 13 Sep 2009 20:44:28 +0300
+
 imapsync (1.252-1) unstable; urgency=low
 
   * New upstream release

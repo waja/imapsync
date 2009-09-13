@@ -2,13 +2,13 @@ Source: imapsync
 Section: mail
 Priority: optional
 Maintainer: RISKO Gergely <risko@debian.org>
-Build-Depends: cdbs, debhelper
+Build-Depends: cdbs, debhelper (>= 7)
 Build-Depends-Indep: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl
-Standards-Version: 3.7.3
+Standards-Version: 3.8.3
 
 Package: imapsync
 Architecture: all
-Depends: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl
+Depends: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, ${misc:Depends}
 Description: IMAP synchronization, copy and migration tool
  The command imapsync is a tool allowing incremental and recursive imap
  transfer from one mailbox to another.
