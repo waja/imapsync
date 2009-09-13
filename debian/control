@@ -2,6 +2,8 @@ Source: imapsync
 Section: mail
 Priority: optional
 Maintainer: RISKO Gergely <risko@debian.org>
+Vcs-Browser: http://git.debian.org/?p=collab-maint/imapsync.git;a=summary
+Vcs-Git: git://git.debian.org/collab-maint/imapsync.git
 Build-Depends: cdbs, debhelper (>= 7)
 Build-Depends-Indep: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl
 Standards-Version: 3.8.3
