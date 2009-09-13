@@ -1,5 +1,5 @@
 
-# $Id: Makefile,v 1.17 2007/10/30 00:49:43 gilles Exp gilles $	
+# $Id: Makefile,v 1.23 2009/07/03 01:01:13 gilles Exp gilles $	
 
 TARGET=imapsync
 
@@ -9,23 +9,46 @@ help: usage
 
 usage:
 	@echo "      $(TARGET) $(VERSION), You can do :"
-	@echo make install # as root
-	@echo make testf   # run tests
-	@echo make testv   # run tests verbosely
-	@echo make all     
+	@echo "make install # as root"
+	@echo "make testf   # run tests"
+	@echo "make testv   # run tests verbosely"
+	@echo "make test3xx # run tests with Mail-IMAPClient-3.xy"
+	@echo "make test229 # run tests with Mail-IMAPClient-2.2.9"
+	@echo "make all     "
 
 all: ChangeLog README VERSION
 
-.PHONY: test testp testf
+.PHONY: test testp testf test3xx
 
 .test: $(TARGET) tests.sh
-	nice -40 sh tests.sh 1>/dev/null
+	/usr/bin/time sh tests.sh 1>/dev/null
 	touch .test
+
+.test_3xx: $(TARGET) tests.sh
+	CMD_PERL='perl -I./Mail-IMAPClient-3.19/lib' /usr/bin/time sh tests.sh 1>/dev/null
+	touch .test_3xx
+
+test_quick : test_quick_229 test_quick_3xx
+
+test_quick_229: $(TARGET) tests.sh
+	CMD_PERL='perl -I./Mail-IMAPClient-2.2.9' /usr/bin/time sh tests.sh locallocal 1>/dev/null
+
+test_quick_3xx: $(TARGET) tests.sh
+	CMD_PERL='perl -I./Mail-IMAPClient-3.19/lib' /usr/bin/time sh tests.sh locallocal 1>/dev/null
 
 testv:
 	nice -40 sh -x tests.sh
 
-test: .test
+test: .test_229 .test_3xx
+
+
+test3xx: .test_3xx
+
+test229: .test_229
+
+.test_229: $(TARGET) tests.sh
+	CMD_PERL='perl -I./Mail-IMAPClient-2.2.9' /usr/bin/time sh tests.sh 1>/dev/null
+	touch .test_229
 
 testf: clean_test test
 
@@ -39,14 +62,14 @@ README: $(TARGET)
 	perldoc -t $(TARGET) > README
 
 VERSION: $(TARGET) Makefile
-	./$(TARGET) --version > VERSION
+	perl -I./Mail-IMAPClient-2.2.9 ./$(TARGET) --version > VERSION
 
 .PHONY: clean clean_tilde clean_test   
 
-clean: clean_tilde clean_test clean_man
+clean: clean_tilde clean_man
 
 clean_test:
-	rm -f .test
+	rm -f .test .test_3xx .test_229
 
 clean_tilde:
 	rm -f *~
@@ -70,14 +93,17 @@ install: testp $(TARGET).1
 DIST_NAME=$(TARGET)-$(VERSION)
 DIST_FILE=$(DIST_NAME).tgz
 DEB_FILE=$(DIST_NAME).deb
-VERSION=$(shell ./$(TARGET) --version)
+VERSION=$(shell perl -I./Mail-IMAPClient-2.2.9 ./$(TARGET) --version)
 
-dist: cidone test clean clean_dist all INSTALL  
+dist: cidone test clean clean_dist all INSTALL tarball
+
+
+tarball:
 	echo making tarball $(DIST_FILE)
 	mkdir -p dist
 	mkdir -p ../prepa_dist/$(DIST_NAME)
 	rsync -aCv --delete  --exclude dist/ ./  ../prepa_dist/$(DIST_NAME)
-	cd ../prepa_dist && tar czfv $(DIST_FILE) $(DIST_NAME)
+	cd ../prepa_dist && tar czfv --verify $(DIST_FILE) $(DIST_NAME)
 	ln -f ../prepa_dist/$(DIST_FILE) dist/
 	cd dist && md5sum $(DIST_FILE) > $(DIST_FILE).md5.txt
 	cd dist && md5sum -c $(DIST_FILE).md5.txt
@@ -86,7 +112,7 @@ dist: cidone test clean clean_dist all INSTALL
 deb: 
 	echo making debball $(DEB_FILE)
 	mkdir -p ../prepa_deb
-	cd  ../prepa_deb && tar xzvf ../prepa_dist/$(DIST_FILE) &&\
+	cd  ../prepa_deb && tar  xzvf ../prepa_dist/$(DIST_FILE) &&\
 	cd ../prepa_dist/$(DIST_NAME) 
 
 .PHONY: cidone clean_dist
@@ -101,7 +127,7 @@ clean_dist:
 
 .PHONY: lfo niouze
 
-lfo: dist niouze_lfo lfo_upload niouze
+lfo: dist lfo_upload niouze_lfo  niouze
 
 lfo_upload: 
 	rsync -avH --delete . \
