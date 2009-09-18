@@ -1,3 +1,11 @@
+imapsync (1.286+dfsg-1) unstable; urgency=low
+
+  * Removed IMAPClient sources from upstream source package, it contained
+    non-free RFCs. (closes: #547279)
+  * Added VCS headers to debian/control.
+
+ -- RISKO Gergely <risko@debian.org>  Fri, 18 Sep 2009 21:38:53 +0300
+
 imapsync (1.286-1) unstable; urgency=low
 
   * New Upstream Version (closes: #532566)
