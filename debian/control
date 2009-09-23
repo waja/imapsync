@@ -10,7 +10,7 @@ Standards-Version: 3.8.3
 
 Package: imapsync
 Architecture: all
-Depends: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, ${misc:Depends}
+Depends: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, libmail-imapclient-perl (>= 3.20-2), ${misc:Depends}
 Description: IMAP synchronization, copy and migration tool
  The command imapsync is a tool allowing incremental and recursive imap
  transfer from one mailbox to another.

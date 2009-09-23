@@ -1,3 +1,9 @@
+imapsync (1.286+dfsg-2) unstable; urgency=low
+
+  * Re-added libmail-imapclient-perl dependency. (closes: #547709)
+
+ -- RISKO Gergely <risko@debian.org>  Wed, 23 Sep 2009 20:04:42 +0300
+
 imapsync (1.286+dfsg-1) unstable; urgency=low
 
   * Removed IMAPClient sources from upstream source package, it contained
