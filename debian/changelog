@@ -1,8 +1,16 @@
+imapsync (1.286+dfsg-3) unstable; urgency=low
+
+  * Added libdate-manip-perl, libmail-imapclient-perl to build
+    dependencies too beyond binary package dependencies.
+    (closes: #549776)
+
+ -- RISKO Gergely <risko@debian.org>  Mon, 05 Oct 2009 23:48:57 +0300
+
 imapsync (1.286+dfsg-2) unstable; urgency=low
 
   * Re-added libmail-imapclient-perl dependency. (closes: #547709)
 
- -- RISKO Gergely <risko@debian.org>  Wed, 23 Sep 2009 20:04:42 +0300
+ -- RISKO Gergely <risko@debian.org>  Mon, 05 Oct 2009 23:48:26 +0300
 
 imapsync (1.286+dfsg-1) unstable; urgency=low
 
