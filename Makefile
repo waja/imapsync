@@ -1,5 +1,5 @@
 
-# $Id: Makefile,v 1.23 2009/07/03 01:01:13 gilles Exp gilles $	
+# $Id: Makefile,v 1.29 2010/06/11 02:51:20 gilles Exp gilles $	
 
 TARGET=imapsync
 
@@ -12,20 +12,20 @@ usage:
 	@echo "make install # as root"
 	@echo "make testf   # run tests"
 	@echo "make testv   # run tests verbosely"
-	@echo "make test3xx # run tests with Mail-IMAPClient-3.xy"
+	@echo "make test3xx # run tests with (last) Mail-IMAPClient-3.xy"
 	@echo "make test229 # run tests with Mail-IMAPClient-2.2.9"
 	@echo "make all     "
 
 all: ChangeLog README VERSION
 
-.PHONY: test testp testf test3xx
+.PHONY: test tests testp testf test3xx
 
 .test: $(TARGET) tests.sh
 	/usr/bin/time sh tests.sh 1>/dev/null
 	touch .test
 
 .test_3xx: $(TARGET) tests.sh
-	CMD_PERL='perl -I./Mail-IMAPClient-3.19/lib' /usr/bin/time sh tests.sh 1>/dev/null
+	CMD_PERL='perl -I./Mail-IMAPClient-3.25/lib' /usr/bin/time sh tests.sh 1>/dev/null
 	touch .test_3xx
 
 test_quick : test_quick_229 test_quick_3xx
@@ -34,13 +34,14 @@ test_quick_229: $(TARGET) tests.sh
 	CMD_PERL='perl -I./Mail-IMAPClient-2.2.9' /usr/bin/time sh tests.sh locallocal 1>/dev/null
 
 test_quick_3xx: $(TARGET) tests.sh
-	CMD_PERL='perl -I./Mail-IMAPClient-3.19/lib' /usr/bin/time sh tests.sh locallocal 1>/dev/null
+	CMD_PERL='perl -I./Mail-IMAPClient-3.25/lib' /usr/bin/time sh tests.sh locallocal 1>/dev/null
 
 testv:
 	nice -40 sh -x tests.sh
 
 test: .test_229 .test_3xx
 
+tests: test
 
 test3xx: .test_3xx
 
@@ -102,8 +103,9 @@ tarball:
 	echo making tarball $(DIST_FILE)
 	mkdir -p dist
 	mkdir -p ../prepa_dist/$(DIST_NAME)
-	rsync -aCv --delete  --exclude dist/ ./  ../prepa_dist/$(DIST_NAME)
-	cd ../prepa_dist && tar czfv --verify $(DIST_FILE) $(DIST_NAME)
+	rsync -aCv --delete --omit-dir-times --exclude dist/ ./  ../prepa_dist/$(DIST_NAME)
+	#sync && sync && sync && sleep 2
+	cd ../prepa_dist &&  (tar czfv $(DIST_FILE) $(DIST_NAME) || tar czfv  $(DIST_FILE) $(DIST_NAME))
 	ln -f ../prepa_dist/$(DIST_FILE) dist/
 	cd dist && md5sum $(DIST_FILE) > $(DIST_FILE).md5.txt
 	cd dist && md5sum -c $(DIST_FILE).md5.txt
@@ -125,9 +127,9 @@ clean_dist:
 
 # Local goals
 
-.PHONY: lfo niouze
+.PHONY: lfo lfo_upload niouze_lfo niouze_fm public
 
-lfo: dist lfo_upload niouze_lfo  niouze
+lfo: dist lfo_upload niouze_lfo
 
 lfo_upload: 
 	rsync -avH --delete . \
@@ -139,8 +141,8 @@ lfo_upload:
 niouze_lfo : VERSION
 	. memo && lfo_announce
 
-niouze: VERSION
+niouze_fm: VERSION
 	. memo && fm_announce
 
 
-public: niouze
+public: niouze_fm
