@@ -1,8 +1,58 @@
 #!/bin/cat
-# $Id: TODO,v 1.65 2009/07/24 17:22:13 gilles Exp gilles $
+# $Id: TODO,v 1.74 2010/06/11 02:49:49 gilles Exp gilles $
 
 TODO file for imapsync
 ----------------------
+
+Post on newsgroup comp.mail.imap when a new release comes.
+http://groups.google.fr/group/comp.mail.imap
+
+Post on imapsync mailing-list when a new release comes.
+
+Start a wiki for imapsync.
+
+Add a best practice migration tips document.
+
+Fix the mailing-list archive bug with From at
+the beginning of a line
+http://www.linux-france.org/prj/imapsync_list/msg00307.html
+
+Evaluate 
+http://www.rackspace.com/apps/email_hosting/migrations
+http://www.yippiemove.com/
+
+Add NTLM authentification support
+http://cpansearch.perl.org/src/BUZZ/NTLM-1.05/NTLM.pm
+http://curl.haxx.se/rfc/ntlm.html
+
+
+Add "output to reflect everything that imapsync was doing".
+Not everything but flag synchronization will be nice"
+
+Add and option to sync to & from files.
+
+Add an option to make imapsync automatically
+reconnect when the connection drops
+
+Add an --aclregextrans2 flag.
+"Today we discovered, that Cyrus and Dovecot use different characters for 
+their ACLs. Syncing ACLs vom Cyrus to Dovecot (at least 1.2) doesn't 
+work. Cyrus uses c and d, Dovecot uses k and x instead." 
+Peer Heinlein.
+
+Add --subscribeall option.
+Is it possible to have a option that subscribes all folders regardless of
+subscription on the source server? Perhaps --subscribeall?
+
+Add a --delete2folders option
+"When syncing mailboxes with imapsync, is there a way to delete folders in the
+target account? The --delete2 option only seems to delete individual
+messages, not folders."
+
+Add different levels of output to see clearly the
+problem by default.
+
+Add option --exclude_messages_with_flag
 
 Add more information about skipped messages.
 
@@ -12,10 +62,7 @@ messages (nowadays there are always big messages in
 mailboxes). May be the best is to take a part of the
 body. Have to code this.
 
-Add an option to store flags with "FLAGS.SILENT" instead of "+FLAGS.SILENT".
 
-
-Add TLS support with patches/imapsync-1.217_tls_support.patch
 
 Add Rick Romero patch with
 --quiet   No output at all
@@ -24,9 +71,6 @@ Add Rick Romero patch with
 Take a look at Mail::IMAPTalk 
 Simon Bertrang said "way better performance, less problems, easier to use and no
 issues so far". Sounds good! 
-
-
-Post on imapsync mailing-list when a new release comes.
 
 Add an option to implement the faq entry about copying a contact folder.
 
@@ -39,16 +83,11 @@ Add kerberos authentification
 
 Add NOOP commands to avoid timeouts.
 
-Start a wiki for imapsync.
-
 Add a --pidfile option.
-Add a --tmpfile  option.
-Add a --tmpdir option.
+
 Write a clean_exit() replacing each die() or exit() call.
 Add a --skipheaderinfolder option 
 See the code patches/imapsync_Cvitkovich_pidfile_tmpfile
-
-Make --skipheader be multiple
 
 Fix this:
 > - Erreur avec la traditionnelle différence entre Windows
@@ -60,21 +99,6 @@ Fix this:
 >         # No NL Count on Windows my $length = ( -s $file ) + $bare_nl_count;
 >         my $length = ( -s $file );
 
-Add a --delete2folders option
-"When syncing mailboxes with imapsync, is there a way to delete folders in the
-target account? The --delete2 option only seems to delete individual
-messages, not folders."
-
-Add different levels of output to see clearly the
-problem by default.
-
-Add --justlogin --justlogin1 --justlogin2 options
-to check username and passwort.
-
-
-Add --subscribeall option.
-Is it possible to have a option that subscribes all folders regardless of
-subscription on the source server? Perhaps --subscribeall?
 
 Add stdin/stdout filter before transfer:
 "Now i asked me, how to modify your perl program to work with
@@ -97,9 +121,6 @@ vs 250s avec la version 1.217". Marc Jauvin
 
 Add LITERAL+ [RFC 2088] support to imapsync.
 
-Add an option to make imapsync automatically
-reconnect when the connection drops
-
 Add an entry to
 http://lsm.execpc.com/lsm/
 See template lsm.imapsync
@@ -109,20 +130,10 @@ is changing and have it replace the domain in all user names that are
 related to ACLs.
 See patches/imapsync-acls-users
 
-Add a best practice migration tips document.
-
-Add "output to reflect everything that imapsync was doing".
-Not everything but flag synchronization will be nice"
-
-Add and option to sync to & from files.
-
 Use examine() instead of select() in --dry mode.
 Add a method doing the switch automagicaly.
 
 Add --verbose from Kjetil jumbo patch.
-
-Post on newsgroup comp.mail.imap when a new release comes.
-http://groups.google.fr/group/comp.mail.imap
 
 Read the IMAP RFC http://www.faqs.org/rfcs/rfc3501.html
 
@@ -138,6 +149,36 @@ Add cyrus link about INBOX. namespace
 http://asg.web.cmu.edu/cyrus/download/imapd/altnamespace.html
 
 Explain expunge behavior.
+
+
+
+
+
+
+DONE. Be "FLAGS.SILENT" the normal behavior instead of "+FLAGS.SILENT".
+
+DONE. Add TLS support with patches/imapsync-1.217_tls_support.patch
+
+USELESS. Make --skipheader be multiple. Useless since we can
+use the or perl regex '^X-|^Date|^From'
+
+
+USELESS. Add a --tmpfile option.
+
+DONE. Add --justlogin options
+to check usernames and passwords.
+
+DONE. Add a --tmpdir option.
+
+DONE. Fix bug "Found that if folders have a space at the end of 
+the name, it will not create the folder name on the new 
+server, nor will it copy that folder's email."
+Added regression test checking this.
+Could not reproduce this bug. 
+Seems to be a old imapsync bug with 2.2.9
+
+
+DONE. (contacted Date::Manip maintener) Fix bug with Date::Manip 6.02
 
 DONE. Explain howto change only the header with --regexmess
 
