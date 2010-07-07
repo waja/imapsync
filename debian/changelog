@@ -1,3 +1,12 @@
+imapsync (1.315+dfsg-1) unstable; urgency=low
+
+  * New upstream version. (closes: #553412, #496256, #541237)
+  * debian/copyright:
+    - GPL -> do what the fuck you want
+  * bumped Standards-Version to 3.8.4.0
+
+ -- RISKO Gergely <risko@debian.org>  Wed, 07 Jul 2010 14:34:04 +0300
+
 imapsync (1.286+dfsg-3) unstable; urgency=low
 
   * Added libdate-manip-perl, libmail-imapclient-perl to build
