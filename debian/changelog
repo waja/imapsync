@@ -1,3 +1,16 @@
+imapsync (1.584-1~1.gbp763fb8) unstable; urgency=medium
+
+  * [8a58513] Imported Upstream version 1.584
+  * [c71c047] Change Maintainer
+  * [3b288a2] Refresh copyright
+  * [01bc207] Update Homepage
+  * [bfed652] Add libfile-copy-recursive-perl as (build) dependency
+  * [1250e00] Install documentation RECORD correct again
+  * [763fb85] Add (build-)dependency for libauthen-ntlm-perl and
+    libio-socket-ip-perl
+
+ -- Jan Wagner <waja@cyconet.org>  Wed, 26 Mar 2014 12:59:57 +0100
+
 imapsync (1.315+dfsg-1) unstable; urgency=low
 
   * New upstream version. (closes: #553412, #496256, #541237)
