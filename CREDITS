@@ -1,7 +1,8 @@
 #!/bin/cat
-# $Id: CREDITS,v 1.139 2010/06/21 00:16:01 gilles Exp gilles $
+# $Id: CREDITS,v 1.180 2013/11/15 01:51:58 gilles Exp gilles $
 
-If you want to make a donation to the author, Gilles LAMIRAL:
+If you want to make a donation to the author, Gilles LAMIRAL,
+use any of the following ways:
 
 a) you can use the imapsync wishlist :
   http://www.amazon.com/gp/registry/wishlist/1C9UNDIH3P7R7/
@@ -12,16 +13,259 @@ b) If you can read french, please use the following wishlist :
   (books will be send with free postal cost)
 
 c) its paypal account : gilles.lamiral@laposte.net
-http://www.linux-france.org/prj/imapsync/paypal.html
+http://www.linux-france.org/prj/imapsync/paypal.shtml
 
-Here are the persons who helped me to develop imapsync.
-Feel free to tell me if a name is missing or if you want
-to remove one.
+d) If you prefer making your donation with
+cash or cheque then my postal address is:
+
+Gilles LAMIRAL
+La Billais
+35580 Baulon
+FRANCE
+
+Here are the persons who helped me to develop and maintain imapsync.
+Feel free to tell me if a name is missing or if you want to remove one.
 
 I thank very much all of these people.
+I thank also very much all people who bought imapsync from the homepage
+but I don't cite them here.
+
+David Karnowski.
+Suggested --disarm_read_receipts for its regex.
+
+Erik Torsner.
+Gave patch for create_folder() and nested folders.
+http://erik.torgesta.com/2013/05/gmail-and-google-apps-mail-migration/
+
+Ralf Hauber 
+Gave installation tips for Centos and a bug report about
+final statistics for newly created folders. 
+
+Dave Murray
+Simon Savva
+Found, reported and solved the "Flagged" flag Exchange bug.
+
+Krul, Patrick
+Found bug about trailing blanc on Win32 cache dir.
+
+Jonathan Daley
+Contributed by giving the book
+13.33 EUR "Cartoon Guide to Statistics"
+
+Bowman Gillianne
+Contributed by giving the book
+8.60 EUR "L'Épreuve de l'étranger: Culture et traduction dans l'Allemagne romantique"
+
+Paul Heller
+Contributed by giving the book
+28.54 "Practical Packet Analysis: Using Wireshark to Solve Real-World Network Problems"
+
+Jim Klimov
+Gave patch to handle proxyauth failures.
+
+Eduardo Bortoluzzi Junior
+Write the XOAUTH code and FAQ item.
+
+Marc Weber
+Suggested --mark-as-deleted1 --mark-as-deleted2
+
+Jeff Verheyen
+Contributed by giving a 32GB micro SDHC card and the book
+29.69 "Design by Nature: Using Universal Forms and Principles in Design"
+
+David Abrahams
+Gave a patch for --authmech PREAUTH
+
+Peter Fuchs
+Contributed by giving the book
+30.86 "Designed for Use: Create Usable Interfaces for Applications and the Web"
+
+Pierre GUILLAUME // e-Lixir
+Fixed 2 bugs about [Gmail] folder names.
+one is about $cache_dir and bsd_globs() that needs escaped characters.
+Second is eval and --delete2foldersonly --delete2foldersbutnot that need
+also good escaping. Thanks.
+
+Unknown (Found no card in the packet; may be lost since book is damaged, amazon and paper box for an international transported book ...)
+Contributed by giving the book
+87.18 "Paradigms of Artificial Intelligence Programming: Case Studies in Common Lisp"
+
+Christophe Kern
+Bugfix in the invoice ("paiement à réception de facture")
+GSSAPI proposition
+--useuid --nousecache creates duplicates and should be documented.
+--usecache creates many inodes
+
+Thomas Edgar
+Gave a FAQ item "from Exchange 2003 to Cyrus Imap 2.4"
+
+Dan Hulme.
+Found a bug in the FAQ about --regextrans2
+(Fix is --regextrans2 's,${h2_prefix}(.*),${h2_prefix}FOO${h2_sep}$1,')
+Suggested default --useheader 'Message-ID' --useheader 'Received'
+(Exchange compliant)
+
+Ameir Abdeldayem
+Gave a patch to sync messages lacking Message-ID
+http://www.linux-france.org/prj/imapsync_list/msg01151.html
+
+Yousaf Shah
+Contributed by giving the book
+19.90 "Making Things Talk: Using Sensors, Networks, and Arduino to see, hear, and feel your world"
+
+Klaus Franken
+Patch to avoid useless warning "Use of uninitialized value $uid1 in exists"
+
+Charles H Deling
+Contributed by giving the book
+13.59 "The Twitter Book"
+
+Paulo Victor Fernandes da Silva
+Contributed by giving money 1 USD   
+
+Daniel Rohde
+Bugfix. Solaris 10. ps -o vsz -p @PID
+
+Dex Kelson.
+Contributed by his patch for a better good_date() with --idatefromheader over 100000 messages.
+
+Unknow (@baccari.it)
+Contributed by giving the book
+32.65 "Metamagical Themas: Questing For The Essence Of Mind And Pattern"
+
+Unknow
+Contributed by giving the book
+20.31 "Fluid Concepts And Creative Analogies: Computer Models Of The Fundamental Mechanisms Of Thought"
+
+Khalid Shakir
+Contributed by giving the book
+75.00 "Selected Papers on Fun and Games [Hardcover]"
+
+Alexander J. Stein
+Contributed by giving the book
+22.00 "Weinberg on Writing: The Fieldstone Method"
+
+Doug Ferguson
+Contributed by giving the books
+35.16 "Test Driven Development: By Example"
+13.86 "Gödel, Escher, Bach: An Eternal Golden Braid"
+14.49 "The Mind's I: Fantasies and Reflections on Self & Soul"
+46.42 "Memory"
+
+Timothy Jay Chambers
+Contributed by giving the book
+27.32 "Mathematics and Plausible Reasoning: Volume II Patterns of Plausible Inference"
+
+D.R. Crane
+Contributed by giving the book
+40.90 "Working Effectively with Legacy Code"
+
+Daniel Melnechuk
+Contributed by giving the book
+10.02 "The Design of Everyday Things"
+
+Pratch Pakpinpetch
+Contributed by giving the book
+17.95 "Life and How to Survive It"
+
+Edward Helvund
+Contributed by giving the book
+9.84 "Satan, Cantor and Infinity: Mind-Boggling Puzzles"
+
+Andrea Provaglio
+Contributed by giving the book
+24.95 "Salsa, Further Adventures In Afro Cuban Music For Piano"
+
+Eric Busalacchi
+Contributed by giving money 84 USD   
+
+Jorge López Pérez
+Gave patch proxyauth-v2_1.366.patch
+
+Jeffrey Allison
+Contributed by giving money 30 USD
+
+Roger Schmid
+Contributed by giving money 100 USD
+
+Danny Schulz
+Contributed by giving money 15 USD
+
+Christian Kowarzik
+Contributed by giving money 90 USD
+for --deletefolder2 option.
+
+Harald Petrovitsch
+Contributed by giving the book
+29.95 "Families and How to Survive Them"
+
+Tobias Fink
+Contributed by giving money 5 Eur
+
+Yanick Cyr
+Contributed by giving money 25 USD
+
+Trony Tigno
+Contributed by giving money 5 USD
+
+Paul Garner
+Contributed by giving money 5 USD
+
+Kevin Kretz
+Contributed by giving the books
+15.25 "Tres Cubano: A Complete Guide To Playing The Cuban Tres Guitar (Book & CD)"
+24.00 "Creative Clowning"
+
+Kirk Ismay
+Contributed by giving money 50 USD
+
+Fast-Serv Technologies
+Contributed by giving money 10 USD
+
+Christian Leue
+Contributed by giving money 25 USD
+
+Tony Pearse
+Contributed by giving money 25 USD
+
+Jan Keymeulen
+Contributed by giving money 10 USD for 50% speedup.
+
+Globule Bleu
+Contributed by giving money 15 USD
+
+Martin Schlagnitweit
+Contributed by giving money 20 USD
+
+Martin Werthmoeller
+Gave a patch ./patches/imapsync-1.337_tobit_V6.patch
+
+Jeremy Stent
+Contributed by giving the book
+13.60 "Unfolding the Napkin: The Hands-On Method for Solving Complex Problems with Simple Pictures"
+
+BudgetDedicated
+Contributed by giving money 5 USD
+
+Wilton de Oliveira Garcia
+Contributed by giving money 10 USD
+
+David Osbo
+Contributed by giving the book
+15.61 "The Complete Idiot's Guide to Conversational Sign Language Illustrated"
+
+Jeroen Ticheler
+Contributed by giving the book
+23.77 "Maps of Narrative Practice" 
+
+Korey Kwilinski
+Contributed by giving money 20 USD
 
 Bertrand STERN
 Contributed by giving money 100 USD
+
+George Hazlewood
+Contributed by giving money 40 USD
 
 Miguel Jacq
 Contributed by giving money 100 AUD
@@ -859,6 +1103,32 @@ Eric Yung
 
 Total amount of book prices :
 c \
+28.54+\
+30.86+\
+87.18+\
+19.90+\
+13.59+\
+32.65+\
+20.31+\
+\
+75.00+\
+\
+35.16+\
+13.86+\
+14.49+\
+46.42+\
+\
+27.32+\
+40.90+\
+\
+10.02+\
+\
+17.95+\
+9.84+\
+\
+24.95+\
+29.95+\
+\
 11.20+\
 24.95+\
 13.57+\
@@ -969,4 +1239,4 @@ c \
 31.20+\
 40.00
 =
-2618.10
+3196.99

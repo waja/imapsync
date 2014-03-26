@@ -1,38 +1,102 @@
 #!/bin/cat
-# $Id: TODO,v 1.74 2010/06/11 02:49:49 gilles Exp gilles $
+# $Id: TODO,v 1.124 2013/12/25 03:04:53 gilles Exp gilles $
 
 TODO file for imapsync
 ----------------------
 
-Post on newsgroup comp.mail.imap when a new release comes.
-http://groups.google.fr/group/comp.mail.imap
-
-Post on imapsync mailing-list when a new release comes.
-
 Start a wiki for imapsync.
 
+Write a tutorial.
 Add a best practice migration tips document.
 
-Fix the mailing-list archive bug with From at
-the beginning of a line
-http://www.linux-france.org/prj/imapsync_list/msg00307.html
+Write a Mail::imapsync package and use it.
 
 Evaluate 
 http://www.rackspace.com/apps/email_hosting/migrations
 http://www.yippiemove.com/
+http://www.migrationwiz.com/
+http://www.microsoft.com/download/en/details.aspx?id=1329 "Microsoft Transporter Suite"
 
-Add NTLM authentification support
-http://cpansearch.perl.org/src/BUZZ/NTLM-1.05/NTLM.pm
-http://curl.haxx.se/rfc/ntlm.html
+Write --disarm_read_receipts that does:
+  --regexmess 's{\A(.*?(?! ^$))^Disposition-Notification-To:(.*?)$}{$1X-Disposition-Notification-To:$2}igxms' 
+May be apply it only to UNSEEN messages.
+
+Write --max_messages_per_second and  --max_bytes_per_second for staying under Microsoft's throttling policies.
 
 
-Add "output to reflect everything that imapsync was doing".
-Not everything but flag synchronization will be nice"
+Convert folder names to utf-8 and print them next to the uft-7 ones.
+Look at imapsync/W/learn/ 
+./imap_utf7 data_utf7
+
+Add an exit value when exiting because of --exitwhenover
+The goal is to know easily why to restart later.
+
+Add --mark-as-deleted1 --mark-as-deleted2 as
+aliases for --noexpunge1 --delete1 and --noexpunge2 --delete2
+
+Move --help documentation into the man page so that description is easier to find.
+
+Feature request for ImapSync.
+Can you setup an option to make it stop if the destination mailbox reports that it is over quota? 
+
+Print the list of messages not copied and why (duplicates or void header)
+
+Fix bug found by Pavel Stano on 01/06/2012 (june) imapsync never stop login
+when login fails with a "* BYE Temp error" from server.
+
+Consider /var/tmp/ instead of /tmp (/tmp is destoyed 
+on some Unix at reboot)
+
+Add a FAQ entry about long path over than 260 character on Win32. 
+
+Fix long path over than 260 character on Win32 with --usecache
+Fix inode crunching with --usecache
+Think about Digest::SHA or Digest::SHA::PurePerl.
+Think about a file database like DBM instead.
+Look at https://en.wikipedia.org/wiki/Radix_tree (David M advice)
+Look at leveldb (Simon Th actux advice)
+Look at http://fallabs.com/kyotocabinet/ (JYB advice)
+Also Redis (Ludovic Danigo advice)
+
+I am writing now to suggest that imapsync provide info containing the parameters
+with which a message is determined to be a duplicate, so that if I wanted to confirm
+they are in fact duplicates by looking at the messages themselves, enough info would
+be available to easily locate them.  One or two duplicates per folder are easy to
+find, but I had one large folder with quite a few, and in this case it would have
+been a big help.
+
+
+Find a way to avoid passwords in --debugimap unless needed.
+
+Explain that users can win time/bandwidth by using --expunge
+
+Fix "\Forwarded" flag bug in courier.
+Does \lalala can be forbidden (courier does a 
+"16 NO Error in IMAP command received by server"
+with 
+* OK [PERMANENTFLAGS (\* \Draft \Answered \Flagged \Deleted \Seen)] Limited
+
+Add an option to log both on screen and append to a file.
+At least document the tee command solution (Unix and Windows)
+
+Suggestion: it's very difficult to track down messages which are behaving
+funny during the sync. It would be great - and presumably easy to code -
+to have an option to have imapsync display e.g. the subject of an
+e-mail when it gets synced, rather than just the message ID and the date/time.
+
+Add a well described problem for each problem detected
+and counted in error counter statistics.
+
+Add sync imap keywords. Sync gmail labels to imap keyword
+http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=503159
+http://www.linux-france.org/prj/imapsync_list/msg00022.html
+http://mail.google.com/support/bin/answer.py?hl=en&answer=77657
+http://mail.google.com/support/bin/answer.py?answer=78892 
+
+Look at larch https://github.com/rgrove/larch/ 
+http://wonko.com/
 
 Add and option to sync to & from files.
-
-Add an option to make imapsync automatically
-reconnect when the connection drops
 
 Add an --aclregextrans2 flag.
 "Today we discovered, that Cyrus and Dovecot use different characters for 
@@ -40,29 +104,10 @@ their ACLs. Syncing ACLs vom Cyrus to Dovecot (at least 1.2) doesn't
 work. Cyrus uses c and d, Dovecot uses k and x instead." 
 Peer Heinlein.
 
-Add --subscribeall option.
-Is it possible to have a option that subscribes all folders regardless of
-subscription on the source server? Perhaps --subscribeall?
-
-Add a --delete2folders option
-"When syncing mailboxes with imapsync, is there a way to delete folders in the
-target account? The --delete2 option only seems to delete individual
-messages, not folders."
-
 Add different levels of output to see clearly the
 problem by default.
 
-Add option --exclude_messages_with_flag
-
 Add more information about skipped messages.
-
-There was a time imapsync took the whole message when the
-header was bad (empty). But it was bad for speed with big
-messages (nowadays there are always big messages in
-mailboxes). May be the best is to take a part of the
-body. Have to code this.
-
-
 
 Add Rick Romero patch with
 --quiet   No output at all
@@ -76,29 +121,11 @@ Add an option to implement the faq entry about copying a contact folder.
 
 imapsync doesn't report well. It should says "I had
 to sync 123 messages but I could transfer only 99 messages"
+Maybe count messages not transfered because they're dupplicate.
 
 Fix bug "not possible to use space in the imap password"
 
 Add kerberos authentification
-
-Add NOOP commands to avoid timeouts.
-
-Add a --pidfile option.
-
-Write a clean_exit() replacing each die() or exit() call.
-Add a --skipheaderinfolder option 
-See the code patches/imapsync_Cvitkovich_pidfile_tmpfile
-
-Fix this:
-> - Erreur avec la traditionnelle différence entre Windows
-> et LInux sur les retour-chariots : le calcul de la
-> longueur du message ou des entêtes à envoyer au serveur
-> cible n'est pas bon sur une machine Windows.
-> Ci-dessous la modif :
-> 
->         # No NL Count on Windows my $length = ( -s $file ) + $bare_nl_count;
->         my $length = ( -s $file );
-
 
 Add stdin/stdout filter before transfer:
 "Now i asked me, how to modify your perl program to work with
@@ -110,20 +137,13 @@ Fix bug with folder names starting with an asterisk: *Archiv
 Sending: 220 SELECT *Archiv/Support/foobar
 Read: 220 BAD Protokollfehler: "Invalid folder specified in SELECT command"
 
-Add automatic convertion or detection  when 
-separator inversion produces an invalid character.
-From uw to cyrus, for example :
-FoldA/FoldB.ext ->  FoldA.FoldB/ext
-
 Compare speed between 1.182 and 1.217
 "un mailbox de 90MB, ~2400 fichiers prends 80s avec la version 1.182 
 vs 250s avec la version 1.217". Marc Jauvin
 
 Add LITERAL+ [RFC 2088] support to imapsync.
 
-Add an entry to
-http://lsm.execpc.com/lsm/
-See template lsm.imapsync
+Make a m4 file for lsm.imapsync and generate it at each public release.
 
 Add an option to tell imapsync that the domain
 is changing and have it replace the domain in all user names that are
@@ -137,9 +157,6 @@ Add --verbose from Kjetil jumbo patch.
 
 Read the IMAP RFC http://www.faqs.org/rfcs/rfc3501.html
 
-Add debian packaging in the Makefile.
-Write to the debian maintener about that.
-
 Interface with external software like procmail 
 
 Read:
@@ -148,12 +165,200 @@ http://www.washington.edu/imap/documentation/commndmt.txt.html
 Add cyrus link about INBOX. namespace
 http://asg.web.cmu.edu/cyrus/download/imapd/altnamespace.html
 
-Explain expunge behavior.
+===========================================================================
 
 
+DONE. Inform about --addheader when the problem occurs "(no wanted headers so we ignore this message)"
+
+DONE. Print the timeout value. 
+DONE. Inform --timeout is is seconds.
+
+DONE. Add an entry to http://lsm.qqx.org/lsm/
+See lsm.imapsync
+
+DONE. Fix the mailing-list archive bug with From at
+the beginning of a line
+http://www.linux-france.org/prj/imapsync_list/msg00307.html
+
+DONE. Remove 2.2.9 Mail::IMAPClient support.
+
+DONE. Add OAUTH autentication support 
+https://developers.google.com/google-apps/gmail/oauth_overview
+
+DONE. Add --delete1 as an alias for --delete
+
+DONE. Add current date at the beginning of the run, useful when imapsync
+doesn't finish with statistics.
+
+DONE. Add automatic convertion or detection  when 
+separator inversion produces an invalid character.
+From uw to cyrus, for example :
+FoldA/FoldB.ext ->  FoldA.FoldB/ext
+
+DONE. Not donse since useless now (--useuid)
+Add a --skipheaderinfolder option 
+
+DONE. Not fixed since only reported once a long time ago.
+Fix this:
+> - Erreur avec la traditionnelle différence entre Windows
+> et Linux sur les retour-chariots : le calcul de la
+> longueur du message ou des entêtes à envoyer au serveur
+> cible n'est pas bon sur une machine Windows.
+> Ci-dessous la modif :
+> 
+>         # No NL Count on Windows my $length = ( -s $file ) + $bare_nl_count;
+>         my $length = ( -s $file );
+I wonder if it is Windows or the imap server used.
 
 
+DONE. No Debian package anymore.
+Add debian packaging in the Makefile.
+Write to the debian maintener about that.
 
+DONE with --addheader
+Add an option to solve syncing Sent folder when no good header
+are available:
+http://www.linux-france.org/prj/imapsync_list/msg01151.html
+http://www.linux-france.org/prj/imapsync_list/msg01158.html
+
+DONE. Add a note about 
+"One other thing: You might want to warn idiots like me, that if your
+cache resides on a filesystem with a limited number of inodes such as
+ext4, your inodes will be exhausted really fast (check with df -i). I
+now use a dedicated partition with reiserfs."
+
+DONE. Add an option --exitwhenover 2500000000 to avoid to be banned or locked
+http://support.google.com/a/bin/answer.py?hl=en&answer=1071518
+
+DONE. Check if a message exists before fetching it (could have been deleted recently)
+      (Check avoided when UID mode is not available)
+
+DONE. Change default --useheader 'Message-ID' --useheader Date to 
+--useheader 'Message-ID' --useheader 'Received'
+because Exchange changes Date header! (but not Received:)
+
+DONE. Add "output to reflect everything that imapsync was doing".
+Not everything but flag synchronization will be nice"
+--debugflags does this.
+
+DONE. Add a script to install automaticaly all needed Perl modules
+if needed. Not a script but command lines in INSTALL file.
+
+DONE. Post on imapsync mailing-list when a new release comes.
+No since I no longer distribute it gratis, imapsync detects
+itself a new release and buyers are informed by a specific 
+list. I know some packagers (FreeBSD) use the Changelog file 
+to detect an update.
+
+DONE. Subscribe users to imapsync_update mailing-list automatically after the payment.
+(done in paypal_send)
+
+DONE. NO became porn! Post on newsgroup comp.mail.imap when a new release comes.
+http://groups.google.fr/group/comp.mail.imap
+
+DONE. The --search option allows this (and many other things)
+Add option --exclude_messages_with_flag
+
+DONE. (yahoo login is standard now)
+Add yahoo imap support:
+http://elearningcentral.blogspot.com/2010/07/how-to-use-imapsync-with-yahoo-imap.html
+http://www.bwebcentral.com/utils/imapsync-yahoo
+See patches/imapsync-yahoo
+
+
+DONE. Add --subscribe by default. 
+Subscribe only when needed (not already subscribed).
+
+DONE. Ask Nick Czeczulin why he wrote patent "Method for mailbox migration"
+http://www.google.com/patents/about?id=qI_IAAAAEBAJ
+
+DONE. Add --search option allowing to select messages with any IMAP SEARCH command.
+
+DONE. Make --usecache works with --maxage --maxsize etc.
+
+DONE. Fix Exchange 2010 SP1 issue with --foldersizes when
+host2 folders don't exist. $imap->exists calls STATUS.
+Is it RFC compliant or an Exchange bug?
+Exchange quit after 10 errors.
+
+DONE. Make --delete2 works with --useuid
+
+DONE. write a comment to http://blog.migrationwiz.com/2010/12/09/imapsync-vs-migrationwiz/
+
+DONE. Read http://bugs.gentoo.org/show_bug.cgi?id=354831
+      Nice conversation.
+
+DONE. Look https://fedorahosted.org/released/imapsync/
+
+DONE. Take a look at https://bitbucket.org/imapsync/imapsync
+
+DONE. Explain expunge behavior in help message.
+
+DONE. Add --authmd51 --authmd52 to permit authmd5 by host.
+
+DONE. Write option --delete2foldersonly regex.
+Example: to permit a sync in a subfolder with --delete2folder
+--regextrans2 's#(.*)#NEW/$1#'  --delete2foldersonly /^NEW/ 
+
+DONE. Write option --delete2foldersnot regex.
+Example: to permit a sync but not deleting folder OLD
+--delete2foldersnot /^OLD/ 
+
+DONE. Add cache to speed up transfer. Option --usecache 
+
+DONE. There was a time imapsync took the whole message when the
+header was bad (empty). But it was bad for speed with big
+messages (nowadays there are always big messages in
+mailboxes). May be the best is to take a part of the
+body. Have to code this.
+
+DONE. Add a --delete2folders option
+"When syncing mailboxes with imapsync, is there a way to delete folders in the
+target account? The --delete2 option only seems to delete individual
+messages, not folders."
+
+DONE. Add NTLM authentification support. Mail-IMAPClient-3.25
+support it. 
+http://cpansearch.perl.org/src/BUZZ/NTLM-1.05/NTLM.pm
+http://curl.haxx.se/rfc/ntlm.html
+
+DONE. Evaluate memory consumption with (or better):
+print qx{ ps o pid,pcpu,comm,vsz,rss,size $$ }, "\n"
+Search memory leaks with 
+Test-Weaken Test-Memory-Cycle Devel-Cycle Devel-Leak Test-Weaken
+sh -x tests.sh ll_bigmail 
+sh -x tests.sh ll_memory_consumption
+are good candidate to stress memory.
+No memory leak detected just up to 8 memory copies of the same data
+in Mail::IMAPClient.
+Wrote ./learn/memory_consumption to show that it is a Mail::IMAPClient issue.
+
+DONE.Be more effiscient with large mailboxes
+Write a Mail::IMAPClient::fetch_hash allowing selecting messages to fetch
+4 hours estimated time coding. Time spent 4h30 (with public release and emails)
+
+DONE. Bugfix. Duplicate messages on host2 are not deleted with --delete2
+Reason: "Skipping msg #120:508 in host2 folder INBOX.2005-INBOX (duplicate so we ignore this message)"
+
+DONE. Ask namespace capability after login (dovecot 2).
+It was a bug from library caching CAPABILITY.
+
+DONE. Write a clean_exit() replacing each die() or exit() call.
+Wrote exit_clean() and die_clean() to remove pid file.
+
+DONE. Add a --pidfile option.
+
+DONE. Add NOOP commands to avoid timeouts.
+Useless since reconnect mode permits timeouts.
+
+DONE. Add --subscribeall option.
+Is it possible to have a option that subscribes all folders regardless of
+subscription on the source server? Perhaps --subscribeall?
+
+DONE. Add an option to make imapsync automatically
+reconnect when the connection drops
+
+DONE. Add Google adsence to imapsync website to see if it can help. 
 
 DONE. Be "FLAGS.SILENT" the normal behavior instead of "+FLAGS.SILENT".
 

@@ -1,21 +1,21 @@
-# $Id: INSTALL,v 1.16 2010/01/14 23:41:59 gilles Exp gilles $
+# $Id: INSTALL,v 1.33 2013/12/25 03:25:18 gilles Exp gilles $
 # 
 # INSTALL file for imapsync 
-# imapsync : IMAP sync or copy tool.
+# imapsync : IMAP sync and migrate tool.
 
 INTRODUCTION
 ------------
 
- imapsync works fine under any Unix OS with perl.
- imapsync works fine under Windows (2000, XP) and ActiveState's 5.8 Perl
+ imapsync works fine under any operating system with Perl and Perl modules (listed below).
+ imapsync.exe works fine standalone under Windows XP, Vista, Seven, 20XX, either 32 or 64bit.
 
- imapsync is already available directly on the following distributions (at least):
- FreeBSD, Debian, Ubuntu, Gentoo, NetBSD, Darwin, Mandriva and OpenBSD (yeah!).
 
- Get imapsync at
- http://www.linux-france.org/prj/imapsync/dist/
+UNIX
+----
 
- You'll find a compressed tarball called imapsync-x.xx.tgz
+ Purchase imapsync at
+ http://imapsync.lamiral.info/
+ You'll have access to a compressed tarball called imapsync-x.xx.tgz
  where x.xx is the version number. Untar the tarball where
  you want (on Unix):
 
@@ -24,13 +24,49 @@ INTRODUCTION
  Go into the directory imapsync-x.xx and read the INSTALL file.
  You're already reading the INSTALL file.
 
-GETTING
+WINDOWS
 -------
 
-http://www.linux-france.org/prj/imapsync/dist/
+a) Simplest way:
 
-PREREQUISITES
+- Buy imapsync.exe at http://imapsync.lamiral.info/
+
+- Run imapsync.exe in a command prompt (execute cmd.exe)
+  but I suggest the next process, I use it myself.
+
+- Since it is simpler to edit a batch file with notepad than 
+  the command line in DOS mode:
+
+  a) Look at the batch file at
+     http://imapsync.lamiral.info/examples/imapsync_example.bat
+  b) Take it and put this batch file in the same directory as imapsync.exe
+  c) Edit this batch file with notepad and replace the parameters 
+     with your own values
+  d) Run the batch file with a double-click.
+
+
+b) Hard way. It is the hard way because it installs all software
+   dependencies. The way for changing imapsync if needed.
+
+- Get imapsync-x.xx.tgz
+- Install Perl if it isn't already installed.
+  Strawberry Perl is a very good candidate
+  http://strawberryperl.com/
+
+- Use the command CPAN to install modules listed in the PREREQUISITES section.
+  There is also a batch file that does this install for you
+  It is called install_modules.bat available at
+  http://imapsync.lamiral.info/examples/install_modules.bat
+
+c) How to build imapsync.exe?
+
+- Do the hard stuff in b)
+- Run build_exe.bat (found in the tarball)
+
+PREREQUISITES 
 -------------
+
+This section doesn't concern Windows imapsync.exe users.
 
 You need : 
 - Perl 
@@ -39,93 +75,171 @@ You need :
   Get Perl here:
   http://www.perl.org/
 
-- Some perl modules. To verify you have
-  all modules in one command, just run:
+- Some perl modules. To verify in one command that you have
+  all needed modules, just run:
 
   perl -c imapsync
 
   The good answer is "imapsync syntax OK".
+  Any other output will list the missing modules in the
+  Perl paths (it then talks about @INC variable).
 
 Here is some individual module help:
 
-- Perl Mail::IMAPClient module 
+- To check if your system has Perl Mail::IMAPClient module 
   try : 
 
   perl -mMail::IMAPClient -e ''
-  
-  Get the Mail::IMAPClient module here:
-  http://search.cpan.org/
-  http://search.cpan.org/~djkernen/
-  http://search.cpan.org/~djkernen/Mail-IMAPClient-2.2.9/
-  
-  In fact I use Mail-IMAPClient-2.2.9
+
+  It should print nothing, nothing printed means Mail::IMAPClient
+  is already installed on your system.
+
+  If the module Mail::IMAPClient is not on the system,
+  you can use a copy included in the imapsync tarball
+  or get the latest Mail::IMAPClient module here:
+  http://search.cpan.org/dist/Mail-IMAPClient/
+
+  I use always the latest Mail-IMAPClient-3.xx
   To know the version you have on your system try :
 
   perl -mMail::IMAPClient -e 'print $Mail::IMAPClient::VERSION, "\n"'
 
-  New Mail-IMAPClient-3.xx works now with imapsync,
-  at least with Mail-IMAPClient-3.19 (previous may bug)
+  New Mail-IMAPClient-3.xx works very well with imapsync,
+  Use at least Mail-IMAPClient-3.25 (previous releases may bug).
+  Do not hesitate to use latest Mail-IMAPClient-3.xx 
+  (3.xx >= 3.35 at the time of this writing)
 
-- Perl Digest::MD5 module. 
+  Look at the shell script named "i3" in the tarball, it can be used to
+  run imapsync with included Mail-IMAPClient-3.35/ wherever you 
+  unpacked the imapsync tarball.
+
+- Digest::MD5
+  perl -mDigest::MD5 -e ""
+
   http://search.cpan.org/
-  http://search.cpan.org/~gaas/Digest-MD5-2.36/
+  http://search.cpan.org/~gaas/Digest-MD5-2.52/
   To know the version you have on your system try :
   perl -mDigest::MD5 -e 'print $Digest::MD5::VERSION, "\n"'
-  I use 2.36 (debian etch package)
+  I use 2.39 (Ubuntu package)
 
 - Term::ReadKey
-  perl -mTerm::ReadKey -e ''
+  perl -mTerm::ReadKey -e ""
 
-- IO:Socket:SSL.pm
-  perl -mIO::Socket::SSL -e ''
+- IO::Socket::SSL
+  perl -mIO::Socket::SSL -e ""
 
-- Date::Manip
-  perl -mDate::Manip -e ''
-
-- File::Spec
-  perl -mFile::Spec -e ''
-
-- File::Path
-  perl -mFile::Path -e ''
-
-- (Option) Perl Digest::HMAC_MD5 module
+- Digest::HMAC_MD5
   Good for non plain text password over network.
+  perl -mDigest::HMAC_MD5 -e ""
+
+- Authen::NTLM
+  perl -mAuthen::NTLM -e ""
+
+- Time::HiRes
+  perl -mTime::HiRes  -e ""
+
+- Data::Uniqid
+  perl -mData::Uniqid  -e ""
+
+- URI::Escape
+  perl -mURI::Escape  -e ""
+
+- File::Copy::Recursive
+  perl -mFile::Copy::Recursive -e ""
+
+Test everything in one command:
+
+  perl -mMail::IMAPClient -mDigest::MD5 -mTerm::ReadKey -mIO::Socket::SSL \
+       -mDigest::HMAC_MD5 -mAuthen::NTLM -e -mTime::HiRes \
+       -mData::Uniqid -mURI::Escape  ""
+
+You can install easily those Perl modules in latest release via the
+following commands (with root permissions)
+
+  perl -MCPAN -e "install Mail::IMAPClient"
+  perl -MCPAN -e "install Term::ReadKey"
+  perl -MCPAN -e "install IO::Socket::SSL"
+  perl -MCPAN -e "install Digest::HMAC_MD5"
+  perl -MCPAN -e "install URI::Escape"
+  perl -MCPAN -e "install File::Copy::Recursive"
+
+  perl -MCPAN -e "install Data::Uniqid"
+  perl -MCPAN -e "install Authen::NTLM"
 
 
-INSTALLING
-----------
+You can also install them easily too by using the standard install
+command on your system if the packages have been made on it
+(so you may not have the latest but most of the time it
+doesn't care). 
+
+Modules 
+ Authen::NTLM
+ Data::Uniqid
+may be not available this distribution way since I haven't find them
+on Ubuntu nor on Mandriva.
+
+On Debian/Ubuntu:
+
+  aptitude install libmail-imapclient-perl     # Mail::IMAPClient
+  aptitude install libterm-readkey-perl        # Term::ReadKey
+  aptitude install libio-socket-ssl-perl       # IO::Socket::SSL
+  aptitude install libdigest-hmac-perl         # Digest::HMAC_MD5 Digest::HMAC_SHA1
+  aptitude install liburi-perl                 # URI::Escape
+  aptitude install libfile-copy-recursive-perl # File::Copy::Recursive
+
+On Mandriva:
+
+  urpmi perl-Mail-IMAPClient     # Mail::IMAPClient
+  urpmi perl-Term-ReadKey        # Term::ReadKey
+  urpmi perl-IO-Socket-SSL       # IO::Socket::SSL
+  urpmi perl-Digest-HMAC         # Digest::HMAC_MD5 Digest::HMAC_SHA1
+  urpmi perl-URI                 # URI::Escape
+  urpmi perl-File-Copy-Recursive # File::Copy::Recursive
+
+On  CentOS (thanks to Ralf Hauber)
+
+  Install RPM Repository: Fedora Epel
+
+  See http://pkgs.org/centos-6-rhel-6/epel-i386/perl-Data-Uniqid-0.12-2.el6.noarch.rpm.html
+  wget http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
+  rpm -Uvh epel-release*rpm
+
+  yum install perl-Mail-IMAPClient
+  yum install "perl(Term::ReadKey)"
+  yum install "perl(Authen::NTLM)"
+  yum install perl-Data-Uniqid
+  yum install perl-File-Copy-Recursive
+
+
+INSTALLING on Unix
+------------------
+
 To see what will be done, just run:
 
-make -n install
+  make -n install
 
-To install imapsync, just run:
+To install imapsync in /usr/bin/ and man page in /usr/share/man/man1/, just run (as root):
 
-make install
+  make install
 
 or copy the file imapsync where you want it to be.
 
-WINDOWS
--------
+TESTING on Unix
+---------------
 
-- Install Perl if it isn't already installed.
-  ActivePerl from ActiveState is a good candidate if
-  you understand nothing at free/open software
-  and want to run imapsync with success.
-- Use PPM to install modules listed in the PREREQUISITES section.
-  PPM is Perl Package Manager.
-
-TESTING
--------
-
-The test will break as they are home specific.
+Tests will break as they are home specific.
 You need a running imap server on localhost with several accounts
 toto with a password located in the file $HOME/var/pass/secret.toto
 titi with a password located in the file $HOME/var/pass/secret.titi
 tata with a password located in the file $HOME/var/pass/secret.tata
 
-Of course, you can change the file tests.sh and run the tests with :
+Of course, you can change the file tests.sh and run tests with:
 
-sh -x tests.sh
+  sh -x tests.sh
+
+Specific tests can be run by using them as argument to tests.sh:
+
+  sh -x tests.sh ll_ssl_justconnect ll_bad_host ...
 
 The tests.sh script break on first failure ("set -e" directive).
 
