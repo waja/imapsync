@@ -34,4 +34,4 @@ Description: IMAP synchronization, copy and migration tool
  you just want to keep a "live" copy of B in A (backup).
  .
  Similar packages: offlineimap, imapcopy.
-Homepage: http://www.linux-france.org/prj/imapsync/
+Homepage: http://imapsync.lamiral.info/
