@@ -1,7 +1,7 @@
 Source: imapsync
 Section: mail
 Priority: optional
-Maintainer: RISKO Gergely <risko@debian.org>
+Maintainer: Jan Wagner <waja@cyconet.org>
 Vcs-Browser: http://git.debian.org/?p=collab-maint/imapsync.git;a=summary
 Vcs-Git: git://git.debian.org/collab-maint/imapsync.git
 Build-Depends: cdbs, debhelper (>= 7)
