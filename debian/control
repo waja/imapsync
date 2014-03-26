@@ -5,12 +5,12 @@ Maintainer: Jan Wagner <waja@cyconet.org>
 Vcs-Browser: http://git.debian.org/?p=collab-maint/imapsync.git;a=summary
 Vcs-Git: git://git.debian.org/collab-maint/imapsync.git
 Build-Depends: cdbs, debhelper (>= 7)
-Build-Depends-Indep: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, libmail-imapclient-perl (>= 3.20-2)
+Build-Depends-Indep: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, libmail-imapclient-perl (>= 3.20-2), libfile-copy-recursive-perl
 Standards-Version: 3.8.4.0
 
 Package: imapsync
 Architecture: all
-Depends: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, libmail-imapclient-perl (>= 3.20-2), ${misc:Depends}
+Depends: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, libmail-imapclient-perl (>= 3.20-2), libfile-copy-recursive-perl, ${misc:Depends}
 Description: IMAP synchronization, copy and migration tool
  The command imapsync is a tool allowing incremental and recursive imap
  transfer from one mailbox to another.
