@@ -1,3 +1,11 @@
+imapsync (1.607-1~1.gbp38b608) UNRELEASED; urgency=medium
+
+  * [d949fa5] Imported Upstream version 1.592
+  * [5c096cf] Imported Upstream version 1.596
+  * [38b6081] Imported Upstream version 1.607
+
+ -- Jan Wagner <waja@cyconet.org>  Sat, 14 Mar 2015 13:17:16 +0100
+
 imapsync (1.584-1) unstable; urgency=medium
 
   * [8a58513] Imported Upstream version 1.584
