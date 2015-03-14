@@ -83,7 +83,7 @@ REPO=$1 && shift
 RELEASE=$1 && shift
 RELEASEFILES=$@
 
-if ! TAG=`git describe --exact-match 2>/dev/null`; then
+if ! TAG=`git describe --exact-match --all 2>/dev/null`; then
   echo "This commit is not a tag so not creating a release"
   exit 0
 fi
