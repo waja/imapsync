@@ -1,4 +1,4 @@
-imapsync (1.584-1~1.gbp763fb8) unstable; urgency=medium
+imapsync (1.584-1) unstable; urgency=medium
 
   * [8a58513] Imported Upstream version 1.584
   * [c71c047] Change Maintainer
