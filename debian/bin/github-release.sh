@@ -98,6 +98,7 @@ if [ "$TRAVIS" = "true" ] && [ "$TRAVIS_TAG" != "$RELEASE" ]; then
   exit 1
 fi
 
+TAG=`echo "$TAG" | sed 's/^tags\///'`
 if [ "$TAG" != "$RELEASE" ]; then
   echo "Error: The tag ($TAG) does not match the indicated release ($RELEASE)"
   exit 1
