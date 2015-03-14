@@ -1,6 +1,11 @@
 This package was debianized by RISKO Gergely <risko@debian.org> on
 Mon, 25 Apr 2005 12:59:24 +0200.
 
+Files: debian/*
+Copyright: Copyright (C) 2005-2010 RISKO Gergely <risko@debian.org>
+           Copyright (C) 2014-2015 Jan Wagner <waja@cyconet.org>
+License: GPL-2+
+
 Upstream Author: Gilles LAMIRAL <gilles.lamiral@laposte.net>
 
 Copyright (C) 2009,2010  Gilles LAMIRAL <lamiral@linux-france.org>
