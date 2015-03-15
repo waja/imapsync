@@ -1,3 +1,9 @@
+imapsync (1.607-1~1.gbpf04322) UNRELEASED; urgency=medium
+
+  *
+
+ -- Jan Wagner <waja@cyconet.org>  Sun, 15 Mar 2015 23:40:00 +0100
+
 imapsync (1.607-1) unstable; urgency=medium
 
   * [d949fa5] Imported Upstream version 1.592
