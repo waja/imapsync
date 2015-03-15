@@ -6,6 +6,7 @@ Vcs-Browser: https://github.com/waja/imapsync
 Vcs-Git: https://github.com/waja/imapsync.git
 Build-Depends: cdbs, debhelper (>= 7)
 Build-Depends-Indep: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, libmail-imapclient-perl (>= 3.20-2), libfile-copy-recursive-perl, libauthen-ntlm-perl, libio-socket-ip-perl, libio-tee-perl, libunicode-string-perl
+Homepage: http://imapsync.lamiral.info/
 Standards-Version: 3.9.6
 
 Package: imapsync
@@ -34,4 +35,3 @@ Description: IMAP synchronization, copy and migration tool
  you just want to keep a "live" copy of B in A (backup).
  .
  Similar packages: offlineimap, imapcopy.
-Homepage: http://imapsync.lamiral.info/
