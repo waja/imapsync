@@ -1,4 +1,4 @@
 version=3
 
-opts=dversionmangle=s/\+dfsg// \
-http://www.linux-france.org/prj/imapsync/dist/imapsync-(.*).tgz
+opts=filenamemangle=s/.+\/imapsync-([0-9.]+).tar.gz/imapsync-$1.tar.gz/,dversionmangle=s/\+dfsg// \
+  https://github.com/imapsync/imapsync/releases .*/imapsync-([0-9.]+).tar.gz
