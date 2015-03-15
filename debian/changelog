@@ -1,10 +1,27 @@
-imapsync (1.607-1~1.gbp38b608) UNRELEASED; urgency=medium
+imapsync (1.607-1) unstable; urgency=medium
 
   * [d949fa5] Imported Upstream version 1.592
   * [5c096cf] Imported Upstream version 1.596
   * [38b6081] Imported Upstream version 1.607
+  * [08573bb] Add libio-tee-perl and libunicode-string-perl to
+    Build-Depends-Indep
+  * [d8c81e4] travis-ci: Adding initial .travis.yml
+  * [c182076] Update copyright for debian/
+  * [fcae1ad] Add GPL-2+ text to copyright
+  * [6b08eac] travis-ci: Adding github-release.sh
+  * [b7c3086] travis-ci: Initial support for uploading releases to github
+  * [fbcd6fa] travis-ci: debian/bin/github-release.sh uses now all tags, not
+    just the annotated
+  * [689654a] travis-ci: debian/bin/github-release.sh fix comparison of TAG
+    value
+  * [61c8b1d] Bump Standards-Version to 3.9.6, no changes needed
+  * [b876de5] Adding source format file (1.0)
+  * [51ac435] Update of Vcs-Headers
+  * [a5f6c69] Move Homepage field into source package
+  * [9343c72] Preventing first person in description
+  * [e4814eb] Adjusting watch file
 
- -- Jan Wagner <waja@cyconet.org>  Sat, 14 Mar 2015 13:17:16 +0100
+ -- Jan Wagner <waja@cyconet.org>  Sun, 15 Mar 2015 23:34:35 +0100
 
 imapsync (1.584-1) unstable; urgency=medium
 
