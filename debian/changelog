@@ -1,3 +1,9 @@
+imapsync (1.607-3~1.gbpe8fea6) UNRELEASED; urgency=medium
+
+  * UNRELEASED
+
+ -- Jan Wagner <waja@cyconet.org>  Wed, 25 Mar 2015 17:34:21 +0100
+
 imapsync (1.607-2) unstable; urgency=medium
 
   * [2876aed] Merging upstream changes of github-release.sh
