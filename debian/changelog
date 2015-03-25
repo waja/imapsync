@@ -1,8 +1,9 @@
-imapsync (1.607-1~1.gbpf04322) UNRELEASED; urgency=medium
+imapsync (1.607-2) unstable; urgency=medium
 
-  *
+  * [2876aed] Merging upstream changes of github-release.sh
+  * [337c92f] Adding libio-tee-perl and libunicode-string-perl to dependencies
 
- -- Jan Wagner <waja@cyconet.org>  Sun, 15 Mar 2015 23:40:00 +0100
+ -- Jan Wagner <waja@cyconet.org>  Wed, 25 Mar 2015 17:29:42 +0100
 
 imapsync (1.607-1) unstable; urgency=medium
 
