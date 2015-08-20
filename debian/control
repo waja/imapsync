@@ -5,13 +5,34 @@ Maintainer: Jan Wagner <waja@cyconet.org>
 Vcs-Browser: https://github.com/waja/imapsync
 Vcs-Git: https://github.com/waja/imapsync.git
 Build-Depends: cdbs, debhelper (>= 7)
-Build-Depends-Indep: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, libmail-imapclient-perl (>= 3.20-2), libfile-copy-recursive-perl, libauthen-ntlm-perl, libio-socket-ip-perl, libio-tee-perl, libunicode-string-perl
+Build-Depends-Indep: libauthen-ntlm-perl,
+                     libdate-manip-perl,
+                     libdigest-hmac-perl,
+                     libfile-copy-recursive-perl,
+                     libio-socket-ip-perl,
+                     libio-socket-ssl-perl,
+                     libio-tee-perl,
+                     libmail-imapclient-perl (>= 3.20-2),
+                     libterm-readkey-perl,
+                     libunicode-string-perl,
+                     perl
 Homepage: http://imapsync.lamiral.info/
 Standards-Version: 3.9.6
 
 Package: imapsync
 Architecture: all
-Depends: perl, libdigest-hmac-perl, libterm-readkey-perl, libio-socket-ssl-perl, libdate-manip-perl, libmail-imapclient-perl (>= 3.20-2), libfile-copy-recursive-perl, libauthen-ntlm-perl, libio-socket-ip-perl, libio-tee-perl, libunicode-string-perl, ${misc:Depends}
+Depends: libauthen-ntlm-perl,
+         libdate-manip-perl,
+         libdigest-hmac-perl,
+         libfile-copy-recursive-perl,
+         libio-socket-ip-perl,
+         libio-socket-ssl-perl,
+         libio-tee-perl,
+         libmail-imapclient-perl (>= 3.20-2),
+         libterm-readkey-perl,
+         libunicode-string-perl,
+         perl,
+         ${misc:Depends}
 Description: IMAP synchronization, copy and migration tool
  The command imapsync is a tool allowing incremental and recursive imap
  transfer from one mailbox to another.
