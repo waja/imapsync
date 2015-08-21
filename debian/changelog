@@ -1,8 +1,14 @@
-imapsync (1.607-3~1.gbpe8fea6) UNRELEASED; urgency=medium
+imapsync (1.644-1) unstable; urgency=medium
 
-  * UNRELEASED
+  * [8a27ff7] Imported Upstream version 1.592
+  * [860c4bd] Imported Upstream version 1.596
+  * [7e700c0] Imported Upstream version 1.607
+  * [769bd00] debian/control: reformating with warp-and-sort
+  * [49bdcaf] Reformating with warp-and-sort the rest of debian/
+  * [05e3309] Imported Upstream version 1.637
+  * [dac3765] Imported Upstream version 1.644
 
- -- Jan Wagner <waja@cyconet.org>  Wed, 25 Mar 2015 17:34:21 +0100
+ -- Jan Wagner <waja@cyconet.org>  Fri, 21 Aug 2015 13:15:58 +0200
 
 imapsync (1.607-2) unstable; urgency=medium
 
