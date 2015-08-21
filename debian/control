@@ -14,6 +14,7 @@ Build-Depends-Indep: libauthen-ntlm-perl,
                      libio-tee-perl,
                      libmail-imapclient-perl (>= 3.20-2),
                      libterm-readkey-perl,
+                     libtest-pod-perl,
                      libunicode-string-perl,
                      perl
 Homepage: http://imapsync.lamiral.info/
@@ -30,6 +31,7 @@ Depends: libauthen-ntlm-perl,
          libio-tee-perl,
          libmail-imapclient-perl (>= 3.20-2),
          libterm-readkey-perl,
+         libtest-pod-perl,
          libunicode-string-perl,
          perl,
          ${misc:Depends}
