@@ -48,7 +48,7 @@ Description: IMAP synchronization, copy and migration tool
  transferred by not transferring a given message if it is already on both
  sides. Same headers, same message size and the transfer is done only
  once. All flags are preserved, unread will stay unread, read will stay
- read, deleted will stay deleted. It can be stoped the transfer at any time
+ read, deleted will stay deleted. It can be stopped the transfer at any time
  and restarted later, imapsync is adapted to a bad connection.
  .
  It can decided to delete the messages from the source mailbox after a
