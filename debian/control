@@ -19,7 +19,7 @@ Build-Depends-Indep: libauthen-ntlm-perl,
                      libunicode-string-perl,
                      perl
 Homepage: http://imapsync.lamiral.info/
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 
 Package: imapsync
 Architecture: all
