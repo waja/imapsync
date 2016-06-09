@@ -6,6 +6,7 @@ Vcs-Browser: https://github.com/waja/imapsync
 Vcs-Git: https://github.com/waja/imapsync.git
 Build-Depends: cdbs, debhelper (>= 7)
 Build-Depends-Indep: libauthen-ntlm-perl,
+                     libdata-uniqid-perl,
                      libdate-manip-perl,
                      libdigest-hmac-perl,
                      libfile-copy-recursive-perl,
@@ -24,6 +25,7 @@ Package: imapsync
 Architecture: all
 Depends: libauthen-ntlm-perl,
          libdate-manip-perl,
+         libdata-uniqid-perl,
          libdigest-hmac-perl,
          libfile-copy-recursive-perl,
          libio-socket-ip-perl,
