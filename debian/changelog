@@ -1,4 +1,4 @@
-imapsync (1.678-1~1.gbp7563e5) UNRELEASED; urgency=medium
+imapsync (1.678-1) unstable; urgency=medium
 
   * [8a27ff7] Imported Upstream version 1.592
   * [860c4bd] Imported Upstream version 1.596
@@ -12,8 +12,17 @@ imapsync (1.678-1~1.gbp7563e5) UNRELEASED; urgency=medium
   * [5d67dff] travis-ci: automatically install dependencies
   * [cc8c969] Imported Upstream version 1.670
   * [364727b] Imported Upstream version 1.678
+  * [5c21cdc] d/control: Add libdata-uniqid-perl to (Build-)Depends(-Indep)
+    as it's available at least in jessie-backports and xenial
+  * [54417c2] d/imapsync.docs: Add new documentations provided upstream
+  * [51077ff] d/imapsync.examples: Shipping examples provided upstream
+  * [c6d15b5] Bump Standards-Version to 3.9.8, no changes needed
+  * [dbb7ec8] d/control: Fixing minor spelling error
+  * [525d72b] travis-ci: Adding ppa:waja/trusty-backports
+  * [8eabd93] d/control: Add missing libio-socket-inet6-perli
+    (Build-)Depends(-Indep)
 
- -- Jan Wagner <waja@cyconet.org>  Thu, 09 Jun 2016 14:15:11 +0200
+ -- Jan Wagner <waja@cyconet.org>  Thu, 09 Jun 2016 15:59:52 +0200
 
 imapsync (1.607-2) unstable; urgency=medium
 
