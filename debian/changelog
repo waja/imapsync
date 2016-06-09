@@ -1,4 +1,4 @@
-imapsync (1.644-1) unstable; urgency=medium
+imapsync (1.678-1~1.gbp7563e5) UNRELEASED; urgency=medium
 
   * [8a27ff7] Imported Upstream version 1.592
   * [860c4bd] Imported Upstream version 1.596
@@ -7,8 +7,13 @@ imapsync (1.644-1) unstable; urgency=medium
   * [49bdcaf] Reformating with warp-and-sort the rest of debian/
   * [05e3309] Imported Upstream version 1.637
   * [dac3765] Imported Upstream version 1.644
+  * [1d38312] Adding libtest-pod-perl as build and runtime dependency
+  * [62af4fc] travis-ci: Adding required arguments for trusty
+  * [5d67dff] travis-ci: automatically install dependencies
+  * [cc8c969] Imported Upstream version 1.670
+  * [364727b] Imported Upstream version 1.678
 
- -- Jan Wagner <waja@cyconet.org>  Fri, 21 Aug 2015 13:15:58 +0200
+ -- Jan Wagner <waja@cyconet.org>  Thu, 09 Jun 2016 14:15:11 +0200
 
 imapsync (1.607-2) unstable; urgency=medium
 
