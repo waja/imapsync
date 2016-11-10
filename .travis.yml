@@ -27,7 +27,7 @@ after_script:
 env:
   global:
     # travis encrypt -r waja/imapsync GITHUBTOKEN=XXXXXX (https://help.github.com/articles/creating-an-access-token-for-command-line-use / http://docs.travis-ci.com/user/encryption-keys/)
-    secure: "aVPTMjCrl5ovPvvO3HceU9LNZyVWJxy20OIXm7AKymwrKaQJN5fXhYq5h8ciR/mDRNISsJ56GFv/yfrgFm6syM2hle7ZpZRUUTMhaAFM8MvwDpB6iS1S8M//6nRVXeCzzblUFbEU6pRIwbaFEyi2zecRIJx+RVUGCFFiajZotug="
+    secure: "TXWTG98WlH91eP8iGuxU6iDG8f7DTum036wzqokIsiW6FIkjQTAcYB21WULKjHsPFPHVLj44zuzMbhdk9DZNK10iDLa7pHudrvYuevt25GwFNdDkYk4YZj7BJ2NNqROYQ7MYNhXYHQnI+HsmU+u3q2ZNAQRDxjB6esDvYBRE7I0="
 
 after_success:
     - mkdir -p debian/build/release/
