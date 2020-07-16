@@ -1,13 +1,23 @@
 #!/bin/cat
-$Id: FAQ.Gmail.txt,v 1.18 2016/01/18 18:14:12 gilles Exp gilles $
+$Id: FAQ.Gmail.txt,v 1.58 2019/04/25 10:41:12 gilles Exp gilles $
 
-=====================================
-  Imapsync tips for Gmail accounts.
-=====================================
+This document is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+https://imapsync.lamiral.info/FAQ.d/FAQ.Gmail.txt
 
-Questions anwswered in this FAQ are:
+=======================================================================
+              Imapsync tips for Gmail accounts.
+=======================================================================
+
+Questions answered in this FAQ are:
 
 Q. Can I use imapsync to transfer from or to Gmail accounts?
+
+Q. Even after several syncs the number of messages differs
+   largely between imapsync and the Gmail web interface.
+   What can I do?
+
+Q. How many days does it take to transfer X GB?
 
 Q. How to synchronize from Gmail to Gmail?
 
@@ -15,17 +25,24 @@ Q. How to synchronize from XXX to Gmail?
 
 Q. How to synchronize from Gmail to XXX?
 
-Q. Can I use the Extension of the SEARCH command: X-GM-RAW described at
-   https://support.google.com/mail/answer/7190?hl=en
-
-Q. How to avoid the [IMAP] prefix on Gmail side?
-
 Q. I can't authenticate with Gmail via IMAP
    and Gmail says "Please log in via your web browser"
 
 Q. Can not open imap connection on [imap.gmail.com]
+   Unable to connect to imap.gmail.com
+
+Q. Can I transfer "Chat" messages with imapsync?
+
+Q. Can I safely use --useuid for Gmail transfers?
 
 Q. Gmail does not really delete messages in folder [Gmail]/All Mail
+   What happens? What can I do?
+
+Q. Can I use the Extension of the SEARCH command: X-GM-RAW described at
+   https://support.google.com/mail/answer/7190?hl=en
+   https://developers.google.com/gmail/imap_extensions#extension_of_the_search_command_x-gm-raw
+
+Q. How to avoid the [IMAP] prefix on Gmail side?
 
 Q. Does imapsync have the capability to do 2 stage authentication?
 
@@ -37,6 +54,9 @@ Q. How to use a Gmail account to backup several different imap accounts?
 
 Q. How to migrate email from gmail to google apps?
 
+
+Now the questions again with their answers.
+
 =======================================================================
 Q. Can I use imapsync to transfer from or to Gmail accounts?
 
@@ -47,42 +67,104 @@ it has to be allowed in the Gmail configuration part:
  -> IMAP Access
  -> Enable IMAP
 
+ Also:
+ 
+ -> Verify 2-step verification is OFF
+    https://myaccount.google.com/security?hl=en&pli=1&nlr=1#signin
+ -> Turn ON "Access for less secure apps"
+    https://www.google.com/settings/security/lesssecureapps
+    https://support.google.com/accounts/answer/6010255?hl=en
+
+=======================================================================
+Q. Even after several syncs the number of messages differs
+   largely between imapsync and the Gmail web interface.
+   What can I do?
+
+R. Turned off "Conversation views" on Gmail.
+With "Conversation views" turned off, Gmail shows the exact message 
+count for each folder and it matches what imapsync shows. 
+With "Conversation views" on, a single conversation can have 
+multiple messages and it doesn't match what imapsync presents.
+(Thanks to Karthik.V for this input)
+
+=======================================================================
+Q. How many days does it take to transfer X GB?
+
+R. Basically it takes X days to transfer X GB per account.
+   Gmail has usage limits per day and use throttlers when
+   they are overtaken
+   http://support.google.com/a/bin/answer.py?hl=en&answer=1071518
+   From the previous link:
+
+   * it's 2X days to upload  X GB to Gmail, it's why I suggest to add
+   --maxbytespersecond 10000 --maxbytesafter 1_000_000_000
+   for uploading messages to Gmail
+   * it's X/2 days to download X BG from Gmail, it's why I suggest to add
+   --maxbytespersecond 20000 --maxbytesafter 1_000_000_000
+   for downloading messages from Gmail
+  
+   That's theoretical values that always work in practice. Try
+   upper values and see if they still work.
+
+   How Gmail says limits are reached?
+   This is either a disconnection with
+   "BYE Session expired, please login again"
+   or a very small rate, less than 1 Kib/s
+
+https://imapsync.lamiral.info/FAQ.d/FAQ.Gmail.txt
 =======================================================================
 Q. How to synchronize from Gmail to Gmail?
 
-
 R. Use the following example:
 
-./imapsync \
+imapsync  \
+           --user1 account1@gmail.com \
+           --password1 gmailsecret1 \
+           --user2 account2@gmail.com \
+           --password2 gmailsecret2 \
+           --gmail1 --gmail2 
+
+Or, replacing what does --gmail1 --gmail2 (values are from imapsync 1.882):
+
+imapsync \
            --host1 imap.gmail.com \
-           --ssl1 \
            --user1 account1@gmail.com \
            --password1 gmailsecret1 \
            --host2 imap.gmail.com \
-           --ssl2 \
            --user2 account2@gmail.com \
            --password2 gmailsecret2 \
-           --exitwhenover 500000000 \
+           --maxbytespersecond 20_000 \
+           --maxbytesafter 1_000_000_000 \
+           --maxsleep 2 \
            --automap \
            --exclude "\[Gmail\]$"   
 
+With --gmail1 --gmail2 you can override the parameters
+that are activated by them, for example:
+
+imapsync ... --gmail1 --gmail2 --maxbytespersecond 50_000
 
 Explanations:
 
---ssl1 --ssl2 are mandatory since Gmail only supports 
-imap ssl connections.
 
---exitwhenover 500000000 ( ~500 MB ) option is here to avoid 
-locking or errors when imap transfers exceed maximum limit. 
+--maxbytespersecond 20_000 ( 20 kBytes/s ) option is here to avoid 
+locking or errors when imap transfers exceed Gmail maximum limit. 
 See http://support.google.com/a/bin/answer.py?hl=en&answer=1071518
---exitwhenover is not mandatory in the sense Gmail may allow you 
-to use an upper value than 500 MB without disconnections; I don't
-know the hard value, it seems to vary, so just have some tries
-and report me what you discover in case you detect something
-reliable.
+--maxbytespersecond 20_000 is not mandatory in the sense Gmail may 
+allow you to use an upper value than 1 GBytes per 24h without 
+disconnections. If you count well, it should be 10_000, not 20_000.
+
+--maxbytesafter 1_000_000_000 option is there because 
+option --maxbytespersecond 20000 is unnecessarily slow if the Gmail 
+account size is less than 1 GB.
+
+--maxsleep 2 is to avoid sleeping more than 2 seconds when 
+the --maxbytespersecond value implies a long sleep between 2 copies.
 
 --automap is not mandatory but it's a feature to automatically
 map folder names based on the Gmail user configuration itself, par account.
+It will save manual folder names changes or the use of --regextrans2 
+or --f1f2 to map folder names.
 For example, imap folder "[Gmail]/Sent Mail" may be mapped as one of
 E-mails enviados
 Enviada
@@ -95,59 +177,97 @@ Skickat
 Verzonden
 etc.
 on both sides, host1 or host2, maybe differently, sometimes in 
-incomprehensible alphabets, a headache for imap sysadmins. 
+incomprehensible alphabets, a headache for imap sysadmins.
 See a listing here:
 http://stackoverflow.com/questions/2185391/localized-gmail-imap-folders/2185548#2185548
 
 --exclude "\[Gmail\]$"   is just there to avoid a warning error
 when selecting this not used folder.
 
-=======================================================================
+Be aware that --gmail1 --gmail2 is a special case, it's not what
+--gmail1 does plus what --gmail2 does when they are not invoked 
+together.
 
 
+https://imapsync.lamiral.info/FAQ.d/FAQ.Gmail.txt
 =======================================================================
 Q. How to synchronize from XXX to Gmail?
 
-R. There are some details to get the special [Gmail] sub-folders
-   right. Here's an example of migrating an old "Sent" folder to
-   Gmail's structure:
+R. Use the following example:
 
-imapsync --host1 mail.oldhost.com \
+imapsync --host1 mail.oldhost.com     \
          --user1 my_email@oldhost.com \
-         --password1 password \
+         --password1 password   \
+         --user2 my_email@gmail.com \
+         --password2 password \
+         --gmail2
+
+Or, replacing what does --gmail2 (values are from imapsync 1.921):
+
+imapsync --host1 mail.oldhost.com     \
+         --user1 my_email@oldhost.com \
+         --password1 password   \
          --host2 imap.gmail.com \
          --user2 my_email@gmail.com \
          --password2 password \
-         --ssl2 \
-         --exitwhenover 500000000 \
-         --maxsize 25000000 \
-         --automap \
-         --expunge1 \
+         --maxbytespersecond 20_000 \
+         --maxbytesafter 1_000_000_000 \
+         --maxsleep 2 \
+         --maxsize 35_651_584 \
+         --automap   \
+         --expunge1  \
          --addheader \
-         --exclude "\[Gmail\]$"           \
-         --regextrans2 "s/[ ]+/_/g"       \
-         --regextrans2 "s/[\^]/_/g"       \
-         --regextrans2 "s/['\"\\\\]/_/g"  
+         --exclude "\[Gmail\]$"  \
+         --regextrans2 "s/['\^\"\\\\]/_/g" \
+         --regextrans2 "s/[ ]+/_/g" 
+
+
+Starting from imapsync 1.926 the last --regextrans2 replacing 
+all blanks, which was:
+
+        --regextrans2 "s/[ ]+/_/g" 
+
+became 
+
+on Winwows, like:
+
+  imapsync.exe ... --regexflag "s,\\Seen,," --regexflag "s,,\\Seen ,"
+                   
+on Linux, like:
+
+  imapsync ...    --regexflag 's,\\Seen,,' --regexflag 's,,\\Seen ,'
+
+
+
+With --gmail2 you can override the parameters
+that are activated by them, for example:
+
+imapsync ... --gmail2 --maxbytespersecond 50_000 --noautomap --maxsleep 0
 
 Explanations:
 
---ssl2 is mandatory since Gmail only supports imap ssl connections.
-
---exitwhenover 500000000 option is here to avoid locking when 
-transfers exceed maximum limit. 
+--maxbytespersecond 20_000 ( 20 kBytes/s ) option is here to avoid 
+locking or errors when imap transfers exceed Gmail maximum limit. 
 See http://support.google.com/a/bin/answer.py?hl=en&answer=1071518
---exitwhenover is not mandatory in the sense you may be able to
-use an upper value than 500 MB without disconnections; I don't
-know the hard value, it seems to vary, so just have some tries
-and report me what you discover in case you detect something.
+--maxbytespersecond 20_000 is not mandatory in the sense Gmail may 
+allow you to use an upper value than 1 GBytes per 24h without 
+disconnections. If you count well, it should be 10_000, not 20_000.
 
---maxsize 25000000 is mandatory since Gmail limits messages size
+--maxbytesafter 1_000_000_000 option is there because 
+option --maxbytespersecond 20000 is unnecessarily slow if the Gmail 
+account size is less than 1 GB. Counting well, it should 
+be 500_000_000, not 1_000_000_000, but 1GB is usually ok.
+
+--maxsleep 2 is to avoid sleeping more than 2 seconds when 
+the --maxbytespersecond value implies a long sleep between 2 copies.
+
+--maxsize 25_000_000 is mandatory since Gmail limits messages size
 up to 25 MB. This value increases over time, it was 10 MB some 
 years ago so you can try higher values. The Gmail page about
 this limit is https://support.google.com/mail/answer/6584
 
 --automap is optional but it will save manual folder names
-changes or the use of --regextrans2 to map folder names.
+changes or the use of --regextrans2 or --f1f2 to map folder names.
 
 --expunge1 is optional. It deletes messages marked \Deleted on host1.
 Imapsync syncs messages with all their flags, Gmail takes the messages
@@ -186,53 +306,53 @@ not accepted by gmail, character ^ to character _ underscore.
 --regextrans2 "s/['\"\\\\]/_/g" is optional. It converts 
 characters ' or " or \ to character _ underscore.
 
-
-
-
-You can add --folder "INBOX.Sent" in the example in case
-you want to sync only the "Sent" folder.
-
 You can select folders exported to imap within the gmail preferences.
 Select or unselect some "System labels", depending on your needs.
 
 
+https://imapsync.lamiral.info/FAQ.d/FAQ.Gmail.txt
 =======================================================================
 Q. How to synchronize from Gmail to XXX?
 
 R. Use this example:
 
-./imapsync \
+imapsync \
+           --user1 gilles.lamiral@gmail.com \
+           --password1 gmailsecret \
+           --host2 localhost \
+           --user2 tata \
+           --gmail1
+
+Or, replacing what does --gmail1 (values are from imapsync 1.882):
+
+imapsync \
            --host1 imap.gmail.com \
            --user1 gilles.lamiral@gmail.com \
            --password1 gmailsecret \
            --host2 localhost \
            --user2 tata \
            --password2 tatasecret \
-           --ssl1 \
-           --exitwhenover 2500000000 \
+           --maxbytespersecond 20_000 \
            --useheader="X-Gmail-Received" \
            --useheader "Message-Id" \
            --automap \
            --regextrans2 "s,\[Gmail\].,," \
            --skipcrossduplicates \
-           --folderfirst "Work" \
-           --folderfirst "Friends" \
-           --folderlast  "CanWait" \
            --folderlast  "[Gmail]/All Mail"
 
+With --gmail1 you can override the parameters
+that are activated by them, for example:
+
+imapsync ... --gmail1 --maxbytespersecond 50_000 --noskipcrossduplicates --noautomap
 
 Explanations:
 
---ssl1 is mandatory since Gmail only supports imap ssl connections.
-
---exitwhenover 2500000000 (2.5 GB) option is here to avoid 
-locking when transfers exceed maximum limit.
-
+--maxbytespersecond 20_000 ( 20 kBytes/s ) option is here to avoid 
+locking or errors when imap transfers exceed Gmail maximum limit. 
 See http://support.google.com/a/bin/answer.py?hl=en&answer=1071518
---exitwhenover is not mandatory in the sense you may be able to
-use an upper value than 2.5 GB without disconnections; I don't
-know the hard value, it seems to vary, so just have some tries
-and report me what you discover in case you detect something.
+--maxbytespersecond 20_000 is not mandatory in the sense Gmail may 
+allow you to use an upper value than 2 GBytes per 24h without 
+disconnections.
 
 --useheader="X-Gmail-Received" --useheader "Message-Id" are not
 mandatory. I use them because I found (several years ago, it may
@@ -251,19 +371,15 @@ get rid of this "[Gmail]" part with that.
 You can select folders exported to imap within the gmail preferences,
 for example you may unselect all "System labels".
 
---exitwhenover option is here to avoid locking when transfers 
-exceed maximum limit. 
-See http://support.google.com/a/bin/answer.py?hl=en&answer=1071518
-
 --skipcrossduplicates is optional but it can save Gigabytes of hard
 disk memory. Within imap protocol, Gmail presents Gmail labels as 
 folders, so a message labeled "Work" "ProjectX" "Urgent" ends up 
 in three different imap folders "Work" "ProjectX" and "Urgent"
-after an imap sync. --skipcrossduplicates prevent this behavior.
+after an imap sync. Option --skipcrossduplicates prevent this behavior.
 
 An issue with --skipcrossduplicates is that the first label synced
-by imapsync goes to its corresponding folder and other labels are
-ignored. This way, at least you can choose what labels have the 
+by imapsync goes to its corresponding folder but other labels are
+then ignored. You can choose what labels have the 
 priority by using the --folderfirst option. For example
 --folderfirst "Work" will sync messages labeled "Work" before
 messages labeled "CanWait" or "Urgent". By default imapsync 
@@ -275,6 +391,119 @@ label CanWait and only it.
 --folderlast "[Gmail]/All Mail", in conjunction with option 
 --skipcrossduplicates, will only put in "[Gmail]/All Mail"
 the messages that are not labeled at all.
+
+
+https://imapsync.lamiral.info/FAQ.d/FAQ.Gmail.txt
+=======================================================================
+Q. I can't authenticate with Gmail via IMAP
+   and Gmail says "Please log in via your web browser"
+
+R0. My current settings on two Gmail accounts are made
+with three steps 0) 1) 2)
+
+0) Login via a web browser to the Gmail account concerned.
+
+1) The 2-step verification is OFF
+https://myaccount.google.com/security?hl=en&pli=1&nlr=1#signin
+
+2) Access for less secure apps is turned ON
+https://www.google.com/settings/security/lesssecureapps
+https://support.google.com/accounts/answer/6010255?hl=en
+
+R1. See Coert Grobbelaar solution:
+https://web.archive.org/web/20150906230041/http://security.stackexchange.com/questions/86404/how-do-i-interact-with-google-to-import-email-via-imapsync
+
+R2. I had the same issue one time (mars 2015) logging to Gmail 
+with imapsync.
+The Gmail imap message error said "Please log in via your web browser"
+so I logged for this account via a web browser. Then,
+it asked me to receive a code via a mobile, I said yes,
+I entered the code and everything went ok on next syncs
+with imapsync. 
+
+
+=======================================================================
+Q. Can not open imap connection on [imap.gmail.com]: 
+   Unable to connect to imap.gmail.com
+
+R0. It looks like this issue is related to ipv6. Both ipv4 and ipv6 
+protocols should work with gmail and imapsync, I test that regularly, 
+imapsync works fine for both ipv4 and ipv6. 
+If you disable ipv6 then disable also ipv6 resolution! 
+
+The default names resolution order is to present ipv6 name resolutions 
+first. If you know how to make ipv4 answers be taken before ipv6 
+then tell me.
+
+R1. First solution, run imapsync with the option --inet4:
+
+   imapsync ... --inet4
+
+R2. A second solution is to use directly gmail ipv4 ip address:
+
+  imapsync ... --host1 64.233.184.108 
+
+In case it changes, get it with any command showing the imap.gmail.com 
+name resolution, try one of those:
+
+  nslookup imap.gmail.com
+  host     imap.gmail.com
+  ping     imap.gmail.com
+
+Or go to http://ping.eu/nslookup/ to get the resolution.
+
+Thanks to Chris Nolan to report, understand and fix this issue!
+
+=======================================================================
+Q. Can I transfer "Chat" messages with imapsync?
+
+R. No. 
+   Even if you think you can because the Chat folder is seen in IMAP,
+   with Chat messages in them, they won't be well transferred.
+   Chat messages are not well presented and not well transferred 
+   using the IMAP protocol.
+
+=======================================================================
+Q. Can I safely use --useuid or --usecache for Gmail transfers?
+
+R. Yes, but I suggest to not use --useuid nor --usecache 
+   for Gmail transfers.
+
+Using UIDs is useless with Gmail in the case of global duplicates
+(duplicates across different folders). Gmail always accept a global
+duplicate message as a new message, giving imapsync a new UID for this
+message, and throw it away because it already has it. Gmail
+will do this at each run so imapsync will always try to copy the
+message, and Gmail will always accept and throw away the new copy. It
+ends up with no duplicates on Gmail but a waste of bandwith and time,
+which is the opposite goal of --usecache implied by --useuid.
+
+
+======================================================================= 
+Q. Gmail does not really delete messages in folder [Gmail]/All Mail 
+   What happens? What can I do? 
+
+R. It's true and explained in Gmail documentation at
+https://support.google.com/mail/answer/7401?hl=en
+
+To really remove messages in folder "[Gmail]/All Mail", they have to
+be moved to the "Trash" folder and be deleted from "Trash".
+
+Quoting the link above (25 december 2018, happy christmas by the way!)
+...
+Empty your Trash
+If you don't want a message to stay in your Trash for 30 days, 
+you can permanently delete it.
+* On your computer, go to Gmail.
+* On the left side of the page, scroll down, 
+  then click More and then Trash.
+* Check the box next to messages you want to permanently delete, 
+  then click Delete forever.
+
+* Note: The Delete forever option is only available in the Trash. 
+  You won’t be able to delete items forever from the Search result view.
+  To delete all messages in your trash, click Empty Trash now.
+
 
 =======================================================================
 Q. Can I use the Extension of the SEARCH command: X-GM-RAW described at
@@ -289,8 +518,7 @@ On Unix:
 
 On Windows:
 
-  imapsync.exe ... --search "X-GM-RAW ""has:attachment in:unread"""
-
+  perl imapsync ... --search "X-GM-RAW ""has:attachment in:unread"""
 
 
 =======================================================================
@@ -300,64 +528,6 @@ Any switch we can use? e.g. [IMAP]/Archive
 
 R. No switch in imapsync since [IMAP]/ prefix is done by Gmail,
    it might be configurable within Gmail parameters configuration.
-
-=======================================================================
-Q. I can't authenticate with Gmail via IMAP
-   and Gmail says "Please log in via your web browser"
-
-R1. See Coert Grobbelaar solution:
-https://security.stackexchange.com/questions/86404/how-do-i-interact-with-google-to-import-email-via-imapsync
-
-R2. I had the same issue one time (mars 2015) logging to Gmail 
-with imapsync.
-The Gmail imap message error said "Please log in via your web browser"
-so I logged for this account via a web browser,
-it asked me to receive a code via a mobile, I said yes,
-I entered the code and everything went ok. 
-
-R3. Use https://www.google.com/settings/security/lesssecureapps
-    (thanks to Flavio Zarur)
-    See https://support.google.com/accounts/answer/6010255?hl=en
-
-=======================================================================
-Q. Can not open imap connection on [imap.gmail.com]: 
-   Unable to connect to imap.gmail.com
-
-R0. It looks like this issue is related to ipv6. Both ipv4 and ipv6 
-protocols should work with gmail and imapsync, I test that regurlarly, 
-imapsync works fine for both ipv4 and ipv6. 
-If you disable ipv6 then disable also ipv6 resolution! 
-Or at least, make ipv4 answers be taken before ipv6 since the default 
-names resolution order is to present ipv6 name resolutions first.
-
-R1. A first simple solution is to use directly gmail ipv4 ip address:
-
-  imapsync ... --host1 74.125.133.108 
-
-In case it changes, get with any command showing the imap.gmail.com 
-name resolution:
-
-  nslookup imap.gmail.com
-  host     imap.gmail.com
-  ping     imap.gmail.com
-
-Or go to http://ping.eu/nslookup/ to get the resolution.
-
-R2. Fix imapsync with the line:
-
-  use IO::Socket::SSL 'inet4' ;
-
-Thanks to Chris Nolan to report, understand and fix this issue!
-
-=======================================================================
-Q. Gmail does not really delete messages in folder [Gmail]/All Mail
-   What happens? What can I do?
-
-R. It's true and explained in Gmail documentation at
-https://support.google.com/mail/answer/78755?hl=en
-
-To really remove messages in folder "[Gmail]/All Mail", they have to
-be moved to the "Trash" folder and be deleted from "Trash".
 
 
 =======================================================================
@@ -371,17 +541,20 @@ So you have to follow the Google recommendation and generate an
 application-specific password or normal authentication 
 or use XOAUTH or XOAUTH2.
 
+
 =======================================================================
 Q. How to use XOAUTH2 to globally authenticate gmail users?
 
 R. Yes, but really tested on Unix systems, not sure on Windows. See:
    http://imapsync.lamiral.info/FAQ.d/FAQ.XOAUTH2.txt
 
+
 =======================================================================
 Q. How to use XOAUTH to globally authenticate gmail users?
 
 R0. XOAUTH is considered obsolete and superseded by XOAUTH2
     See http://imapsync.lamiral.info/FAQ.d/FAQ.XOAUTH2.txt
+
 
 =======================================================================
 Q. How to use a Gmail account to backup several different imap accounts?
@@ -395,12 +568,14 @@ is no supplementary label created on the multi-archive Gmail
 destination account. No labels all over the place and all original
 xxx sub-folders show up nested within xxx/xxx.
 
+
 =======================================================================
 Q. How to migrate email from gmail to google apps?
 
 R. Take a look at:
-http://www.linux-france.org/prj/imapsync_list/msg00639.html
 
-http://biasecurities.com/blog/2009/migrate-email-from-gmail-to-google-apps/
+http://biasecurities.com/2009/02/migrate-email-from-gmail-to-google-apps/
 http://www.thamtech.com/blog/2008/03/29/gmail-to-google-apps-email-migration/
 
+=======================================================================
+=======================================================================

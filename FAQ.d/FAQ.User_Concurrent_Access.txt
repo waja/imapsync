@@ -1,0 +1,46 @@
+#!/bin/cat
+$Id: FAQ.User_Concurrent_Access.txt,v 1.5 2018/05/24 11:34:30 gilles Exp gilles $
+
+This document is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+https://imapsync.lamiral.info/FAQ.d/FAQ.User_Concurrent_Access.txt
+
+
+=======================================================================
+              Imapsync and user concurrent access.
+=======================================================================
+
+=======================================================================
+Q. What happens if a user access the mailbox during the transfer process?
+
+R. Think all potential problems with a sync between
+   a master/source/host1 and a slave/destination/host2
+
+What happens when a user access syncing accounts depends
+on what he does, where he does and when. 
+
+As a summary, reading is safe, writing/deleting is not.
+
+Details:
+
+* Reading: no problem anywhere, at source/host1 or at destination/host2,
+           anytime. Reading is safe.
+
+* Writing at source/host1:
+  * adding folder       => will need a resync after
+  * deleting folder     => folders deletions are not synced unless --delete2folders
+  * deleting message    => messages deletions are not synced unless --delete2
+  * adding message      => will need a resync
+  * moving message      => will need a resync. Moving is like adding + deleting 
+                           so --delete2 is needed to sync the deletion.
+  * message flag change => will need a resync
+
+* Writing at destination/host2:
+  * adding folder       => no problem, unless --delete2folders is used
+  * deleting folder     => will reappear by a new sync
+  * adding message      => no problem, unless --delete2 is used on next sync.
+  * deleting message    => might reappear by a new sync.
+  * message flag change => will be reseted by a new sync.
+
+=======================================================================
+=======================================================================

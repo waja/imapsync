@@ -1,0 +1,26 @@
+#!/bin/cat
+$Id: FAQ.Folders_Sizes.txt,v 1.2 2018/05/24 11:34:30 gilles Exp gilles $
+
+This documentation is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+https://imapsync.lamiral.info/FAQ.d/FAQ.Folders_Sizes.txt
+
+=======================================================================
+  Imapsync tips to know folders sizes.
+=======================================================================
+
+
+
+=======================================================================
+Q. How can I know the size of all folders before launching a sync?
+
+R. Use --justfoldersizes option.
+
+With --justfoldersizes option, imapsync displays the folder size
+part of a run and then exits without doing any transfer:
+
+  imapsync ... --justfoldersizes
+
+
+=======================================================================
+=======================================================================

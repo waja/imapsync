@@ -1,5 +1,5 @@
 @REM
-@REM $Id: sync_loop_windows.bat,v 1.13 2015/11/26 20:35:09 gilles Exp gilles $
+@REM $Id: sync_loop_windows.bat,v 1.18 2018/05/24 11:45:42 gilles Exp gilles $
 @REM
 @REM imapsync massive sync example batch for Windows users
 @REM lines beginning with @REM are just comments 
@@ -68,7 +68,8 @@
 @REM First let's go in the directory this batch is
 CD /D %~dp0
 
-@REM Let's get arguments of this batch, they will be added to imapsync arguments, if any. 
+@REM Let's get arguments of this batch, they will be added to imapsync arguments, if any.
+@REM Do not touch this part to add arguments to imapsync, do that in the FOR loop below
 @SET arguments= & @SET command=%~0
 @IF %1. EQU . GOTO args_end
 :args_loop
@@ -80,14 +81,14 @@ CD /D %~dp0
 @REM Now the loop on the csv file.
 SET csvfile=file.txt
 
-FOR /F "tokens=1,2,3,4,5,6,7 delims=; eol=#" %%G IN (%csvfile%) DO (
+@FOR /F "tokens=1,2,3,4,5,6,7 delims=; eol=#" %%G IN (%csvfile%) DO (
+@REM Blank lines are usually ignored. Dumping the tokens in [] in case debugging is needed
+@ECHO GOT those values from %csvfile%  presented inside brackets: [%%G] [%%H] [%%I] [%%J] [%%K] [%%L] [%%M]
+@REM You can add extra arguments to imapsync after the variable named %arguments% 
 @ECHO ==== Starting imapsync from --host1 %%G --user1 %%H to --host2 %%J --user2 %%K ====
-@ECHO.
-
-imapsync ^
-  --host1 %%G --user1 %%H --password1 %%I ^
-  --host2 %%J --user2 %%K --password2 %%L %arguments%
-
+@imapsync ^
+        --host1 %%G --user1 %%H --password1 %%I ^
+        --host2 %%J --user2 %%K --password2 %%L %%M %arguments% 
 @ECHO ==== Ended imapsync from --host1 %%G --user1 %%H to --host2 %%J --user2 %%K ====
 @ECHO.
 )

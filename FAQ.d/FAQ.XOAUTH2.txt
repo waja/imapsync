@@ -1,9 +1,14 @@
 #!/bin/cat
-$Id: FAQ.XOAUTH2.txt,v 1.8 2016/01/18 18:14:12 gilles Exp gilles $
+$Id: FAQ.XOAUTH2.txt,v 1.15 2018/08/28 21:48:53 gilles Exp gilles $
 
-======================================================================
+This document is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+https://imapsync.lamiral.info/FAQ.d/FAQ.XOAUTH2.txt
+
+
+=======================================================================
   Imapsync tips to use XOAUTH2 authentication (Gmail) and old XOAUTH 
-======================================================================
+=======================================================================
 
 
 =======================================================================
@@ -12,8 +17,87 @@ Q. Is XOAUTH2 authentication available with imapsync?
 R. Yes, but XOAUTH2 has been really tested on Unix systems, 
    less profund on Windows but it should work.
 
+   Two file formats are available from Gmail: json and pk12.
+   json is easier to manage than pk12.
+
 =======================================================================
-Q. How to use XOAUTH2 to globally authenticate gmail users?
+Q. Imapsync XOAUTH2 fails with the following message, how to fix that?
+{
+ "error": "unauthorized_client",
+ "error_description": "Unauthorized client or scope in request."
+}
+
+R. In order to work you also have to allow the service https://mail.google.com/ 
+   in the Google client API manager for OAUTH2.
+   "Select OAuth 2.0 scopes:"
+
+=======================================================================
+Q. How to use XOAUTH2 via a json file to globally authenticate gmail users? 
+
+R. Unless you use an imapsync binary like imapsync.exe or imapsync_bin_Darwin,
+   Perl modules needed for xoauth2 are:
+
+  Crypt::OpenSSL::RSA
+  JSON
+  JSON::WebToken
+  LWP
+  HTML::Entities
+  Encode::Byte
+
+A easy way to install or upgrade Perl modules is to use cpanm command,
+also called cpanminus. On Linux it is something like
+
+  sudo cpanm  JSON::WebToken JSON Crypt::OpenSSL::RSA LWP HTML::Entities Encode::Byte
+
+The json file patch code and explanation comes from Secretion at
+https://github.com/imapsync/imapsync/pull/68
+
+Here is a complete example for Gmail. It is a little stupid
+since it is the same account as source and destination but
+it's just to get the picture for xoauth2 authentication.
+
+All xoauth2 config is given via the --password1 parameter. 
+It has the form:
+
+  --password1 secret.xoauth2.json
+
+where secret.xoauth2.json is the json file given by Gmail.
+
+
+imapsync \
+        --host1 imap.gmail.com --ssl1 --user1 gilles.lamiral@gmail.com \
+        --password1 secret.xoauth2.json --authmech1 XOAUTH2 \
+        --host2 imap.gmail.com --ssl2 --user2 gilles.lamiral@gmail.com \
+        --password2 secret.xoauth2.json --authmech2 XOAUTH2 \
+        --justlogin --debug
+
+Use your own xoauth2 values.
+
+The secret.xoauth2.json looks like:
+
+{
+  "type": "service_account",
+  "project_id": "your-project-name",
+  "private_key_id": "1cfb..............................bd7fbe",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiGziM...ZV5ACKPHuOfp8A46I=\n-----END PRIVATE KEY-----\n",
+  "client_email": "jsonfile@your-project-name.iam.gserviceaccount.com",
+  "client_id": "105................689",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/jsonfile%40your-project-name.iam.gserviceaccount.com"
+}
+
+You get this json file by a link like:
+https://console.developers.google.com/apis/credentials?project=your-project-name
+
+See also:
+https://developers.google.com/gmail/imap/xoauth2-protocol
+https://developers.google.com/identity/protocols/OAuth2
+
+
+=======================================================================
+Q. How to use XOAUTH2 via pk12 file to globally authenticate gmail users? 
 
 R. First, consider the XOAUTH2 feature at a prototype level.
 
@@ -113,7 +197,8 @@ R2. In case you still have to use XOAUTH, here is the method:
     --password2 secret2 \
     --authmech2 XOAUTH
 
-Google Apps is a paid service, but you can try it for 30 days without any cost.
+Google Apps is a paid service, but you can try it for 30 days without any cost,
+or you could try, time goes on on free trial offers.
 
 Some notes about configuring the Google Apps XOAUTH:
 
@@ -128,4 +213,6 @@ Some notes about configuring the Google Apps XOAUTH:
     "https://mail.google.com/" configured 
     (https://support.google.com/a/bin/answer.py?answer=162106).
 
+=======================================================================
+=======================================================================
 

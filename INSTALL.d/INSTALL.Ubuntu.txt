@@ -1,41 +1,64 @@
 #!/bin/cat 
-# $Id: INSTALL.Ubuntu.txt,v 1.5 2016/01/21 15:10:01 gilles Exp gilles $
+# $Id: INSTALL.Ubuntu.txt,v 1.15 2018/11/20 10:28:05 gilles Exp gilles $
 
-=================================================
-= Installing imapsync on Ubuntu 12.04 or higher =
-=================================================
+This documentation is also located online at 
+https://imapsync.lamiral.info/INSTALL.d/
+https://imapsync.lamiral.info/INSTALL.d/INSTALL.Ubuntu.txt
 
-Here are the two commands to install imapsync dependencies.
-You need root priviledge to run them.
+=======================================================================
+         Installing imapsync on Ubuntu 16.04 or higher
+=======================================================================
 
-The first command installs standard Ubuntu packages:
+Here is  the command to install imapsync dependencies,
+you need root privilege to run them.
 
+This command installs standard Ubuntu packages:
 
-  sudo apt-get install \
-libauthen-ntlm-perl \
-libcrypt-ssleay-perl \
-libdigest-hmac-perl \
+  sudo apt-get install  \
+libauthen-ntlm-perl     \
+libclass-load-perl      \
+libcrypt-ssleay-perl    \
+libdata-uniqid-perl     \
+libdigest-hmac-perl     \
+libdist-checkconflicts-perl \
 libfile-copy-recursive-perl \
-libio-compress-perl \
+libio-compress-perl     \
 libio-socket-inet6-perl \
-libio-socket-ssl-perl \
-libio-tee-perl \
+libio-socket-ssl-perl   \
+libio-tee-perl          \
+libmail-imapclient-perl \
 libmodule-scandeps-perl \
+libnet-dbus-perl        \
 libnet-ssleay-perl      \
-libpar-packer-perl \
-libterm-readkey-perl \
-libtest-pod-perl \
+libpar-packer-perl      \
+libreadonly-perl        \
+libregexp-common-perl   \
+libsys-meminfo-perl     \
+libterm-readkey-perl    \
+libtest-fatal-perl      \
+libtest-mock-guard-perl \
+libtest-mockobject-perl \
+libtest-pod-perl        \
+libtest-requires-perl   \
 libtest-simple-perl     \
-libunicode-string-perl \
-liburi-perl \
+libunicode-string-perl  \
+liburi-perl             \
+libtest-nowarnings-perl \
+libtest-deep-perl       \
+libtest-warn-perl       \
+make                    \
 cpanminus
 
-The second command installs "manually" the Perl module Data::Uniqid
-because Debian hasn't made it available via a package yet.
-It also  install manually Perl module Mail::IMAPClient because
-it is good to be up to date:
+In case you want to update the Perl module 
+Mail::IMAPClient, a major module for imapsync,
+the following command installs it "manually":
 
-  cpanm Data::Uniqid Mail::IMAPClient
+  sudo cpanm Mail::IMAPClient
+
+In case you need to use XOAUTH2 authentication you have to install   
+the module JSON::WebToken with the command:
+
+  sudo cpanm JSON::WebToken
 
 After installing the dependencies, imapsync should be working.
 
@@ -69,3 +92,5 @@ You can use imapsync.
 Now go to read http://imapsync.lamiral.info/#doc
 start with the tutorial.
 
+=======================================================================
+=======================================================================

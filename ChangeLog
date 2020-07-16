@@ -1,17 +1,1312 @@
 
 RCS file: RCS/imapsync,v
 Working file: imapsync
-head: 1.678
+head: 1.945
 branch:
 locks: strict
-	gilles: 1.678
+	gilles: 1.945
 access list:
 symbolic names:
 keyword substitution: kv
-total revisions: 678;	selected revisions: 678
+total revisions: 945;	selected revisions: 945
 description:
 ----------------------------
-revision 1.678	locked by: gilles;
+revision 1.945	locked by: gilles;
+date: 2019/06/26 19:30:56;  author: gilles;  state: Exp;  lines: +151 -94
+Proofread the documentation part, what will go to README.
+The pod at the beginning.
+----------------------------
+revision 1.944
+date: 2019/06/25 16:44:08;  author: gilles;  state: Exp;  lines: +8 -8
+Bugfix. Readonly syntax. "Readonly my %EXIT_TXT => ("
+----------------------------
+revision 1.943
+date: 2019/06/25 08:34:51;  author: gilles;  state: Exp;  lines: +47 -30
+Usability. Added the error message text after "Exiting with return value xx". Example: Exiting with return value 16 (EXIT_AUTHENTICATION_FAILURE)
+Usability. Added what function is called when installing a signal. Example: "kill -QUIT 19839 # special behavior: call to sub catch_exit"
+----------------------------
+revision 1.942
+date: 2019/06/24 20:43:43;  author: gilles;  state: Exp;  lines: +51 -37
+Bugfix. USR1 signal for toggle_sleep call was never installed.
+Usability. Now --justfolders will activate --foldersizesatend
+Enhancement. Added PROCESS_ID when "Tail -f finished."
+Bugfix. The number of messages deleted was not accurate at all.
+Usability. masked the warning "no header by parse_headers so taking whole header with BODY.PEEK[HEADER]" to --debug mode.
+Usability. Moved the warning "no header found so adding our own" to --debug mode.
+Tests. Added ETA simulation with --simulong (for the progress info on /X)
+Bugfix. Change the longest line in --exchange2 and --office from 10500 to 10239. (\n inserted for those long lines)
+Enhancement. --maxage and --minage can take float as value in order to filter with less than a day. (Need --noabletosearch also).
+----------------------------
+revision 1.941
+date: 2019/06/04 22:55:24;  author: gilles;  state: Exp;  lines: +54 -19
+Usability. Now "imapsync --host1 ks" or "imapsync --host2" is ok and do like a --justconnect on servers. Useful to cjeck rapidely a imap server.
+----------------------------
+revision 1.940
+date: 2019/06/04 06:29:31;  author: gilles;  state: Exp;  lines: +14 -9
+Added 'junk', 'Junk E-Mail', 'Junk Email' as possible_special of \Junk
+Added 'Deleted Messages' as possible_special of \Trash
+----------------------------
+revision 1.939
+date: 2019/05/27 21:58:33;  author: gilles;  state: Exp;  lines: +10 -9
+Back to a test  Mail::IMAPClient 3.40 failed but  Mail::IMAPClient 3.42 succeed.
+----------------------------
+revision 1.938
+date: 2019/05/27 18:45:06;  author: gilles;  state: Exp;  lines: +111 -33
+CGI context. --addheader is on by default.
+Added option --appendlimit xxxx in order to override the value got by APPENDLIMIT in CAPABILITY.
+Added option --truncmess to allow transfer of too big messages. When you think it's better to have a truncated message than no message at all.
+1453 regression tests.
+----------------------------
+revision 1.937
+date: 2019/05/01 22:14:00;  author: gilles;  state: Exp;  lines: +328 -326
+CGI context. Only Message-Id to identify messages, instead of Message-Id Received.
+Fixed perl critic about blanks.
+Fixed tests comments
+----------------------------
+revision 1.936
+date: 2019/04/29 05:26:19;  author: gilles;  state: Exp;  lines: +26 -23
+Bugfix. Do not tail when abort.
+Usability. --testslive values can be overwritten like --testslive --user1 empty
+           Same thing for --testslive6
+----------------------------
+revision 1.935
+date: 2019/04/28 02:10:24;  author: gilles;  state: Exp;  lines: +293 -44
+Added File::Tail dependency.
+Added --tail option. Will do like a tail -f on the logfile of another imapsync with the same pidfile. 
+    Good in CGI context. Maybe...
+    We'll see. It was one of my first whishes for cgi behaviour
+1441 unit tests.
+----------------------------
+revision 1.934
+date: 2019/04/26 08:23:24;  author: gilles;  state: Exp;  lines: +134 -52
+Added following options available in cgi context:
+--subfolder1
+--subfolder2
+--justfolders
+--justfoldersizes
+--delete1
+--delete2
+
+CGI context. Added the equivalent command line parameters like:
+Command line used, run by /usr/bin/perl:
+/usr/lib/cgi-bin/imapsync --host1 test1.lamiral.info 
+Usability. Turns off --automap when --subfolder1 or --subfolder2 is used.
+----------------------------
+revision 1.933
+date: 2019/04/23 11:42:42;  author: gilles;  state: Exp;  lines: +47 -98
+CGI context. Added default like --maxsize 1_000_000_000 (Out of memory prevention?)
+Usability. maxsize is the minimum of --maxsize and APPENDLIMIT=xxx or each one if the other no exists.
+----------------------------
+revision 1.932
+date: 2019/04/13 22:09:04;  author: gilles;  state: Exp;  lines: +93 -24
+Added --sanitize to remove egding blanks on host1 user1 password1 etc.
+--sanitize on by default. Use --noanitize to avoid it
+----------------------------
+revision 1.931
+date: 2019/04/13 16:10:24;  author: gilles;  state: Exp;  lines: +109 -22
+Added test tests_check_binary_embed_all_dyn_libs to detect non embedded dynamic libraries in binaries Darwin and Win32
+----------------------------
+revision 1.930
+date: 2019/04/11 22:32:38;  author: gilles;  state: Exp;  lines: +467 -211
+All exits are now done with a specific return code related to the error causing the exit.
+Removed sub die_clean()
+die_clean() calls replaced by exit_clean() calls
+----------------------------
+revision 1.929
+date: 2019/04/08 09:14:13;  author: gilles;  state: Exp;  lines: +425 -300
+Bug fix. With --gmail1 or --gmail2 do not sync [Gmail]/All Mail if it is not requested.
+Bug fix. When asked to terminate by a signal, kill myself by the signal instead of an exit call.
+         Applied Martin Cracauer's advice on https://www.cons.org/cracauer/sigint.html 
+         "Proper handling of SIGINT/SIGQUIT" 
+         I hope it fixes the not always working double-ctrl-c to end the sync.
+         See bug report https://github.com/imapsync/imapsync/issues/142
+----------------------------
+revision 1.928
+date: 2019/03/28 11:12:44;  author: gilles;  state: Exp;  lines: +648 -317
+Added --subfolder1 Foo/Bar option in order to restore a backup made with --subfolder2 Foo/Bar
+  --folderrec Foo/Bar is imply by --subfolder1 Foo/Bar because it's the most common purpose.
+Deglobalized $debug @regextrans2 $sep1 $sep2 $fixslash2 
+Added --resynclabels to resync the Gmail labels X-GM-LABELS
+Bugfix. --synclabels now create sublabels with --subfolder2
+Bugfix. --subfolder2 Pf2/Sub2 and --subfolder2 Sub2 perform the same when Pf2 is the --prefix2
+1336 non-regression tests
+----------------------------
+revision 1.927
+date: 2019/03/22 14:45:55;  author: gilles;  state: Exp;  lines: +9 -8
+Active --resynclabels when --gmail1 --gmail2
+----------------------------
+revision 1.926
+date: 2019/03/22 14:06:38;  author: gilles;  state: Exp;  lines: +283 -88
+Call abort() before simulong() to be able to abort a long simulong.
+Bugfix. --synclabels --subfolder2 create sublabels only and not a mixture.
+Enhancement. Added --resynclabels
+1286 non-regression tests
+----------------------------
+revision 1.925
+date: 2019/03/03 12:25:02;  author: gilles;  state: Exp;  lines: +8 -8
+1268 tests
+----------------------------
+revision 1.924
+date: 2019/03/03 12:22:37;  author: gilles;  state: Exp;  lines: +50 -27
+Tolerate more load. Double the threshold. accept load at 2 per core instead of 1 per core
+----------------------------
+revision 1.923
+date: 2019/03/03 12:00:05;  author: gilles;  state: Exp;  lines: +29 -20
+Moved cgiload( $sync ) in order to log exites on heavy load
+----------------------------
+revision 1.922
+date: 2019/02/26 13:03:58;  author: gilles;  state: Exp;  lines: +43 -35
+Fixed tests to pass under the docker image
+----------------------------
+revision 1.921
+date: 2019/02/18 10:21:03;  author: gilles;  state: Exp;  lines: +10 -8
+Bugfix. Errors of APPEND were not counted as missing messages on host2!
+----------------------------
+revision 1.920
+date: 2019/02/09 15:45:31;  author: gilles;  state: Exp;  lines: +37 -33
+Better "Extra arguments found" error message, added "or some misspelling options"
+----------------------------
+revision 1.919
+date: 2019/02/09 14:20:41;  author: gilles;  state: Exp;  lines: +74 -32
+Added authmech X-MASTERAUTH. To be used for Kerio with --authmech1 X-MASTERAUTH or --authmech2 X-MASTERAUTH
+Patch from https://github.com/imapsync/imapsync/pull/53/files
+----------------------------
+revision 1.918
+date: 2019/02/07 12:16:28;  author: gilles;  state: Exp;  lines: +79 -44
+Fixed test since macosx.polarhome.com can not do ipv6 these days.
+Allow --tests --testslive for cover analyse
+----------------------------
+revision 1.917
+date: 2019/02/06 12:13:44;  author: gilles;  state: Exp;  lines: +279 -110
+Added --addheader description in the README part.
+Bugfix --debugssl 0 was impossible and equivalent to --debugssl 1
+Deglobalized $justfolders now $sync->{ justfolders }
+Deglobalized %h2_folders_of_md5 it's now $sync->{ h2_folders_of_md5 }
+Bugfix. Now split the deletion of messages in several chunks (--split)
+Added stat "Messages found in host1 not in host2"
+Added stat "Messages found in host2 not in host1"
+Removed stat "Total bytes duplicate hostX"
+Removed stat "Total bytes error"
+Added stat "Load end is"
+Added comments on final stat about messages in 1 not in 2
+Added comments on final stat about messages in 2 not in 1
+Added comment on final stat about unidentified messages
+1264 unit tests.
+----------------------------
+revision 1.916
+date: 2019/01/05 14:45:10;  author: gilles;  state: Exp;  lines: +550 -470
+Added missing "Entering tests_..." and "Leaving  tests_..." in tests_* subroutines.
+Some perlcritic fixes.
+----------------------------
+revision 1.915
+date: 2019/01/04 12:39:56;  author: gilles;  state: Exp;  lines: +12 -15
+Remove the unit test $imap->new() $imap->connect() because IO::Socket::IP kills us on this.
+----------------------------
+revision 1.914
+date: 2019/01/03 04:38:10;  author: gilles;  state: Exp;  lines: +10 -10
+unit test revised for match_a_pid_number()
+----------------------------
+revision 1.913
+date: 2019/01/03 04:31:11;  author: gilles;  state: Exp;  lines: +9 -8
+A pid can be up to 99999 on FreeBSD
+----------------------------
+revision 1.912
+date: 2019/01/03 04:18:54;  author: gilles;  state: Exp;  lines: +14 -14
+Added prints in sub remove_pidfile_not_running() in order to debug bad behavior on freeBSD
+----------------------------
+revision 1.911
+date: 2019/01/03 02:52:43;  author: gilles;  state: Exp;  lines: +29 -11
+Added --sigprint HUP in order to allow some asynchronous prints in CGI mode and avoid timeouts from browser
+----------------------------
+revision 1.910
+date: 2018/12/25 18:20:48;  author: gilles;  state: Exp;  lines: +77 -38
+Added --addheader suggestion at the final stats.
+Added a counter of crossduplicates on host2, presented on final stats.
+----------------------------
+revision 1.909
+date: 2018/12/09 21:23:54;  author: gilles;  state: Exp;  lines: +8 -8
+Typo. loose lose
+----------------------------
+revision 1.908
+date: 2018/11/20 13:22:07;  author: gilles;  state: Exp;  lines: +80 -39
+Played with IO::Prompt and IO::Prompter to remove <STDIN> perl critic. Failed...
+Deglobalized $passfile1 and $passfile2
+----------------------------
+revision 1.907
+date: 2018/11/16 10:08:11;  author: gilles;  state: Exp;  lines: +142 -135
+Localized %SIG
+Fixed Host1 Host2 prints to be more homogene
+----------------------------
+revision 1.906
+date: 2018/11/08 18:37:18;  author: gilles;  state: Exp;  lines: +120 -47
+Added tests_operators_and_exclam_precedence()
+Added tests_teelaunch()
+Added tests_logfileprepa()
+----------------------------
+revision 1.905
+date: 2018/10/22 17:28:02;  author: gilles;  state: Exp;  lines: +10 -9
+Added IO::Socket::IP in the list of modules versions.
+----------------------------
+revision 1.904
+date: 2018/10/19 11:57:24;  author: gilles;  state: Exp;  lines: +157 -59
+1238 unit tests
+Refactored appendlimit() to use Mail::IMAPClient::capability like the API. No hack from internal $imap->{ APPENDLIMIT }
+With --office1 option, folder "Files" is excluded because it's a "special" folder. Like --exclude "^Files$". Unless --noexclude is used.
+With --office2 option, folder "Files" on host1 is renamed like --f1f2 "Files=Files_renamed_by_imapsync". Unless --nof1f2 is used.
+----------------------------
+revision 1.903
+date: 2018/10/06 09:16:57;  author: gilles;  state: Exp;  lines: +9 -9
+--noskipcrossduplicates with --gmail12
+----------------------------
+revision 1.902
+date: 2018/10/05 19:50:23;  author: gilles;  state: Exp;  lines: +12 -10
+Added --folderlast '[Gmail]/All Mail' within --gmail12
+----------------------------
+revision 1.901
+date: 2018/10/03 23:49:51;  author: gilles;  state: Exp;  lines: +815 -412
+Removed --maxsize 25_000_000 from --gmail2 because now it's get from APPENDLIMIT in CAPABILITY (and it is currently 35651584, greater than 25_000_000)
+Moved opening { in all sub to next line.
+----------------------------
+revision 1.900
+date: 2018/10/03 23:17:11;  author: gilles;  state: Exp;  lines: +16 -16
+Deglobalized $maxsize
+----------------------------
+revision 1.899
+date: 2018/10/03 22:50:23;  author: gilles;  state: Exp;  lines: +332 -14
+Added automatic --maxsize from CAPABILITY  APPENDLIMIT=xxxx (Gmail)
+----------------------------
+revision 1.898
+date: 2018/09/28 14:12:21;  author: gilles;  state: Exp;  lines: +89 -29
+Added --maxsize 35_651_584 with --gmail2 
+(Should me replaced by automatic APPEND_LIMIT in CAPABILITY). Soon.
+Added --exclude '^Files$' with --office2
+----------------------------
+revision 1.897
+date: 2018/09/19 14:54:26;  author: gilles;  state: Exp;  lines: +96 -74
+Deglobalized $delete1, $delete2, $delete2duplicates, $expunge2, $uidexpunge2
+Started sub tests_uidexpunge_or_expunge() sub uidexpunge_or_expunge()
+----------------------------
+revision 1.896
+date: 2018/09/19 11:51:17;  author: gilles;  state: Exp;  lines: +81 -60
+Deletions on host1 are done by batch during a resync.
+----------------------------
+revision 1.895
+date: 2018/09/13 17:38:53;  author: gilles;  state: Exp;  lines: +97 -87
+Refactor. Deglobarized variable
+  * $exitwhenover,
+  * $total_bytes_skipped
+  * $nb_msg_skipped
+----------------------------
+revision 1.894
+date: 2018/09/11 13:59:54;  author: gilles;  state: Exp;  lines: +19 -14
+Commented test for @regexflag = ( 's/\\Flagged/X/g' ) since \F is new and was a bug anyway.
+----------------------------
+revision 1.893
+date: 2018/09/11 09:09:34;  author: gilles;  state: Exp;  lines: +89 -75
+Bugfix. --exchange1 and --exchange2 were not options! No one complained...
+Added inline explanations for --office1 --office2 --exchange1 --exchange2 (what they set and how to unset)
+Added --noregexmess to avoid the regexmess setting with --office2 and --exchange2 (wrap long lines >= 10500 char)
+Added --noregexflag to avoid the regexflag set by exchange2 (remove \Flagged flag)
+Bugfix. The regex to remove flag \Flagged was wrong. It worked because of another filter run after...
+----------------------------
+revision 1.892
+date: 2018/09/04 04:04:34;  author: gilles;  state: Exp;  lines: +9 -9
+--skipcrossduplicates activated with --gmail1 --gmail2
+----------------------------
+revision 1.891
+date: 2018/09/04 03:28:09;  author: gilles;  state: Exp;  lines: +175 -123
+Enhancement. Added option --synclabels to sync Gmail labels. It should speed up Gmail to Gmail syncs. 
+  --synclabels applies only during a copy of a message for now. resyncing labels will be coded later.
+----------------------------
+revision 1.890
+date: 2018/09/01 21:45:41;  author: gilles;  state: Exp;  lines: +117 -114
+Refactoring. Replaced $imap1 and $imap2 by $sync->{imap1} and $sync->{imap2}
+----------------------------
+revision 1.889
+date: 2018/08/31 01:02:06;  author: gilles;  state: Exp;  lines: +19 -7
+Applied https://github.com/imapsync/imapsync/issues/95
+Thanks jh1995!
+----------------------------
+revision 1.888
+date: 2018/08/29 11:02:59;  author: gilles;  state: Exp;  lines: +9 -9
+Gives CGI.pm release.
+Calls memory_consumption_of_pids_win32() with Cygwin (https://github.com/imapsync/imapsync/pull/22)
+----------------------------
+revision 1.887
+date: 2018/08/23 19:10:44;  author: gilles;  state: Exp;  lines: +11 -10
+--maxsleep override $MAX_SLEEP in gmail*() subroutines.
+Default  $sync->{ sigignore } to empty list.
+----------------------------
+revision 1.886
+date: 2018/08/06 15:02:51;  author: gilles;  state: Exp;  lines: +28 -11
+Added mygetppid because getppid is not available on Windows.
+Removed --nosubscribed since it is not coded and useless anyway.
+----------------------------
+revision 1.885
+date: 2018/07/07 04:14:26;  author: gilles;  state: Exp;  lines: +8 -8
+Sheband uses env now. Fed up to change freebsd /usr/local/bin/perl
+----------------------------
+revision 1.884
+date: 2018/07/07 03:40:54;  author: gilles;  state: Exp;  lines: +18 -15
+Added PPID info where PID is printed.
+----------------------------
+revision 1.883
+date: 2018/07/03 03:55:03;  author: gilles;  state: Exp;  lines: +32 -8
+Added freebsd support for loadavg and cpu_cores
+----------------------------
+revision 1.882
+date: 2018/05/05 21:10:43;  author: gilles;  state: Exp;  lines: +8 -8
+typo
+----------------------------
+revision 1.881
+date: 2018/05/05 20:43:36;  author: gilles;  state: Exp;  lines: +96 -61
+proofread the doc part. ispell on README.
+----------------------------
+revision 1.880
+date: 2018/05/05 12:44:21;  author: gilles;  state: Exp;  lines: +26 -21
+Splitted sub usage() with call to sub mypod2usage(). Crit level 4 on open/close not far away.
+----------------------------
+revision 1.879
+date: 2018/04/20 13:02:13;  author: gilles;  state: Exp;  lines: +20 -13
+Back to `` because of backtick() does not work always on Darwin
+----------------------------
+revision 1.878
+date: 2018/04/19 00:51:45;  author: gilles;  state: Exp;  lines: +76 -40
+Perlcrit. Removed the select in teelaunch()
+Perlcrit. *STDERR change is now localized.
+Perlcrit. Hard 'LOG_imapsync' is now $DEFAULT_LOGDIR
+Proxy mode. Log file will be named with a suffix "_remote.txt" 
+Refactor. sub logfile() is deglobalized. (removed $debug lines)
+----------------------------
+revision 1.877
+date: 2018/04/18 22:00:46;  author: gilles;  state: Exp;  lines: +31 -13
+Changed sub myprint and sub myprintf in order to suppress the select in teelaunch
+----------------------------
+revision 1.876
+date: 2018/04/18 03:02:32;  author: gilles;  state: Exp;  lines: +20 -17
+Bugfix. ARRAY ref not defined with --subscribed
+----------------------------
+revision 1.875
+date: 2018/04/18 02:27:18;  author: gilles;  state: Exp;  lines: +32 -25
+Refactor. $tmpdir unglobalized
+Win32. No USR1 on Windows so skip signals tests on Win32
+----------------------------
+revision 1.874
+date: 2018/04/18 00:46:46;  author: gilles;  state: Exp;  lines: +53 -40
+Perlcrit. Use IPC::Open3::open3 instead of backticks  ``
+----------------------------
+revision 1.873
+date: 2018/04/17 00:24:54;  author: gilles;  state: Exp;  lines: +9 -9
+Added SERVER_SOFTWARE
+Added SERVER_PORT
+----------------------------
+revision 1.872
+date: 2018/04/16 23:10:03;  author: gilles;  state: Exp;  lines: +17 -11
+Bugfix to pass --tests under root user.
+----------------------------
+revision 1.871
+date: 2018/04/13 18:00:06;  author: gilles;  state: Exp;  lines: +71 -12
+Added toggle sleep from 2s to 0s with signal USR1
+----------------------------
+revision 1.870
+date: 2018/04/08 17:25:54;  author: gilles;  state: Exp;  lines: +46 -46
+Changed gilles.lamiral@laposte.net => gilles@lamiral.info
+----------------------------
+revision 1.869
+date: 2018/04/08 17:21:15;  author: gilles;  state: Exp;  lines: +29 -30
+https://imapsync.lamiral.info/ instead of http://imapsync.lamiral.info/ in ID support-url
+Removed uname info from banner, adder ram info.
+Change utf8 char ° to nb in tests summary
+----------------------------
+revision 1.868
+date: 2018/04/03 01:55:24;  author: gilles;  state: Exp;  lines: +13 -12
+Renamed total_ram_memory() =>  ram_memory_info()
+----------------------------
+revision 1.867
+date: 2018/04/03 00:35:58;  author: gilles;  state: Exp;  lines: +21 -18
+Refactor. sub under_cgi_context() uses $mysync.
+----------------------------
+revision 1.866
+date: 2018/03/29 04:58:11;  author: gilles;  state: Exp;  lines: +10 -9
+Changed inline signal message
+----------------------------
+revision 1.865
+date: 2018/03/29 04:50:26;  author: gilles;  state: Exp;  lines: +98 -86
+Moved the inline help "I am asked to stop immediately" after the final stats.
+Tidied up sub myGetOptions()
+----------------------------
+revision 1.864
+date: 2018/03/28 21:33:28;  author: gilles;  state: Exp;  lines: +12 -18
+Before tidy up sub myGetOptions
+----------------------------
+revision 1.863
+date: 2018/03/28 16:57:22;  author: gilles;  state: Exp;  lines: +10 -8
+Added inline advice to resync after an end commanded by a TERM or QUIT signal.
+----------------------------
+revision 1.862
+date: 2018/03/28 14:48:37;  author: gilles;  state: Exp;  lines: +21 -20
+Reduced the loadavg ingo in the header status in CGI context.
+Added the hostname in in the header status in CGI context.
+----------------------------
+revision 1.861
+date: 2018/03/27 03:04:03;  author: gilles;  state: Exp;  lines: +41 -48
+Refactor. Use of debugmemory() 
+Moved the hostname printing at first line. The goal is for clarity when in proxy mode.
+Added free RAM info in the banner
+Added free RAM and total RAM in the status in CGI context.
+----------------------------
+revision 1.860
+date: 2018/03/26 21:14:01;  author: gilles;  state: Exp;  lines: +97 -67
+Reviewed tests_get_options_cgi(), renamed to tests_get_options_cgi_context()
+Reviewed tests_get_options
+----------------------------
+revision 1.859
+date: 2018/03/22 12:55:34;  author: gilles;  state: Exp;  lines: +13 -8
+Bugfix. Predeclare $sync->{folder} as ARRAY ref. $sync->{folder} = [] ;
+----------------------------
+revision 1.858
+date: 2018/03/21 07:53:26;  author: gilles;  state: Exp;  lines: +14 -11
+Refactoring. Deglobalized $justconnect
+----------------------------
+revision 1.857
+date: 2018/03/21 07:40:12;  author: gilles;  state: Exp;  lines: +80 -31
+Refactor. Changed how --f1f2 is handled. Was a hash, now a list.
+----------------------------
+revision 1.856
+date: 2018/03/20 02:24:52;  author: gilles;  state: Exp;  lines: +31 -19
+Refactoring. Deglobalized @folder
+----------------------------
+revision 1.855
+date: 2018/03/19 14:15:53;  author: gilles;  state: Exp;  lines: +18 -21
+Refactoring. Deglobalized $addheader
+Refactoring. Deglobalized $justlogin
+----------------------------
+revision 1.854
+date: 2018/03/19 13:45:31;  author: gilles;  state: Exp;  lines: +32 -25
+Unglobalized $version
+Unglobalized $releasecheck
+Added sub debugmemory()
+----------------------------
+revision 1.853
+date: 2018/03/12 13:43:11;  author: gilles;  state: Exp;  lines: +9 -9
+Back to default signals. INT => reconnect. TERM or QUIT => stats and exit. (cgicontext ignored TERM)
+----------------------------
+revision 1.852
+date: 2018/03/12 03:11:04;  author: gilles;  state: Exp;  lines: +132 -29
+Added --sigexit; For example --sigexit QUIT --sigexit TERM to exit when receiving QUIT or TERM signals.
+Added --sigreconnect. For example --sigreconnect INT to reconnect to both imap servers when receiving INT signal.
+Added --sigignore. For example --sigignore TERM to "ignore" the TERM signal. In fact print stats during the sync.
+Default is like:  --sigexit QUIT --sigexit TERM --sigreconnect INT 
+
+Added sub sig_install() to install any behavior with any signal (the ones actually received in Unix).
+Number of tests with --tests is 1137
+----------------------------
+revision 1.851
+date: 2018/03/04 15:19:04;  author: gilles;  state: Exp;  lines: +10 -10
+Inline help. Clarified --errorsmax inline help.
+----------------------------
+revision 1.850
+date: 2018/02/21 04:15:32;  author: gilles;  state: Exp;  lines: +66 -41
+Option --abort now creates a log too, in order to see if imapsync ends by signal come from --abort or something else.
+----------------------------
+revision 1.849
+date: 2018/02/18 18:45:36;  author: gilles;  state: Exp;  lines: +14 -10
+Added \t\r\n characters replaced by _ in sub filter_forbidden_characters()
+----------------------------
+revision 1.848
+date: 2018/02/07 00:58:59;  author: gilles;  state: Exp;  lines: +50 -28
+Cleaned up --releasecheck stuff.
+Clarified SSL_VERIFY_NONE default.
+----------------------------
+revision 1.847
+date: 2017/12/18 11:04:26;  author: gilles;  state: Exp;  lines: +56 -33
+Bugfix. Fixed sub epoch() to allow that kind of silly INTERNALDATE 00-Jan-0000 00:00:00 +0000
+(Thanks to IBM Domino...)
+Added inline documentation about --releasecheck and --noreleasecheck
+Default upstream is still --releasecheck. Just a line to change to have --noreleasecheck by default (as before)
+Bugfix. --releasecheck on was hardcoded in cgi context. Now it depends on the default behavior chosen.
+Bug pending. Still have to fix --releasecheck on with --help
+----------------------------
+revision 1.846
+date: 2017/11/30 02:00:12;  author: gilles;  state: Exp;  lines: +34 -12
+Added sub memory_stress
+Added sub tests_memory_stress
+memory_stress() crunch 3/4 of the RAM. 
+tests_memory_stress() is the associated test.
+----------------------------
+revision 1.845
+date: 2017/11/28 23:36:43;  author: gilles;  state: Exp;  lines: +51 -29
+Added --noresyncflags     : Do not resync flags for already transfered messages.
+May be useful when a user has already started to play with its host2 account.
+----------------------------
+revision 1.844
+date: 2017/11/16 14:38:38;  author: gilles;  state: Exp;  lines: +107 -43
+Crit. Removed 4 "Warnings disabled". crit level 4
+----------------------------
+revision 1.843
+date: 2017/11/05 22:23:57;  author: gilles;  state: Exp;  lines: +38 -30
+Added --nocheckfoldersexist ( Default is like --checkfoldersexist )
+----------------------------
+revision 1.842
+date: 2017/10/30 18:47:37;  author: gilles;  state: Exp;  lines: +246 -115
+Refactoring. Removed global variables $h1_prefix and $h2_prefix
+Bugfix. cpu_number() returns always an integer >= 1.
+----------------------------
+revision 1.841
+date: 2017/10/27 12:37:39;  author: gilles;  state: Exp;  lines: +55 -41
+Detect extra arguments. Meaning usually a quoting issue in the command line, options not well parsed.
+----------------------------
+revision 1.840
+date: 2017/10/22 14:28:00;  author: gilles;  state: Exp;  lines: +9 -9
+No limitssssss
+----------------------------
+revision 1.839
+date: 2017/10/04 17:50:29;  author: gilles;  state: Exp;  lines: +132 -39
+In case the pidfile already exists, remove it if no process match its content.
+Do nothing if the pidfile doesn't content a pid number 0<pid<65536
+----------------------------
+revision 1.838
+date: 2017/09/22 08:12:49;  author: gilles;  state: Exp;  lines: +28 -12
+Added Polska to possible_special (not for all).
+Started sub tests_write_pidfile()
+----------------------------
+revision 1.837
+date: 2017/09/20 20:14:14;  author: gilles;  state: Exp;  lines: +42 -19
+Usability. More verbose with ssl probing.
+----------------------------
+revision 1.836
+date: 2017/09/05 16:14:53;  author: gilles;  state: Exp;  lines: +189 -182
+Reread the README part. Changed order, rewrote some parts, added options.
+----------------------------
+revision 1.835
+date: 2017/09/03 04:11:31;  author: gilles;  state: Exp;  lines: +53 -92
+Reviewed the pod part that goes to README
+----------------------------
+revision 1.834
+date: 2017/08/31 04:14:04;  author: gilles;  state: Exp;  lines: +18 -15
+Some crit level 4 fixed.
+----------------------------
+revision 1.833
+date: 2017/08/31 01:58:57;  author: gilles;  state: Exp;  lines: +9 -305
+Removed sub usage_old()
+----------------------------
+revision 1.832
+date: 2017/08/31 01:47:48;  author: gilles;  state: Exp;  lines: +285 -127
+Rewrote sub usage() and use Pod::Usage now.
+Dependency added: Pod::Usage
+ID on by default now. Use --noid to avoid it.
+Splited sub tests_mailimapclient_connect() to put pure ipv6 test in sub tests_mailimapclient_connect_bug() which is not 
+run with --tests
+Added some warning in --testsunit when sub called do not exist.
+----------------------------
+revision 1.831
+date: 2017/08/27 01:52:48;  author: gilles;  state: Exp;  lines: +17 -14
+Updated from OPTIONS file
+----------------------------
+revision 1.830
+date: 2017/08/27 01:27:49;  author: gilles;  state: Exp;  lines: +35 -35
+Inline help to remove sslcheck
+----------------------------
+revision 1.829
+date: 2017/08/23 12:40:10;  author: gilles;  state: Exp;  lines: +14 -12
+Bugfix. Fixed guess \ separator.
+----------------------------
+revision 1.828
+date: 2017/08/22 22:06:27;  author: gilles;  state: Exp;  lines: +10 -10
+Syntax fix
+----------------------------
+revision 1.827
+date: 2017/08/22 22:04:38;  author: gilles;  state: Exp;  lines: +12 -12
+Increased gmail1 maxbytespersecond to 40_000
+Increased gmail2 maxbytespersecond to 20_000
+----------------------------
+revision 1.826
+date: 2017/08/22 21:55:26;  author: gilles;  state: Exp;  lines: +13 -11
+Added \ separator guess. List is now . / \\ and \
+----------------------------
+revision 1.825
+date: 2017/07/26 19:05:56;  author: gilles;  state: Exp;  lines: +19 -10
+Skip ipv6 tests on cuillere.
+Skip a connect in void context on macosx polarhome, it stalls.
+----------------------------
+revision 1.824
+date: 2017/07/24 08:04:18;  author: gilles;  state: Exp;  lines: +22 -21
+Better output for failed tests.
+----------------------------
+revision 1.823
+date: 2017/07/21 23:55:17;  author: gilles;  state: Exp;  lines: +53 -20
+Better output in sub tests_mailimapclient_connect()
+----------------------------
+revision 1.822
+date: 2017/07/20 23:22:08;  author: gilles;  state: Exp;  lines: +11 -11
+Bugfix. --skipmess could not work most of the time.
+----------------------------
+revision 1.821
+date: 2017/07/18 00:16:43;  author: gilles;  state: Exp;  lines: +24 -26
+Bugfix. Guess prefix '' even when there is no folders.
+----------------------------
+revision 1.820
+date: 2017/07/11 12:12:49;  author: gilles;  state: Exp;  lines: +14 -14
+loadavg on Win32 => 0 => unknown.
+----------------------------
+revision 1.819
+date: 2017/07/07 23:21:45;  author: gilles;  state: Exp;  lines: +70 -27
+Added --testslive6 to check ipv6 connectivity
+----------------------------
+revision 1.818
+date: 2017/07/06 03:06:36;  author: gilles;  state: Exp;  lines: +42 -27
+Removed from --tests call to:
+  tests_imapsping()
+  tests_tcpping()
+  tests_resolv()
+  tests_resolvrev()
+----------------------------
+revision 1.817
+date: 2017/07/05 21:58:42;  author: gilles;  state: Exp;  lines: +30 -22
+--ipv4 is now synonim of --inet4
+--ipv6 is now synonim of --inet6
+----------------------------
+revision 1.816
+date: 2017/07/05 14:50:28;  author: gilles;  state: Exp;  lines: +101 -16
+Added dependency use IO::Socket::INET6
+Added sub probe_imapssl(). Not use yet. Will replace imapsping()
+----------------------------
+revision 1.815
+date: 2017/06/27 16:45:20;  author: gilles;  state: Exp;  lines: +10 -10
+MAX_SLEEP 30 => 2
+----------------------------
+revision 1.814
+date: 2017/06/26 22:50:41;  author: gilles;  state: Exp;  lines: +213 -66
+Added raw LIST folders.
+Added IP print of both hosts, using peerhost().
+Added sub resolv() and others but not using them for now.
+Still a problem with IPv6 on port 143 only, 993 with ssl is ok. "Invalid argument" when connecting.
+ Solved with Mail::IMAPClient patched like this:
+  use IO::Socket::INET6 instead of IO::Socket::INET
+----------------------------
+revision 1.813
+date: 2017/05/24 17:46:13;  author: gilles;  state: Exp;  lines: +93 -38
+Added --maxsleep in order to avoid timeouts with --maxbytespersecond and --maxmessagespersecond
+Default is like --maxsleep 30 
+30 seconds sleeping at max.
+----------------------------
+revision 1.812
+date: 2017/05/23 21:12:37;  author: gilles;  state: Exp;  lines: +10 -10
+941 unit tests.
+----------------------------
+revision 1.811
+date: 2017/05/23 21:10:12;  author: gilles;  state: Exp;  lines: +24 -24
+Sync also messages with no internal date.
+No blanks in automatic logfile name.
+----------------------------
+revision 1.810
+date: 2017/05/02 18:46:30;  author: gilles;  state: Exp;  lines: +10 -10
+Fixed a test in tests_umask_str() in order to pass it on Darwin
+----------------------------
+revision 1.809
+date: 2017/05/02 18:34:34;  author: gilles;  state: Exp;  lines: +45 -45
+Isolated bad tests in notmatch() and match(): q{} against q{}, so commented now.
+----------------------------
+revision 1.808
+date: 2017/05/02 17:35:25;  author: gilles;  state: Exp;  lines: +160 -75
+Better tests ending in exe in case of failure (was 0 I do not know why, a PAR bug)
+Report which tests failed at the end of tests.
+----------------------------
+revision 1.807
+date: 2017/04/28 13:43:07;  author: gilles;  state: Exp;  lines: +30 -25
+testsunit() isolated.
+----------------------------
+revision 1.806
+date: 2017/04/28 09:50:40;  author: gilles;  state: Exp;  lines: +81 -31
+Added --testsunit in order to run any unit test individualy from the command line.
+Several --testsunit are allowed. Example:
+  imapsync --testsunit tests_true --testsunit tests_always_fail
+----------------------------
+revision 1.805
+date: 2017/04/27 13:04:58;  author: gilles;  state: Exp;  lines: +50 -40
+Added test to mkpath with trailing dots foo... in folder name for --usecache.
+It does not fail.
+----------------------------
+revision 1.804
+date: 2017/04/27 00:39:51;  author: gilles;  state: Exp;  lines: +10 -10
+Fix number of fake test on Win32.
+----------------------------
+revision 1.803
+date: 2017/04/26 17:52:34;  author: gilles;  state: Exp;  lines: +123 -119
+Perl crit fixes:
+* $! $OS_ERROR
+* $@ $EVAL_ERROR
+many others.
+----------------------------
+revision 1.802
+date: 2017/04/25 16:13:33;  author: gilles;  state: Exp;  lines: +231 -229
+crit about blanks
+----------------------------
+revision 1.801
+date: 2017/04/24 20:51:00;  author: gilles;  state: Exp;  lines: +116 -75
+Bugfix. logfile must not have / from user1 and user2.
+----------------------------
+revision 1.800
+date: 2017/04/24 13:51:44;  author: gilles;  state: Exp;  lines: +19 -18
+Bugfix. passfile1 passfile2 failure only if used!
+----------------------------
+revision 1.799
+date: 2017/04/24 12:47:34;  author: gilles;  state: Exp;  lines: +20 -10
+Check passfile exist before reading it and exit on failure.
+----------------------------
+revision 1.798
+date: 2017/04/24 02:41:46;  author: gilles;  state: Exp;  lines: +61 -29
+Make all tests run on MSWin32, either success or skip
+----------------------------
+revision 1.797
+date: 2017/04/23 13:35:47;  author: gilles;  state: Exp;  lines: +353 -23
+Moved /etc/imapsync.hash to $CGI_HASHFILE   => '/var/tmp/imapsync_hash'
+Added note( 'Entering ...' ) and note( 'Leaving ...' ) to all tests_...() functions
+----------------------------
+revision 1.796
+date: 2017/04/23 12:25:22;  author: gilles;  state: Exp;  lines: +115 -28
+Added umask setting to 0077 in cgi context.
+----------------------------
+revision 1.795
+date: 2017/04/22 13:01:28;  author: gilles;  state: Exp;  lines: +55 -16
+Refactor. Replaced hard cgi context test $ENV{SERVER_SOFTWARE} by function call to under_cgi_context()
+----------------------------
+revision 1.794
+date: 2017/04/15 16:59:24;  author: gilles;  state: Exp;  lines: +10 -10
+871 unit tests
+----------------------------
+revision 1.793
+date: 2017/04/15 16:56:06;  author: gilles;  state: Exp;  lines: +136 -54
+Tests should pass under nobody in /var/tmp/ now.
+----------------------------
+revision 1.792
+date: 2017/04/05 03:06:42;  author: gilles;  state: Exp;  lines: +22 -22
+Added GMT setting to test setlogfile()
+----------------------------
+revision 1.791
+date: 2017/04/05 02:27:50;  author: gilles;  state: Exp;  lines: +26 -9
+Added docker context in order to be run under nobody without permission issues.
+----------------------------
+revision 1.790
+date: 2017/04/04 11:27:09;  author: gilles;  state: Exp;  lines: +10 -10
+Added 'Objets envoy&AOk-s' for --automap
+----------------------------
+revision 1.789
+date: 2017/03/24 22:44:11;  author: gilles;  state: Exp;  lines: +11 -9
+Fix issue "SSL routines:ssl3_check_cert_and_algorithm:dh key too small" with 
+http://stackoverflow.com/questions/36417224/openssl-dh-key-too-small-error
+SSL_cipher_list => 'DEFAULT:!DH'
+----------------------------
+revision 1.788
+date: 2017/03/20 23:26:26;  author: gilles;  state: Exp;  lines: +10 -10
+852 unit tests
+----------------------------
+revision 1.787
+date: 2017/03/20 23:23:39;  author: gilles;  state: Exp;  lines: +130 -84
+Added --maxbytesafter in order to start --maxbytespersecond limitation only after --maxbytesafter amount of data transferred
+----------------------------
+revision 1.786
+date: 2017/03/20 03:32:12;  author: gilles;  state: Exp;  lines: +44 -39
+Bugfix. Abort on heavy load was not working because of load_and_delay strictly needed 4 arguments
+----------------------------
+revision 1.785
+date: 2017/03/14 18:06:38;  author: gilles;  state: Exp;  lines: +12 -10
+No systematic NOP!
+----------------------------
+revision 1.784
+date: 2017/03/14 17:51:48;  author: gilles;  state: Exp;  lines: +120 -30
+Changed abandon points (last FOLDER) to reconnection points.
+----------------------------
+revision 1.783
+date: 2017/03/13 06:22:43;  author: gilles;  state: Exp;  lines: +24 -90
+Removed Mail::IMAPClient ads!
+----------------------------
+revision 1.782
+date: 2017/03/13 01:20:24;  author: gilles;  state: Exp;  lines: +486 -384
+Added --domino1 --domino2 to facilitate Domino options setting.
+Added password setting via environment variables IMAPSYNC_PASSWORD1 IMAPSYNC_PASSWORD2
+----------------------------
+revision 1.781
+date: 2017/03/09 12:50:07;  author: gilles;  state: Exp;  lines: +30 -22
+Usability. No more "... says it has NO CAPABILITY for AUTHENTICATE LOGIN"
+----------------------------
+revision 1.780
+date: 2017/03/09 11:00:05;  author: gilles;  state: Exp;  lines: +54 -20
+Added --office1 --office2 to load simplify sync from and to office 365 (parameters from the FAQ.d/FAQ.Exchange.txt)
+----------------------------
+revision 1.779
+date: 2017/03/07 13:05:02;  author: gilles;  state: Exp;  lines: +85 -65
+Removed most of the perlcrit  (Severity: 3) Regular expression without "/x" flag
+----------------------------
+revision 1.778
+date: 2017/03/02 00:22:59;  author: gilles;  state: Exp;  lines: +125 -83
+Fixed some perlcrit level 4
+----------------------------
+revision 1.777
+date: 2017/03/01 01:25:58;  author: gilles;  state: Exp;  lines: +20 -16
+Added memory_available
+----------------------------
+revision 1.776
+date: 2017/02/28 22:58:38;  author: gilles;  state: Exp;  lines: +89 -68
+Added tests_not_long_imapsync_version_public()
+----------------------------
+revision 1.775
+date: 2017/02/17 01:54:27;  author: gilles;  state: Exp;  lines: +27 -23
+loadavg on Win32
+----------------------------
+revision 1.774
+date: 2017/02/15 12:55:50;  author: gilles;  state: Exp;  lines: +40 -25
+Bugfix. $tls1 and $tls2 vs $mysync->{tls1} $mysync->{tls2} somewhere
+----------------------------
+revision 1.773
+date: 2017/02/14 23:21:05;  author: gilles;  state: Exp;  lines: +155 -41
+Splited loadavg() in 3 calls loadavg_windows() loadavg_darwin() loadavg_linux()
+Bugfix. Output "Load is" was not complete, miss the important 3 load values!
+----------------------------
+revision 1.772
+date: 2017/02/01 01:31:22;  author: gilles;  state: Exp;  lines: +14 -14
+Bugfix. Output Load is was inacurate
+----------------------------
+revision 1.771
+date: 2017/01/31 22:10:51;  author: gilles;  state: Exp;  lines: +10 -10
+Bugfix. gmail2() had bad regextrans2
+----------------------------
+revision 1.770
+date: 2017/01/29 21:48:44;  author: gilles;  state: Exp;  lines: +52 -45
+Added $imap1->reconnect in case getting metadata from host2 is too long and host1 timesout.
+Bugfix. getoption uses $mysync not $sync
+----------------------------
+revision 1.769
+date: 2017/01/28 05:54:43;  author: gilles;  state: Exp;  lines: +60 -61
+Removed global $dry and $dry_message => $sync->{dry} $sync->{dry_message}
+----------------------------
+revision 1.768
+date: 2017/01/19 06:12:02;  author: gilles;  state: Exp;  lines: +12 -11
+Bugfix. CGI context a newline was bad in  $sync->{loadavg}
+----------------------------
+revision 1.767
+date: 2017/01/19 05:53:02;  author: gilles;  state: Exp;  lines: +11 -10
+use Net::Ping instead of just require.
+----------------------------
+revision 1.766
+date: 2017/01/19 05:29:42;  author: gilles;  state: Exp;  lines: +12 -12
+sslcheck localhost => imapsync.lamiral.info
+----------------------------
+revision 1.765
+date: 2017/01/19 05:16:42;  author: gilles;  state: Exp;  lines: +10 -10
+806 unit tests
+----------------------------
+revision 1.764
+date: 2017/01/19 05:12:17;  author: gilles;  state: Exp;  lines: +184 -59
+Added --sslcheck and made it on by default. Use --nosslcheck to unset it.
+--sslcheck checks ssl port 993 and turn on ssl if it is open.
+----------------------------
+revision 1.763
+date: 2017/01/19 00:49:43;  author: gilles;  state: Exp;  lines: +10 -10
+792 unit tests
+----------------------------
+revision 1.762
+date: 2017/01/19 00:46:30;  author: gilles;  state: Exp;  lines: +113 -90
+--showpasswords now show also passwords with --debugimap
+Load does not generate Perl warnings on Win32
+----------------------------
+revision 1.761
+date: 2017/01/17 06:08:49;  author: gilles;  state: Exp;  lines: +12 -9
+debug for --gmail1 --gmail2
+----------------------------
+revision 1.760
+date: 2017/01/17 04:43:51;  author: gilles;  state: Exp;  lines: +90 -11
+Added --gmail1 --gmail2 --gmail12 to simplify gmail syncs. It sets parameters from the FAQ --ssl --host etc.
+Allow parameters passed by POST.
+----------------------------
+revision 1.759
+date: 2017/01/16 13:20:57;  author: gilles;  state: Exp;  lines: +10 -10
+Bugfix. Add / after CGI_TMPDIR_TOP
+----------------------------
+revision 1.758
+date: 2017/01/15 19:34:42;  author: gilles;  state: Exp;  lines: +71 -26
+Splitted get_options(). Now call either get_options_cgi() or get_options_cmd()
+I applied David M advice, remove all but what is safe in the context.
+----------------------------
+revision 1.757
+date: 2017/01/12 10:33:47;  author: gilles;  state: Exp;  lines: +10 -10
+nb tests
+----------------------------
+revision 1.756
+date: 2017/01/12 10:14:32;  author: gilles;  state: Exp;  lines: +175 -154
+tmpdir is cgidir in cgi context. different for each account couple (host,user,pass).
+----------------------------
+revision 1.755
+date: 2017/01/12 03:25:42;  author: gilles;  state: Exp;  lines: +28 -22
+Now goes to TLS if STARTTLS is in CAPABILITY and ssl is off and notls is not there.
+----------------------------
+revision 1.754
+date: 2017/01/11 06:43:05;  author: gilles;  state: Exp;  lines: +11 -14
+*** empty log message ***
+----------------------------
+revision 1.753
+date: 2017/01/11 04:59:22;  author: gilles;  state: Exp;  lines: +280 -80
+Added load average from /proc/loadavg
+Added abort if load is too heavy in cgi context.
+----------------------------
+revision 1.752
+date: 2017/01/10 00:48:45;  author: gilles;  state: Exp;  lines: +13 -13
+timestart with milliseconds.
+----------------------------
+revision 1.751
+date: 2017/01/09 06:57:00;  author: gilles;  state: Exp;  lines: +30 -36
+Added milliseconds in logfile name since in cgi context several runs is possible in one second.
+----------------------------
+revision 1.750
+date: 2017/01/05 13:47:10;  author: gilles;  state: Exp;  lines: +57 -36
+Added /dist/ link in releasecheck.
+Added tests_check_last_release(  )
+Made check_last_release() testable.
+----------------------------
+revision 1.749
+date: 2017/01/05 03:18:01;  author: gilles;  state: Exp;  lines: +10 -10
+*** empty log message ***
+----------------------------
+revision 1.748
+date: 2017/01/05 01:48:34;  author: gilles;  state: Exp;  lines: +166 -109
+Added cookie imapsync_runs in cgi context.
+Refactor. $host1 $user1 $password1 $host2 $user2 $password2 under $sync now.
+Added output() to delay some output in cgi context.
+----------------------------
+revision 1.747
+date: 2016/12/24 15:38:49;  author: gilles;  state: Exp;  lines: +152 -26
+Added sub rand32()
+Added sub createhashfileifneeded() 
+Added sub hashsync()
+Added sub hashsynclocal()
+Temporary dir different for each individual sync but same dir if same parameters host1 host2 user1 user2 password1 password2
+----------------------------
+revision 1.746
+date: 2016/12/19 20:14:37;  author: gilles;  state: Exp;  lines: +81 -23
+Extracted the $cgi object creation from sub myGetOptions()
+Started sub tests_get_options_cgi()
+Added tests to sub tests_get_options()
+----------------------------
+revision 1.745
+date: 2016/12/14 23:12:37;  author: gilles;  state: Exp;  lines: +102 -41
+Refactoring. get_options( @ARGV ) uses @ARGV as a parameter.
+Refactoring. sub get_options() only gets options (use to add stuff about their values).
+Refactoring. What was in sub get_options() has gone into sub after_get_options()
+Refactoring. sub unsetunsafe(  ) is now sub sub setcgicontext( ) and has more settings.
+Bugfix. sub ask_for_password used <> which could open remaining options from @ARGS. Uses now <STDIN>
+Refactoring. Use Getopt::Long::GetOptionsFromArray() instead of Getopt::Long::GetOptions()
+Added test sub tests_get_options()
+Refactoring. Added sub printenv() extracted code from sub get_options()
+----------------------------
+revision 1.744
+date: 2016/12/13 13:04:21;  author: gilles;  state: Exp;  lines: +105 -106
+Removed local package Imapsync::Getopt::Long
+----------------------------
+revision 1.743
+date: 2016/12/12 11:43:46;  author: gilles;  state: Exp;  lines: +60 -18
+Added --abort option to terminate a previous call still running. Useful in remote context, ie online.
+----------------------------
+revision 1.742
+date: 2016/12/07 16:17:10;  author: gilles;  state: Exp;  lines: +25 -11
+Added --simulong int. To simulate a long response in web context.
+----------------------------
+revision 1.741
+date: 2016/11/22 21:27:43;  author: gilles;  state: Exp;  lines: +10 -10
+Now print " could not append ( Subject:[$subject], Date:[$h1_date], Size:[$h1_size] ) " whn append fails.
+----------------------------
+revision 1.740
+date: 2016/11/17 15:05:01;  author: gilles;  state: Exp;  lines: +10 -10
+Print always permanentflags info. Was only in debug mode.
+----------------------------
+revision 1.739
+date: 2016/11/03 20:31:10;  author: gilles;  state: Exp;  lines: +87 -36
+Added sub tests_match(  ).
+Changed name sub tests_dontmatch(  ) => tests_notmatch(  )
+710 tests noregression.
+----------------------------
+revision 1.738
+date: 2016/11/01 10:11:31;  author: gilles;  state: Exp;  lines: +115 -59
+--expunge --expunge1 are pure aliases now (don't know why they were distinct).
+----------------------------
+revision 1.737
+date: 2016/10/11 12:40:59;  author: gilles;  state: Exp;  lines: +16 -16
+blanks
+----------------------------
+revision 1.736
+date: 2016/10/10 21:02:49;  author: gilles;  state: Exp;  lines: +3215 -3215
+all tabs converted to spaces. By notepad++
+----------------------------
+revision 1.735
+date: 2016/10/10 20:48:53;  author: gilles;  state: Exp;  lines: +21 -21
+crit fix. open my
+----------------------------
+revision 1.734
+date: 2016/10/10 14:05:09;  author: gilles;  state: Exp;  lines: +60 -60
+Renamed sub is_valid_directory() to do_valid_directory()
+Rewrote modulesversion() tp avoid no strict 'refs' usage.
+  use a closure instead
+----------------------------
+revision 1.733
+date: 2016/10/09 21:38:44;  author: gilles;  state: Exp;  lines: +166 -184
+Some crit fixes.
+----------------------------
+revision 1.732
+date: 2016/09/29 20:56:35;  author: gilles;  state: Exp;  lines: +106 -106
+Small perlcritics.
+----------------------------
+revision 1.731
+date: 2016/09/29 12:24:56;  author: gilles;  state: Exp;  lines: +32 -26
+Added --noabletosearch1 --noabletosearch2; Still support --noabletosearch, which turn on both --noabletosearch1 --noabletosearch2
+----------------------------
+revision 1.730
+date: 2016/09/17 14:30:45;  author: gilles;  state: Exp;  lines: +32 -28
+Variable $delete is now $delete1 
+Change doc --delete => --delete1
+--delete still supported, --delete1 and --delete are aliases.
+----------------------------
+revision 1.729
+date: 2016/09/12 06:24:07;  author: gilles;  state: Exp;  lines: +16 -14
+typo.
+----------------------------
+revision 1.728
+date: 2016/08/30 11:38:30;  author: gilles;  state: Exp;  lines: +11 -11
+Typo
+----------------------------
+revision 1.727
+date: 2016/08/19 10:30:36;  author: gilles;  state: Exp;  lines: +53 -110
+Bugfix. Fall back separator to / even when host has no mailbox at all.
+Usability. Better warning about default ssl SSL_VERIFY_NONE
+----------------------------
+revision 1.726
+date: 2016/08/16 21:32:35;  author: gilles;  state: Exp;  lines: +19 -19
+Changed "Checking --regexflag --skipmess --regexmess --maxlinelengthcmd --pipemess commands" with a space string instead of an empty one. Because pipemess() now fails when output is empty.
+----------------------------
+revision 1.725
+date: 2016/08/16 00:01:48;  author: gilles;  state: Exp;  lines: +122 -83
+Some perl critics.
+----------------------------
+revision 1.724
+date: 2016/08/13 11:04:06;  author: gilles;  state: Exp;  lines: +362 -150
+Refactor. No more global $pidfile, $pidfilelocking, $nb_errors, $errorsdump, @errors_log. 
+Refactor. Changed exit_clean. From exit_clean( 0 ) to  exit_clean( $sync, $EX_OK ) ;
+Refactor. Changed errors_incr. From errors_incr( $error ) to errors_incr( $sync, $error ).
+Refactor. From stats(  ) to stats( $sync ).
+Added constants:
+ * $EXIT_WITH_ERRORS_MAX
+ * $EXIT_BY_SIGNAL
+ * $EXIT_WITH_ERRORS
+ * $EXIT_PID_FILE_ALREADY_EXIST
+ * $INTERVAL_TO_EXIT
+----------------------------
+revision 1.723
+date: 2016/07/29 21:57:03;  author: gilles;  state: Exp;  lines: +12 -11
+Force Unconnected state with Ctrl-c.
+----------------------------
+revision 1.722
+date: 2016/07/29 21:14:11;  author: gilles;  state: Exp;  lines: +20 -12
+Added sub debugsleep()
+Changed --debugsleep to take a float parameter. --debugsleep 4.5 add a sleep of 4.5 seconds every folder and before every copied message.
+----------------------------
+revision 1.721
+date: 2016/07/29 17:25:00;  author: gilles;  state: Exp;  lines: +57 -29
+Do reconnections when hit by a signal Ctrl-c, aka INT signal.
+2 consecutive Ctrl-c within 1 second then exit the program.
+----------------------------
+revision 1.720
+date: 2016/07/29 15:01:38;  author: gilles;  state: Exp;  lines: +324 -225
+Some Perl critics "not one of the allowed literal values". Now still 188 violations of ValuesAndExpressions::ProhibitMagicNumbers.
+----------------------------
+revision 1.719
+date: 2016/07/25 19:27:47;  author: gilles;  state: Exp;  lines: +229 -152
+Change some print to myprint.
+Fixed some perlcritic level 4 & 5
+sub pipemess now abort on empty message generated.
+sub pipemess prints stderr
+----------------------------
+revision 1.718
+date: 2016/07/20 10:45:51;  author: gilles;  state: Exp;  lines: +21 -13
+Added --inet4 to force AF_INET connextion in ssl mode.
+Added --inet6 too to force AF_INET6 in ssl mode. Might be useless.
+----------------------------
+revision 1.717
+date: 2016/07/13 14:05:20;  author: gilles;  state: Exp;  lines: +130 -57
+Started tests_message_for_host2()
+Added cyrillic for hard part --automap
+--pipemess test with pipe (cat|cat)
+--pipemess tests with arrors
+----------------------------
+revision 1.716
+date: 2016/07/12 09:02:25;  author: gilles;  state: Exp;  lines: +209 -81
+Added full mocked tests to sub tests_delete1emptyfolders(). Test::MockObject is really helpful!
+Changed pipemess() to return both message and stderr output, in list context. Scalar context stays the same, for now.
+Added list context tests to tests_pipemess()
+----------------------------
+revision 1.715
+date: 2016/07/05 21:17:48;  author: gilles;  state: Exp;  lines: +10 -10
+Removed from errors list "ignoring folder because it is not in host1 whole folders list". Too hard too.
+----------------------------
+revision 1.714
+date: 2016/07/05 21:12:23;  author: gilles;  state: Exp;  lines: +10 -10
+Remove "not selectable" folders from the errors list. Too hard.
+----------------------------
+revision 1.713
+date: 2016/07/05 12:50:35;  author: gilles;  state: Exp;  lines: +21 -18
+Added "ignoring folder" in the errors list.
+----------------------------
+revision 1.712
+date: 2016/06/30 01:35:02;  author: gilles;  state: Exp;  lines: +202 -21
+Added option --delete1emptyfolders ; 8 hours to write it.
+Added module dependency Test::MockObject for some tests. Only require for now.
+----------------------------
+revision 1.711
+date: 2016/06/22 20:23:33;  author: gilles;  state: Exp;  lines: +10 -10
+Removed a useless debug output
+----------------------------
+revision 1.710
+date: 2016/06/22 14:47:23;  author: gilles;  state: Exp;  lines: +28 -27
+Perlcritic fixes. ValuesAndExpressions::ProhibitMagicNumbers some 3 and is_a_release_number tests.
+----------------------------
+revision 1.709
+date: 2016/06/22 11:32:40;  author: gilles;  state: Exp;  lines: +58 -37
+Perlcritic fixes. ValuesAndExpressions::ProhibitMagicNumbers -1 => $LAST or $MINUS_ONE.
+----------------------------
+revision 1.708
+date: 2016/06/22 10:32:45;  author: gilles;  state: Exp;  lines: +193 -192
+Perlcritic fixes. ProhibitParensWithBuiltins, Last ones.
+----------------------------
+revision 1.707
+date: 2016/06/18 00:37:24;  author: gilles;  state: Exp;  lines: +64 -81
+Perlcritic fixes. ProhibitParensWithBuiltins, exists() => exists. But not all. Need to examine precedence with not or and etc.
+Uncommented call to $test_builder->reset(  ) Don't know why it was commented but it was bad for knowing tests go wrong.
+----------------------------
+revision 1.706
+date: 2016/06/17 13:34:09;  author: gilles;  state: Exp;  lines: +13 -13
+Sugar. "return (" => "return("
+----------------------------
+revision 1.705
+date: 2016/06/17 13:28:23;  author: gilles;  state: Exp;  lines: +422 -422
+Replaced all print( calls by myprint( calls.
+It prepares better output handling, I hope.
+----------------------------
+revision 1.704
+date: 2016/06/17 13:25:16;  author: gilles;  state: Exp;  lines: +36 -36
+Replaced smyprintf by mysprintf
+----------------------------
+revision 1.703
+date: 2016/06/17 13:12:09;  author: gilles;  state: Exp;  lines: +700 -697
+Perlcritic fixes. Rmoved parentheses, ProhibitParensWithBuiltins, for defined|scalar|push|keys|unshift|uc
+but added parentheses to print.
+Replaced printf by myprintf
+Replaced sprinf by smyprintf.
+----------------------------
+revision 1.702
+date: 2016/06/15 22:43:35;  author: gilles;  state: Exp;  lines: +495 -495
+Fixed perl critic 458 violations of ValuesAndExpressions::ProhibitInterpolationOfLiterals. "Useless interpolation of literal string". 2 left but critic bugs on them. "\1foo" is not '\1foo' but critic suggests equality.
+----------------------------
+revision 1.701
+date: 2016/06/12 23:39:04;  author: gilles;  state: Exp;  lines: +812 -812
+Fixed perlcritic "Don't use whitespace at the end of lines". Was 627 violations of CodeLayout::ProhibitTrailingWhitespace. Now 0. For now...
+----------------------------
+revision 1.700
+date: 2016/06/12 20:55:25;  author: gilles;  state: Exp;  lines: +33 -33
+Fixed perlcritic latest ouble-sigil dereference $$foo => ${ $ffo } and $#$foo => $#{ $foo }
+----------------------------
+revision 1.699
+date: 2016/06/12 19:51:52;  author: gilles;  state: Exp;  lines: +29 -29
+Fixed perlcritic Double-sigil dereference @$foo => @{ $foo }
+----------------------------
+revision 1.698
+date: 2016/06/12 19:39:15;  author: gilles;  state: Exp;  lines: +33 -36
+Fixed perlcritic %$foo => %{ $ff }
+Double-sigil dereference
+----------------------------
+revision 1.697
+date: 2016/06/12 18:42:18;  author: gilles;  state: Exp;  lines: +53 -24
+Perl critic fixes. 10 x "Unnamed numeric literals make code less maintainable.". use Readonly to fix them.
+----------------------------
+revision 1.696
+date: 2016/06/09 23:42:34;  author: gilles;  state: Exp;  lines: +201 -201
+Fixed perlcritic 'Quotes used with a string containing no non-whitespace characters'.
+"" or '' => q{}
+" " or ' ' => q{ }
+----------------------------
+revision 1.695
+date: 2016/06/09 18:17:14;  author: gilles;  state: Exp;  lines: +15 -10
+Check connected state in sub create_folder().
+----------------------------
+revision 1.694
+date: 2016/06/08 21:01:15;  author: gilles;  state: Exp;  lines: +43 -17
+Added patch: [imapsync/imapsync] Update XOAUTH2 support to work with Google's newer .json files (#68).
+----------------------------
+revision 1.693
+date: 2016/06/07 21:13:03;  author: gilles;  state: Exp;  lines: +38 -28
+CGI loaded when needed only.
+In CGI mode, Remove all content in unsafe evalued options.
+In CGI mode, help solving permission issues.
+----------------------------
+revision 1.692
+date: 2016/05/25 16:34:15;  author: gilles;  state: Exp;  lines: +11 -11
+Small typo
+----------------------------
+revision 1.691
+date: 2016/05/24 20:56:34;  author: gilles;  state: Exp;  lines: +25 -18
+Fixed -1 false output for big account %d => %s in printf.
+Wrote and use getpwuid_any_os. getpwuid breaks on Windows.
+----------------------------
+revision 1.690
+date: 2016/05/14 21:21:56;  author: gilles;  state: Exp;  lines: +33 -23
+*** empty log message ***
+----------------------------
+revision 1.689
+date: 2016/05/09 17:58:11;  author: gilles;  state: Exp;  lines: +155 -20
+Started to be CGI compatible.
+Started  package Imapsync::Getopt::Long.
+----------------------------
+revision 1.688
+date: 2016/03/27 22:56:47;  author: gilles;  state: Exp;  lines: +11 -11
+Check return code of message_to_file in sub message_for_host2.
+----------------------------
+revision 1.687
+date: 2016/03/24 20:39:33;  author: gilles;  state: Exp;  lines: +10 -10
+Replaced message_string() call by message_to_file() and won 1x again.
+Now imapsync crunches only 2x biggest message size in memory.
+----------------------------
+revision 1.686
+date: 2016/03/24 20:21:57;  author: gilles;  state: Exp;  lines: +27 -27
+Changed append_message_on_host2() to pass message string by reference.
+Memory usage passed from 5x to 3x. 3x remains from underlying Mail::IMAPClient module in Mail::IMAPClient::message_string()
+----------------------------
+revision 1.685
+date: 2016/03/24 17:02:13;  author: gilles;  state: Exp;  lines: +65 -35
+Added memory debug in order to decrease the 5x message size in memory.
+----------------------------
+revision 1.684
+date: 2016/03/17 08:35:03;  author: gilles;  state: Exp;  lines: +24 -16
+Bugfix. No more warning about  "Use of uninitialized value $sockargs[7] in join or string at"
+in ssl or tls mode.  Was due to "'SSL_version' => undef".
+----------------------------
+revision 1.683
+date: 2016/03/07 02:41:11;  author: gilles;  state: Exp;  lines: +22 -10
+Added --sslargs1 in documentation.
+----------------------------
+revision 1.682
+date: 2016/03/01 00:47:54;  author: gilles;  state: Exp;  lines: +16 -11
+*** empty log message ***
+----------------------------
+revision 1.681
+date: 2016/02/04 03:34:49;  author: gilles;  state: Exp;  lines: +12 -13
+Bugfix. Syntax error!
+----------------------------
+revision 1.680
+date: 2016/02/04 02:11:32;  author: gilles;  state: Exp;  lines: +25 -27
+Bugfix. Added --expungeaftereach in sub delete_message_on_host1().
+Usability. Added "use --noexpungeaftereach to speed up" if --delete is used.
+----------------------------
+revision 1.679
+date: 2016/01/25 01:57:54;  author: gilles;  state: Exp;  lines: +11 -11
+Bugfix. "Can't use an undefined value as a HASH reference at /usr/bin/imapsync line 1247."
+----------------------------
+revision 1.678
 date: 2016/01/21 19:47:02;  author: gilles;  state: Exp;  lines: +14 -21
 README part check.
 ----------------------------
