@@ -1,49 +1,68 @@
 #!/bin/cat
-# $Id: FAQ.Domino.txt,v 1.5 2016/01/18 18:14:12 gilles Exp gilles $
+# $Id: FAQ.Domino.txt,v 1.10 2018/05/24 11:34:30 gilles Exp gilles $
 
-=============================
-  Imapsync tips for Domino.
-=============================
+This documentation is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+https://imapsync.lamiral.info/FAQ.d/FAQ.Domino.txt
 
 
-======================================================================
-Q. From Domino Notes to xxx
+=======================================================================
+               Imapsync tips for Domino.
+=======================================================================
+
+
+=======================================================================
+Q. From Domino Notes to XXX
+
+R1. Use --domino1, like this:
+
+  imapsync ... --domino1
+
+
+R2. Or use the following options:
 
 On Windows use:
 
-  imapsync.exe ... --sep1 "\\" --prefix1 ""
+  imapsync.exe ... --sep1 "\\" --prefix1 "" --messageidnodomain
 
 On Unix use:
 
-  imapsync ... --sep1 '\' --prefix1 '' 
+  imapsync ... --sep1 '\' --prefix1 '' --messageidnodomain
 
-======================================================================
-Q. From xxx to Domino Notes
+=======================================================================
+Q. From XXX to Domino Notes
+
+R1. Use --domino2, like this:
+
+  imapsync ... --domino2
+
+
+R2. Or follow this:
 
 Domino doesn't accept INBOX subfolders. 
 
 On Windows:
 
   imapsync.exe ... ^
-    --sep2 "\\" --prefix2 "" ^
+    --sep2 "\\" --prefix2 "" --messageidnodomain ^
     --regextrans2 "s,^Inbox\\(.*),$1,i"  
 
 On Unix:
 
   imapsync ... \
-    --sep2 '\' --prefix2 '' \
+    --sep2 '\' --prefix2 '' --messageidnodomain \
     --regextrans2 's,^Inbox\\(.*),$1,i'
 
 If you want to sync the complete host1 mailbox in a subfolder called OLDBOX use:
 
 On Windows:
   imapsync.exe ... ^
-    --sep2 "\\" --prefix2 "" ^
+    --sep2 "\\" --prefix2 "" --messageidnodomain ^
     --subfolder2 "OLDBOX" --justfolders --dry
 
 On Unix:
   imapsync ... \
-  --sep2 '\' --prefix2 '' \
+  --sep2 '\' --prefix2 '' --messageidnodomain \
   --subfolder2 'OLDBOX' --justfolders --dry
     
 If the output is correct for you then remove --dry and have a run.
@@ -67,8 +86,9 @@ For Domino 853FP6 on Linux, we used this command on Unix:
   --host2 hhh2  --user2 uuu2  --password2 ppp2 \
   --exclude "^INBOX/Trash"  --exclude 'Junk|Drafts' \
   --regextrans2 's#^INBOX/Sent$#^Sent#' \
-  --prefix2 ""  --sep2 "\/" \
+  --prefix2 ""  --sep2 "\/" --messageidnodomain \
   --regexmess 's{\A(.*?(?! ^$))^Date:(.*?)$}{$1Migratedbyus:$2\nx-MailDate:$2}gxms'
 
 
-======================================================================
+=======================================================================
+=======================================================================

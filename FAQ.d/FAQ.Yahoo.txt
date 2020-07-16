@@ -1,0 +1,75 @@
+
+$Id: FAQ.Yahoo.txt,v 1.8 2018/05/24 11:34:30 gilles Exp gilles $
+
+This document is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+https://imapsync.lamiral.info/FAQ.d/FAQ.Yahoo.txt
+
+
+=======================================================================
+                     Imapsync tips for Yahoo.
+=======================================================================
+
+
+=======================================================================
+Q. Synchronizing from Yahoo to XXX
+
+R. Use --host1 imap.mail.yahoo.com --ssl1
+
+./imapsync \
+    --host1 imap.mail.yahoo.com \
+    --user1 billy \
+    --password1 secret \
+    --ssl1 \
+    --host2 XXX \
+    --user2 billy \
+    --password2 secret \
+    --noabletosearch --errorsmax 10000 
+
+SSL is mandatory for yahoo since November 2011.
+
+Why increasing --errorsmax to 10000?
+Because during the sync you may encounter several lines like this one:
+- msg Inbox/12600 {0} S[36012] F[] I[27-Nov-2015 07:08:35 +0000] could not be fetched: 190 NO [UNAVAILABLE] UID FETCH Server error while fetching messages
+- msg Inbox/12600 skipped.
+I don't know why it happens, why Yahoo server says 
+"NO [UNAVAILABLE] UID FETCH Server error while fetching messages"
+Usually another run syncs the message successfully.
+
+Why --noabletosearch option?
+Yahoo IMAP does not honor well the SEARCH imap command (Dec 2017).
+So don't use the --search option.
+You can use --minage or/and --maxage but then add also --noabletosearch
+
+Yahoo bandwidth per connexion is relatively low, 50 KiB/s to 500 KiB/s max, usually 100 KiB/s.
+Consider using --useuid to speed up large accounts.
+
+
+You also need to go to Yahoo, security and enable 
+"Allow less secure apps to login", 
+otherwise the login will not work. 
+
+To enable less secure apps to login:
+  * Login to the Yahoo mail account,
+  * click on the account name or the avatar and select "Account Info",
+  * click on "Account security",
+  * turn off "Two steps verification"
+  * turn on "Allow apps that use less secure authentication".​
+
+Thanks to Eugen Mayer for this last point.
+
+Another solution:
+
+  * Login to the Yahoo mail account,
+  * click on the account name or the avatar and select "Account Info",
+  * click on "Account security",
+  * Turn on "Two-step verification"
+  * Click on "Manage app passwords" and 
+    generate a specific password for imapsync, 
+	choose "Other app" at the bottom and type imapsync
+    since it is not in the predefined apps.
+  * Use this password with imapsync.
+
+
+=======================================================================
+=======================================================================

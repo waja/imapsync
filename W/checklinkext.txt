@@ -1,0 +1,31 @@
+
+----------------------------------------
+
+Processing	https://lamiral.info/~gilles/imapsync/S/external.shtml
+
+
+List of broken links and other issues:
+https://wiki2.dovecot.org/Tools/Doveadm/Sync	
+  Line: 38
+  Code: 403 FORBIDDEN
+ To do: The link is forbidden! This needs fixing. Usual suspects: a missing
+	index.html or Overview.html, or a missing ACL.
+
+----------------------------------------
+
+Processing	https://lamiral.info/~gilles/imapsync/S/imapservers.shtml
+
+
+List of broken links and other issues:
+https://en.mail.qq.com/	
+  Line: 157
+  Code: 405 Method Not Allowed
+ To do: The server does not allow HTTP HEAD requests, which prevents the
+	Link Checker to check the link automatically.  Check the link
+	manually.
+
+http://outlook.com/
+-> https://outlook.live.com/owa/	
+  Line: 150
+  Code: 301 -> 440 Login Timeout
+

@@ -1,0 +1,28 @@
+Expression form of "eval" at line 7477, column 27.  See page 161 of PBP.  (Severity: 5)
+Expression form of "eval" at line 7718, column 27.  See page 161 of PBP.  (Severity: 5)
+Expression form of "eval" at line 10687, column 27.  See page 161 of PBP.  (Severity: 5)
+Expression form of "eval" at line 10928, column 27.  See page 161 of PBP.  (Severity: 5)
+Expression form of "eval" at line 13146, column 56.  See page 161 of PBP.  (Severity: 5)
+Expression form of "eval" at line 13150, column 58.  See page 161 of PBP.  (Severity: 5)
+
+     1 files.
+   476 subroutines/methods.
+15,905 statements.
+
+15,974 lines, consisting of:
+     2,987 blank lines.
+       967 comment lines.
+         0 data lines.
+    11,242 lines of Perl code.
+       778 lines of POD.
+
+Average McCabe score of subroutines was 4.05.
+
+6 violations.
+Violations per file was 6.000.
+Violations per statement was 0.000.
+Violations per line of code was 0.000.
+
+6 severity 5 violations.
+
+6 violations of BuiltinFunctions::ProhibitStringyEval.

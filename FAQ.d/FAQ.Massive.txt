@@ -1,23 +1,80 @@
 #!/bin/cat
-$Id: FAQ.Massive.txt,v 1.6 2016/01/18 18:14:12 gilles Exp gilles $
+$Id: FAQ.Massive.txt,v 1.29 2019/06/18 16:38:06 gilles Exp gilles $
 
-==============================================
-  Imapsync tips for massive/bulk migrations.
-==============================================
+This document is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+https://imapsync.lamiral.info/FAQ.d/FAQ.Massive.txt
+
+
+=======================================================================
+              Imapsync tips for massive/bulk migrations.
+=======================================================================
 
 Questions answered here are:
 
-Q. I need to migrate hundred accounts, how can I do?
-Q. I have to migrate 500k users using 400 TB of disk space. 
-   How do I proceed?
-Q. How to determine what is the bottleneck in my current imapsync process?
+Q. How long will take the whole migration?
 
+Q. I need to migrate hundred accounts, how can I do?
+
+Q. I have to migrate 500k users using 400 TB of disk space. 
+   How do I proceed? How about speed?
+
+Q. How to determine where is the bottleneck in an imapsync process?
+
+Q. Can I run several instances of imapsync in parallel on a Windows host?
+
+Q. I run multiple imapsync applications at the same time then get a
+   warning "imapsync.pid already exists, overwriting it".
+   Is this a potential problem when trying to sync multiple 
+   IMAP account in parallel?
+
+=======================================================================
+Q. How long will take the whole migration? 
+
+R1. First you have to consider several periods. There is the global 
+    period, from when the migration process is decided to the final end
+    where all mailboxes are migrated. This global period can be divided
+    into three smaller periods.
+    
+    The first period is the analyse period: you play with the tools 
+    available, you estimate the volume to be transferred, the number of
+    accounts, you measure how long it takes for one account under
+    your context.
+    
+    The second period is the presync period. The users are still using
+    the old accounts but nothing prevents you from starting to sync
+    the old accounts, as they are, to the new accounts.
+    With tons of gigabytes to transfer, this period may be the longest one. 
+    There is nothing more to launch the presyncs and watch until
+    the round is finished.
+    
+    The last period is the final sync period where only the last 
+    changes of the mailboxes need to be synced in order to switch
+    the users to their new mailboxes.
+
+R2. To estimate the presync period, consider the mean imapsync transfer
+    rate to be around 340 Kbytes/s, ie, 2.8 Mbps, no matter the local 
+    link bandwidth. 
+    It's a mean, measured upon various different syncs, coming from 
+    the online interface /X.
+   
+    At 340 Kbytes/s,
+    1 TB to transfer and one sync at a time will end in 35 days (1024^3/340/3600/24).
+    At  10 transfers at a time, 1 TB will take 3.5 days.
+    At 100 transfers at a time, 1 TB will take 8 hours.
+    Double the time because the best scenario never happens.
+    Triple the time because, well, real world is like that.
+
+R3. To estimate the last period, just rerun a complete presync,
+    ie, resync all the mailboxes, the final sync should take 
+    the same amount of time.
+    
 =======================================================================
 Q. I need to migrate hundred accounts, how can I do?
 
-R. If you have many mailboxes to migrate think about a little
+R. If you have many mailboxes to migrate, think about a little
 script program. Write a file called file.txt (for example)
-containing hosts users and passwords on both sides.
+containing hosts, users and passwords on both sides.
 The separator used in this example is ";"
 
 The file.txt file contains for example:
@@ -28,16 +85,23 @@ host003_1;user003_1;password003_1;host003_2;user003_2;password003_2;
 host004_1;user004_1;password004_1;host004_2;user004_2;password004_2;
 etc.
 
+Most of the times, the first column (host001_1, host002_1 ...) will
+contains the same value, the value of --host1 parameter. Same
+thing for the third column (host001_2, host002_2).
+
 On Unix the shell script can be:
 
 #!/bin/sh
 { while IFS=';' read  h1 u1 p1 h2 u2 p2 fake
     do 
         imapsync --host1 "$h1" --user1 "$u1" --password1 "$p1" \
-                 --host2 "$h2" --user2 "$u2" --password2 "$p2" 
+                 --host2 "$h2" --user2 "$u2" --password2 "$p2" "$@" 
     done 
 } < file.txt
 
+You can add extra options inside this script, just after the variable "$@".
+You can also pass extra options via the parameters of this script 
+since they will go in "$@"
 
 Here is a complete Unix example ready to use: 
 http://imapsync.lamiral.info/examples/sync_loop_unix.sh
@@ -47,79 +111,223 @@ On Windows the batch script can be:
 
 CD /D %~dp0
 SET csvfile=file.txt
-FOR /F "tokens=1,2,3,4,5,6 delims=; eol=#" %%G IN (%csvfile%) DO (
+FOR /F "tokens=1,2,3,4,5,6,7 delims=; eol=#" %%G IN (%csvfile%) DO (
 imapsync ^
   --host1 %%G --user1 %%H --password1 %%I ^
-  --host2 %%J --user2 %%K --password2 %%L ...
+  --host2 %%J --user2 %%K --password2 %%L %%M  ...
 )
 
-The final ... can be replaced by nothing or any supplementary imapsync option.
+You can add extra options inside this script, just after the variable %%M.
+You can add extra options inside the file.txt, in the last column. Add 
+an extra semicolon at the end (optional)
+Example:
+host001_1;user001_1;password001_1;host001_2;user001_2;password001_2;
+host002_1;user002_1;password002_1;host002_2;user002_2;password002_2;
+becomes
+host001_1;user001_1;password001_1;host001_2;user001_2;password001_2; --automap --addheader
+host002_1;user002_1;password002_1;host002_2;user002_2;password002_2; --automap --addheader
 
-Here is a complete Windows example nearly ready to use: 
+With this solution, options can be added, changed or removed per account.
+Technically those options will go in %%M in the loop body 
+
+Here is a complete Windows example ready to use: 
 http://imapsync.lamiral.info/examples/sync_loop_windows.bat
+
+Another solution to add extra arguments is to write another .bat that 
+calls sync_loop_windows.bat with the extra arguments, like this
+for example:
+
+  sync_loop_windows.bat --automap --addheader --maxmessagespersecond 4 
+
+Technically those options will go in %arguments%  in the loop body
+of sync_loop_windows.bat
 
 
 =======================================================================
 Q. I have to migrate 500k users using 400 TB of disk space. 
-   How do I proceed?
+   How do I proceed? How about speed?
 
-R. Solution to this issue is two words: parallelism and measurements.  
-Since all 500k mailboxes are independent against each other, 
-they can be processed independently.
+R. A good solution to this issue is two words: parallelism and measurements.  
 
-500k on 400TB is 800 MB per account on average.
+Since all mailboxes are functionnaly independent, they can be processed 
+independently, here comes the parallelism, ie, lunching several imapsync 
+processes in parallel.
 
-On any process involving several mechanisms there is always a
-bottleneck among all elements taking part on the process. No one knows
-in advance what is the first bottleneck.  The first bottleneck has to
-be determined, by measurements, not by guesses.  Once this first
-bottleneck is known and overcome then the next bottleneck has to be
-determined and overcome too, if needed. Repeat the process of looking
-for the next bottleneck and its resolution until you estimate the
-transfer rates, money costs and final dates are good enough to proceed
-the whole 500k/400TB migration.
+Meanwhile, mailboxes usually belong to the same server and the syncs
+share the same imapsync host via the same bandwidth, here come 
+some limitations and bottlenecks.
 
-Possible bottlenecks: 
+How many syncs can we run in parallel in your context?
+Here comes some measurements.
 
-- IMAP servers have artificial limits. For example Gmail and Office365
-  have throttle limits.
+1) Measure the total transfer rate by adding each one printed in each run.
+   Since adding this way is not so easy, just look at the overall 
+   network rate of the imapsync host.
 
-- Bandwidth, on any side, especially on small Internet connexions. But
-  usually bandwidth is not a bottleneck. 
+   On Linux and FreeBSD, nload is a good candidate to measure this overall
+   network rate. For example, to measure the rate every 6 seconds (-t 6000), 
+   on eth0 or em0 interface, with values in Kbytes (-u K), use:
+   
+     nload -t 6000 eth0 -u K  # Linux
+     nload -t 6000 em0  -u K  # FreeBSD
 
-- Memory, on any side. Monitor your system doesn't swap on disk.
+   On Linux only, another very good network tool is dstat:
+   
+     dstat -n -N eth0 6  # Linux only (in 2018)
 
-- CPU, on any side. When measuring that CPU is always 100% during a 
-  transfer then it's useless to add imapsync processus on that host.
+   Another excellent tool to measure the network trafic is iftop.
+   The following command will monitor imap and imaps connexions
+   on interfce eth0, only them, and sum them up:
+   
+     iftop -i eth0 -f 'port imap or port imaps' -B # Linux
+     iftop -i em0  -f 'port imap or port imaps' -B # FreeBSD
 
-- I/O on disks. A classical one always forgotten. Unlike CPU and RAM
-  Input/Output performances don't improve very much as time goes on.
+   During iftop, press the h to see the display commands available, 
+   every single feature is useful! Press h again and try each one.
 
-- Number of hosts available to run imapsync processes.
-- Imapsync itself.
-- Errors management.
-- MX domains, DNS.
-- Money.
-- Time.
-- Bad luck.
-- ...
+
+   On Windows 8.1 Windows 10 Windows 2012 R2 Windows 2016,
+   get the overall network rate with the classical
+   task manager (Ctrl-Shift-Esc), there is a Performance tab
+   in it where resides a Network grap monitor.
+
+   On Windows 7, get the overall network rate with the classical
+   task manager (Ctrl-Shift-Esc), there is a Network tab in it.
+
+   I'm looking for a free and simple tool on Windows that could 
+   sum up only the imap traffic.
+
+2) Launch new parallel runs, one by one, as long as the total 
+   transfer rate increase.
+
+3) When the total transfer rate starts to diminish, stop new launches. 
+   Note N as the number of parallel runs you got until then.
+
+4) Only keep N-2 parallel runs for the future.
+
 
 =======================================================================
-Q. How to determine what is the bottleneck in my current imapsync process?
+Q. How to determine where is the bottleneck in an imapsync process?
 
-R. Divide and conquer.
+R1. Divide and conquer.
 
 In order to detect whether host1/link1 is the bottleneck or
 host2/link2, we have several tests to explore:
 
 1) run a sync from host1 to host1, with a host1 test account as destination.
-This way, only host1+link1 are tested. host2 is not concerned.
+This way, only host1+link1 are tested, host2 is not directly concerned.
 If performances increase a lot then host2/link2 is the bottleneck.
 
 2) run a sync from host2 to host2, with a host2 test account as destination.
-This way, only host2+link2 are tested. host1 is not concerned.
+This way, only host2+link2 are tested, host1 is not concerned.
 If performances increase a lot then host1/link1 is the bottleneck.
 
 If performances increase on both tests 1) and 2), I have no clue to explain that.
 Same thing if they both decrease! 
 
+R2. Isolating and overcoming bottlenecks
+
+On any process involving several mechanisms, among all elements taking
+part on the process, there is always a bottleneck.  No one knows in
+advance what is the first bottleneck. The first bottleneck has to be
+determined, by measurements, not by guesses.  Once this first
+bottleneck is known and overcome then the next bottleneck has to be
+determined and overcome too, if needed. Repeat the process of looking
+for the next bottleneck and its elimination until you estimate the
+transfer rates, money costs, time spent on this, and final dates 
+are good enough to proceed the whole huge migration.
+
+Possible bottlenecks: 
+
+- Throttles. 
+  IMAP servers have artificial limits. 
+  For example Gmail, Office365, Exchange have throttle limits.
+
+- Bandwidth. 
+  Usually available bandwidth is NOT a bottleneck.
+  Meanwhile, it can be a bottleneck on small Internet connexions.
+  Imapsync downloads messages from host1 and upload messages to host2,
+  consider this in case the connexion are asymmetric.
+  
+- I/O on disks. 
+  I/O are a classical bottleneck, almost always forgotten.
+  Unlike CPU and RAM, Input/Output performances don't improve
+  very much as time goes on so it's often a bottleneck.
+  To measure and overcome an I/O disk bottleneck, you need 
+  usually a direct access to host1 and host2.
+  An I/O bottleneck where imapsync runs is possible if
+  --usecache or --useuid is used or with very big messages.
+
+
+- RAM memory.
+  On all sides, monitor that your systems don't swap its 
+  running processes on disk, because swapping running processes 
+  on disks decreases performance by a factor of 20, at least.
+  It's not because the swap memory is used that your
+  system swaps processes on disk.
+
+- CPU.
+  100% CPU during a whole transfer means the system is busy.
+  Usually CPU is not a problem with imapsync but it can be a problem
+  with one of the imap servers.
+  Most often CPU is not the real bottleneck, I/O are.
+
+Other possible bottlenecks:
+- Number of hosts available to run imapsync processes.
+- Imapsync itself.
+- Management of errors.
+- MX domains, DNS.
+- Incompetence.
+- Money.
+- Time.
+- Bad luck.
+- ...
+
+
+=======================================================================
+Q. Can I run several instances of imapsync in parallel on a Windows host?
+
+R. Yes!
+
+Q. Any performance issue?
+
+You have to try and check the transfer rates, sum them up to
+have a uniq numeric criteria. 
+There is always a limit, depending on remote imap servers 
+and the one running imapsync.
+CPU, memory, Inputs/Outputs are the classical bottlenecks, 
+the worst bottleneck is the winner that sets the limit.
+
+examples/sync_loop_windows.bat says
+...
+REM ==== Parallel executions ====
+REM If you want to do parallel runs of imapsync then this current script is a good start.
+REM Just copy it several times and replace, on each copy, the csvfile variable value.
+REM Instead of SET csvfile=file.txt write for example
+REM SET csvfile=file01.txt in the first copy
+REM then also 
+REM SET csvfile=file02.txt in the second copy etc.
+REM Of course you also have to split the data contained in file.txt
+REM into file01.txt file02.txt etc.
+REM After that, just double-click on each batch file to launch each process
+
+
+=======================================================================
+Q. I run multiple imapsync applications at the same time then get a
+   warning "imapsync.pid already exists, overwriting it".
+   Is this a potential problem when trying to sync multiple 
+   IMAP account in parallel?
+
+R1. No issue with the file imapsync.pid if you don't use its content
+by yourself. 
+
+This file can help you to manage multiple runs by sending signals 
+to the processes (sigterm or sigkill) using their PID.
+Each run can have its own pid file with --pidfile option.
+The file imapsync.pid contains the PID of the current imapsync process.
+This file is removed at the end of a normal run.
+You can safely ignore the warning if you don't use imapsync.pid file
+to manage imapsync processes.
+
+=======================================================================
+=======================================================================

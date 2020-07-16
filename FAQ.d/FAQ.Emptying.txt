@@ -1,0 +1,40 @@
+#!/bin/cat
+$Id: FAQ.Emptying.txt,v 1.8 2019/04/30 12:52:10 gilles Exp gilles $
+
+This documentation is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+
+https://imapsync.lamiral.info/FAQ.d/FAQ.Emptying.txt
+
+=======================================================================
+               Imapsync tip to empty an account.
+=======================================================================
+
+=======================================================================
+Q. How to delete all emails of all folders of an account with imapsync?
+
+R. Use the same account on both sides with option --delete1
+   --noexpungeaftereach
+
+Option --noexpungeaftereach is just to speed up the deletions.
+
+Example (real example):
+
+  ./imapsync \
+    --host1 test.lamiral.info --user1 empty --password1 secret \
+    --host2 test.lamiral.info --user2 empty --password2 secret \
+    --delete1 --noexpungeaftereach
+
+=======================================================================
+Q. How to delete all folders of an account with imapsync?
+
+R. Use the same account on both sides with the options 
+    --delete1 --noexpungeaftereach --delete1emptyfolders
+    
+  ./imapsync ... --delete1 --noexpungeaftereach --delete1emptyfolders
+
+It won't delete the folder INBOX since INBOX is mandatory in imap.
+
+
+=======================================================================
+=======================================================================

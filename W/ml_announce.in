@@ -1,48 +1,43 @@
-m4_dnl $Id: ml_announce.in,v 1.12 2016/01/21 02:22:24 gilles Exp gilles $
+m4_dnl $Id: ml_announce.in,v 1.21 2019/02/16 22:31:06 gilles Exp gilles $
 m4_dnl
 m4_define(`M4_imapsync_VERSION',m4_esyscmd(cat VERSION|tr -d '\n'))m4_dnl
-m4_define(`M4_SECRET_PATH',m4_esyscmd(cat dist/path_last.txt|tr -d '\n'))m4_dnl
 m4_dnl
-From: Gilles LAMIRAL <gilles.lamiral@laposte.net>
+From: Gilles LAMIRAL <gilles@lamiral.info>
 Bcc: gilles@lamiral.info
-Subject: [imapsync update] new imapsync release M4_imapsync_VERSION available
+Subject: [imapsync update] New Imapsync release M4_imapsync_VERSION available
 To: imapsync_update@lists.lamiral.info
 
 Dear imapsync user,
 
-You're subscribed to the newsletter announcing imapsync new releases
-(very few traffic) and the way to get them. Send me a note if you
-don't want to receive those announces anymore.
+You will find imapsync release M4_imapsync_VERSION at 
+the following link:
 
-You will find the latest imapsync.exe binary (release M4_imapsync_VERSION)
-and the latest imapsync source code (release M4_imapsync_VERSION) at the following link:
+  https://imapsync.lamiral.info/dist/
 
-  http://imapsync.lamiral.info/dist/M4_SECRET_PATH/
+What's new in this M4_imapsync_VERSION release is described at
+  
+  https://imapsync.lamiral.info/S/news.shtml
 
-or also more permanently from this page 
+You're also invited to try and use the imapsync visual interface:
 
-  http://imapsync.lamiral.info/paypal_return.shtml 
+  https://i005.lamiral.info/X/
 
-Three important files are there:
-* imapsync            is directly the perl script (also found in the tarball and zip) for a fast upgrade.
-* imapsync-M4_imapsync_VERSION.tgz  is the tarball containing everything of the project (maybe too much)
-* imapsync.M4_imapsync_VERSION.zip  is the win32 zip archive including standalone binary imapsync.exe.
+Vote for better imapsync and services at
 
-What's new in this M4_imapsync_VERSION release can be found at
-http://imapsync.lamiral.info/S/news.shtml
-
-Vote for better imapsync and services at 
-http://imapsync.lamiral.info/#poll
+  http://imapsync.lamiral.info/S/poll.shtml
 
 I thank you again for buying and using imapsync,
 I wish you successful imap transfers!
 
 Feedback is welcome!
 
-Web site: http://imapsync.lamiral.info/
+Web site: https://imapsync.lamiral.info/
+
+This newsletter announces imapsync new releases and services.
+Send me a note if you don't want to receive those announces anymore.
 
 --
 Au revoir.
-Gilles Lamiral, La Billais, 35580 Baulon, France
+Gilles Lamiral, 22 La Billais, 35580 Baulon, France
 tel +33 951 84 42 42
-mob +33 620 79 76 06
+mob +33 619 22 03 54

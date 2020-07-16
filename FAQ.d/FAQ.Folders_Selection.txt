@@ -1,0 +1,108 @@
+#!/bin/cat
+$Id: FAQ.Folders_Selection.txt,v 1.7 2018/05/24 11:34:30 gilles Exp gilles $
+
+This documentation is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+https://imapsync.lamiral.info/FAQ.d/FAQ.Folders_Selection.txt
+
+
+=======================================================================
+               Imapsync tips to select folders.
+=======================================================================
+
+By default, Imapsync syncs all folders, one by one, in alphanumeric order.
+
+The IMAP protocol has a specific way to code folder names,
+when these names use non-ascii 7bit characters.
+Imapsync uses the same code as IMAP. 
+In order to well specify them on the command line you will be
+helped by the complete folder list printed by imapsync at each run.
+The left column is what you have to use without the first enclosing 
+square brackets, the right column is the human utf8 view.
+
+
+
+=======================================================================
+Q. How can I sync only one folder?
+
+R. Use --folder option.
+
+  imapsync ... --folder MyFolder
+
+If you have more specific folders to sync just add several --folder 
+
+  imapsync ... --folder MyFolder --folder ThisFolder --folder ThatFolder
+
+
+=======================================================================
+Q. What are --subscribe and --subscribed for, and how can they be used?
+
+R. In the IMAP protocol each user can subscribe to one or more folders.
+   Then one can configure his email software to just see his subscribed
+   folders. That's an IMAP feature.
+
+   Imapsync can use this imap feature to select subscribed folders
+   and also subscribe to folders on host2. Here are the options:
+
+ --subscribed        : Transfers subscribed folders.
+ --subscribe         : Subscribe to the folders transferred on the
+                       host2 that are subscribed on host1. On by default.
+ --subscribeall      : Subscribe to the folders transferred on the
+                       host2 even if they are not subscribed on host1.
+
+
+=======================================================================
+Q. I want to exclude a folder hierarchy like "public"
+
+R. Use:
+
+--exclude "^public\."
+or maybe
+--exclude '^"public\.'
+
+In the example given the character "." is the folder separator, you
+can omit it. Just take the string as it appears on the imapsync
+output line :
+
+From folders list : [INBOX] [public.dreams] [etc.]
+
+
+=======================================================================
+Q. I want to exclude only INBOX
+
+R. Use:
+
+  imapsync ... --exclude "^INBOX$" 
+
+A good way to see what will be done is to first use:
+
+  imapsync ...  --exclude "^INBOX$" --justfolders --nofoldersizes --dry
+
+=======================================================================
+Q. I want to exclude folders matching SPAM no matter the case, 
+   aka how to be case insensitive
+
+R. Use:
+
+  imapsync ... --exclude "(?i)spam" 
+
+A good way to see what will be done is to first use:
+
+  imapsync ... --exclude "(?i)spam" --justfolders --nofoldersizes --dry
+
+
+=======================================================================
+Q. I want the --folder "MyFolder" option be recursive.
+
+Two solutions:
+
+R1. Use
+
+--folderrec "MyFolder"
+
+R2. Use --include "^MyFolder"
+   Then the folder "MyFolder" and all its subfolders will be handled
+   and only them.
+
+=======================================================================
+=======================================================================

@@ -1,0 +1,64 @@
+#!/bin/cat 
+# $Id: INSTALL.AWS_EC2.txt,v 1.5 2018/05/24 11:43:31 gilles Exp gilles $
+
+This documentation is also located online at 
+https://imapsync.lamiral.info/INSTALL.d/
+https://imapsync.lamiral.info/INSTALL.d/INSTALL.AWS_EC2.txt
+
+=======================================================================
+               Installing imapsync on AWS EC2
+=======================================================================
+
+AWS: Amazon Web Service
+
+cat /etc/system-release
+Amazon Linux AMI release 2017.03
+
+
+sudo yum install  \
+perl-Class-Load \
+perl-IO-Compress \
+perl-Crypt-OpenSSL-RSA \
+perl-Data-Dumper \
+perl-Dist-CheckConflicts \
+perl-File-Copy-Recursive \
+perl-IO-Socket-INET6 \
+perl-IO-Socket-SSL \
+perl-JSON \
+perl-HTML-Parser \
+perl-libwww-perl \
+perl-Mail-IMAPClient \
+perl-Module-Implementation \
+perl-Module-Runtime \
+perl-Module-ScanDeps \
+perl-Net-SSLeay \
+perl-Package-Stash \
+perl-Package-Stash-XS \
+perl-Parse-RecDescent \
+perl-Readonly \
+perl-Regexp-Common \
+perl-Sys-MemInfo \
+perl-TermReadKey \
+perl-Test-Fatal \
+perl-Test-MockObject \
+perl-Test-Simple \
+perl-Test-Pod \
+perl-Test-Requires \
+perl-Try-Tiny \
+perl-Unicode-String \
+perl-URI \
+perl-ExtUtils-Embed \
+cpanminus
+
+sudo cpanm Authen::NTLM Data::Uniqid IO::Tee JSON::WebToken JSON::WebToken::Crypt::RSA Test::Mock::Guard
+
+wget -N https://imapsync.lamiral.info/imapsync
+
+chmod +x imapsync
+
+./imapsync
+
+./imapsync --testslive
+
+=======================================================================
+=======================================================================

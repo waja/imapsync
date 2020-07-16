@@ -1,33 +1,61 @@
 #!/bin/sh
 
-# $Id: prerequisites_imapsync,v 1.12 2015/07/06 03:12:43 gilles Exp gilles $
+# $Id: prerequisites_imapsync,v 1.32 2019/05/27 18:52:23 gilles Exp gilles $
 
 MODULES_MANDATORY='
-Digest::HMAC_MD5
+File::Tail
+App::cpanminus
 Authen::NTLM
+CGI
 Compress::Zlib
+Crypt::OpenSSL::RSA
 Data::Dumper
 Data::Uniqid
 Digest::HMAC
+Digest::HMAC_MD5
 Digest::MD5
+Dist::CheckConflicts
+Encode::Byte
 File::Copy::Recursive
 IO::Socket::INET
 IO::Socket::INET6
 IO::Socket::SSL
 IO::Tee
+JSON
+JSON::WebToken
+JSON::WebToken::Crypt::RSA
+HTML::Entities
+LWP::UserAgent
 Mail::IMAPClient
+Module::Implementation
+Module::Runtime
+Module::ScanDeps
+Net::SSLeay
+Package::Stash
+Package::Stash::XS
+PAR::Packer
 Parse::RecDescent
+Pod::Usage
+Readonly
+Regexp::Common
+Sys::MemInfo
 Term::ReadKey
+Test::Fatal
+Test::Mock::Guard
+Test::MockObject
 Test::More
 Test::Pod
+Test::Requires
+Test::Deep
+Try::Tiny
 Unicode::String
 URI::Escape
 '
 
-MODULES_DEVEL='
-Module::ScanDeps
-PAR::Packer
+MODULES_FOR_CODERS='
+Smart::Comments
 '
+
 
 test_perl() {
 # First we need perl
@@ -37,10 +65,39 @@ test_perl() {
 		echo Ok: Found Perl $perl_version
 		return 0
 	else
-		echo Failure: Perl is not here. You have to install Perl first.
+		echo 'Failure: Perl is not here. You have to install Perl first.'
 		return 1
 	fi
 }
+
+test_make() {
+# Second we need make to build some Perl modules
+
+	if echo foo: | make -f - foo ; then
+		make_version=`make -v |head -1`
+		echo Ok: Found make $make_version
+		return 0
+	else
+		echo 'Failure: make is not here. You have to install the "make" command.'
+		return 1
+	fi
+}
+
+
+test_cpanm() {
+# Second we need make to build some Perl modules
+        # redirect "cpanm ... < /dev/null" is there for macos buid via ssh
+        # no clue why it's necessary
+	if cpanm -h > /dev/null 2>&1 < /dev/null; then
+		cpanm_version=`cpanm --version < /dev/null | head -1`
+		echo Ok: Found cpanm $cpanm_version
+		return 0
+	else
+		echo 'Failure: cpanm is not here. You have to install the "cpanm" command.'
+		return 1
+	fi
+}
+
 
 
 test_module() {
@@ -53,6 +110,7 @@ test_module() {
 		echo "Failure: Not found Perl module $M_tested $@"
 		LIST_TO_INSTALL="$LIST_TO_INSTALL $M_tested"
 	fi
+        return
 }
 
 test_mandatory_modules() {
@@ -68,29 +126,70 @@ search_modules_any() {
 		echo "All needed modules are already installed"
 		return
 	}
+        
+        # Debian, Ubuntu & Co
 	apt-file -h > /dev/null 2>&1 && {
 		search_modules_apt "$@"
 		return
 	}
+        
+        # Centos & Co
 	yum -h > /dev/null 2>&1 && {
 		search_modules_yum  "$@"
 		return
 	}
-	
-	# no yum, no apt-get
+        
+        # ArchLinux & Co
+        pacman -h > /dev/null 2>&1 && {
+		search_modules_pacman  "$@"
+		return
+	}
+        
+        # FreeBSD
+	pkg version > /dev/null 2>&1 && {
+		search_modules_freebsd  "$@"
+		return
+	}
+        
+	# no yum, no apt-get, no pacman
 	{
-		search_modules_cpan "$@"
+		search_modules_cpanm "$@"
 		return
 	}
 }
 
-search_modules_cpan() {
+search_modules_cpanm() {
 		cat <<EOD
-Here is a cpan command to install missing Perl modules:
-cpan -i $@
+Here is a cpanm command to install missing Perl modules:
+cpanm $@
 EOD
 }
 
+search_modules_pacman() {
+	echo 
+	echo Searching pacman packages names
+        #echo pacman -Fy
+        #pacman -Fy 
+        echo pacman -S --noconfirm --needed  pkgfile
+        pacman -S --noconfirm --needed  pkgfile
+        echo pkgfile --update
+        pkgfile --update
+	for M in "$@" ; do
+		echo "==== Searching pacman package name for $M"
+		F=`echo $M|tr -s ":" "/"`.pm
+                
+                # Not very good "pacman -Fs"
+		#echo pacman -Fs  "$F"
+		#echo
+		#pacman -Fs  "$F"
+                #echo
+                # Better! pkgfile --reg
+                echo "pkgfile --reg $F | grep perl-"
+                echo
+                pkgfile --reg "$F" | grep perl-
+		echo
+	done
+}
 
 search_modules_yum() {
 	echo 
@@ -98,7 +197,7 @@ search_modules_yum() {
 	for M in "$@" ; do
 		echo "==== Searching rpm package name for $M"
 		F=`echo $M|tr -s ":" "/"`.pm
-		#echo yum -q whatprovides "*/$F"
+		echo yum -q whatprovides "*/$F"
 		echo
 		yum -q whatprovides "*/$F"
 		echo
@@ -109,24 +208,42 @@ search_modules_apt() {
 	echo 
 	echo Searching deb packages names
 	for M in "$@" ; do
-		echo "==== Searching deb package name for $M"
 		F=`echo $M|tr -s ":" "/"`.pm
+		echo "==== Searching deb package name for $M with: apt-file search /$F"
 		#echo apt-file search /$F
 		echo
 		apt-file search /$F
+                echo
+		echo "==== Searching deb package name for $M with: apt-cache search $M"
 		#apt-cache search "$M"
+                apt-cache search "$M"
 		echo
 	done
 }
 
+search_modules_freebsd()
+{
+	echo 
+	echo Searching pkg FreeBSD names
+	for M in "$@" ; do
+		F=`echo $M|tr -s ":" "-"`
+		echo "==== Searching deb package name for $M with: pkg search p5-$F"
+		echo
+		pkg search "p5-$F"
+                echo
+	done
+
+}
 
 list_to_install() {
-	test -n "$LIST_TO_INSTALL" || return
+	test -n "$LIST_TO_INSTALL" || return 0
 	echo
 	echo 'What you have to do before using imapsync:'
 	for M in $LIST_TO_INSTALL ; do
 		echo "Install Perl module $M"
 	done
+        # return false/bad if some modules are missing.
+        return 1
 }
 
 test_unix() {
@@ -138,10 +255,19 @@ test_unix() {
 	uname -a
 }
 
+
+
 test_unix
 #exit
 test_perl || exit
+test_make || exit
 test_mandatory_modules
 list_to_install
-#search_modules_cpan $MODULES_MANDATORY
+EXIT=$?
+
+# Help the user to install missing modules
 search_modules_any $LIST_TO_INSTALL
+
+test "$1" = "MODULES_MANDATORY" && search_modules_any $MODULES_MANDATORY
+test_cpanm
+exit $EXIT

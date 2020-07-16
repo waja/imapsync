@@ -1,0 +1,311 @@
+#!/bin/cat
+$Id: FAQ.Messages_Selection.txt,v 1.14 2018/05/24 11:34:30 gilles Exp gilles $
+
+This document is also available online at
+https://imapsync.lamiral.info/FAQ.d/
+https://imapsync.lamiral.info/FAQ.d/FAQ.Messages_Selection.txt
+
+
+=======================================================================
+                Imapsync tips to select messages.
+=======================================================================
+
+Questions answered in this FAQ are:
+
+Q. What messages imapsync syncs by default?
+
+Q. Is there a way we can specify a date range to sync emails? 
+   If yes, can you please share an example?
+
+Q. Is there a way we can specify an age to sync emails? 
+   If yes, can you please share some examples?
+
+Q. I want to sync messages based on their UID.
+
+Q. Can I migrate only mails with attachments?
+
+Q. How can I move messages marked \Deleted from all folders to
+   a dedicated folder?
+
+Q. What are the selection criteria available with --search option?
+
+
+=======================================================================
+Q. What messages imapsync syncs by default?
+
+R. By default, Imapsync syncs all messages, except duplicates.
+
+=======================================================================
+Q. Is there a way we can specify a date range to sync emails? 
+   If yes, can you please share an example?
+
+R. Yes, a date range is possible with the --search option.
+
+  imapsync ... --search "SENTSINCE 1-Jan-2010" 
+  
+or 
+  
+  imapsync ... --search "SENTBEFORE 31-Dec-2010"
+
+or
+  
+  imapsync ... --search "SENTSINCE 1-Jan-2010 SENTBEFORE 31-Dec-2010"
+
+  Months are specified like this:
+  
+   Jan
+   Feb
+   Mar
+   Apr
+   May 
+   Jun
+   Jul 
+   Aug
+   Sep
+   Oct 
+   Nov
+   Dec
+
+=======================================================================
+Q. Is there a way we can specify an age to sync emails? 
+   If yes, can you please share some examples?
+
+R. Yes, with the --maxage or the --minage option.
+
+E.1 Sync only messages less than 2 days old:
+
+  imapsync ... --maxage 2
+
+E.2 Sync only messages more than 2 days old:
+
+  imapsync ... --minage 2
+
+E.3 Sync only messages more than 30 days old and less than 365 days old:
+
+  imapsync ... --minage 30 --maxage 365
+
+E.4 Sync only messages less than 30 days old or more than 365 days old:
+
+  imapsync ... --maxage 30 --minage 365
+
+Full explanation:
+
+--maxage      <int>    : Skip messages older than <int> days.
+                         final stats (skipped) don't count older messages
+                         see also --minage
+--minage      <int>    : Skip messages newer than <int> days.
+                         final stats (skipped) don't count newer messages
+                         You can do (+ are the messages selected):
+                         past|----maxage+++++++++++++++>now
+                         past|+++++++++++++++minage---->now
+                         past|----maxage+++++minage---->now (intersection)
+                         past|++++minage-----maxage++++>now (union)
+
+C.1 By default,
+
+  option --maxage is implemented as a --search SENTSINCE 
+RFC 3501 says: SENTSINCE <date>
+Messages whose [RFC-2822] Date: header (disregarding time and
+timezone) is within or later than the specified date.
+
+  Option --minage is implemented as a --search SENTBEFORE
+RFC 3501 says: SENTBEFORE <date>
+Messages whose [RFC-2822] Date: header (disregarding time and
+timezone) is earlier than the specified date.
+
+If --noabletosearch is on then --minage and --maxage deal
+with the internal dates given by a FETCH imap command but 
+not the Date: header. Internal date is the arrival date 
+in the mailbox. Same remark for --noabletosearch1 and
+--noabletosearch2 but only for one side then.
+
+=======================================================================
+Q. I want to sync messages based on their UID.
+
+R. First have in mind that UIDs are unique only per folder, so work this
+   way only with one folder at a time, with --folder option.
+
+To show UIDs, there is the --debugLIST parameter.
+
+  imapsync ...  --debugLIST
+
+To sync only a part of all messages, selected by UIDs 
+from 10000 to 11000:
+
+  imapsync ... --search1 "UID 10000:11000" 
+
+To sync from INBOX only 3 messages UIDs 20000 20002 20004:
+
+  imapsync ... --search1 'OR OR UID 20000 UID 20002 UID 20004' --folder INBOX
+
+To sync all messages from INBOX except 3 messages 
+UIDs 20000 20002 20004:
+
+  imapsync ... --search1 'NOT OR OR UID 20000 UID 20002 UID 20004' --folder INBOX
+
+If you search n UIDs then you have to put n-1 OR in the search line,
+that's IMAP.
+
+=======================================================================
+Q. Can I migrate only mails with attachments?
+
+R. Use:
+
+  imapsync ... --search "HEADER Content-Type multipart/mixed" 
+
+or more generally:
+
+  imapsync ... --search "OR HEADER Content-Disposition attachment HEADER Content-Type multipart/mixed" 
+
+
+=======================================================================
+Q. How can I move messages marked \Deleted from all folders to
+   a dedicated folder?
+
+R. To move \Deleted messages from all folders to a specific folder, 
+   let's call it Trash, use:
+
+  imapsync ... --search DELETED --regextrans2 "s/.*/Trash/" 
+
+=======================================================================
+Q. What are the selection criteria available with --search option?
+
+R. The list of search criteria are listed below, an excerpt from RFC3501.
+
+http://www.faqs.org/rfcs/rfc3501.html
+
+6.4.4.  SEARCH Command
+...
+      ALL
+         All messages in the mailbox; the default initial key for
+         ANDing.
+
+      ANSWERED
+         Messages with the \Answered flag set.
+
+      BCC <string>
+         Messages that contain the specified string in the envelope
+         structure's BCC field.
+
+      BEFORE <date>
+         Messages whose internal date (disregarding time and timezone)
+         is earlier than the specified date.
+
+      BODY <string>
+         Messages that contain the specified string in the body of the
+         message.
+
+      CC <string>
+         Messages that contain the specified string in the envelope
+         structure's CC field.
+
+      DELETED
+         Messages with the \Deleted flag set.
+
+      DRAFT
+         Messages with the \Draft flag set.
+
+      FLAGGED
+         Messages with the \Flagged flag set.
+
+      FROM <string>
+         Messages that contain the specified string in the envelope
+         structure's FROM field.
+
+      HEADER <field-name> <string>
+         Messages that have a header with the specified field-name (as
+         defined in [RFC-2822]) and that contains the specified string
+         in the text of the header (what comes after the colon).  If the
+         string to search is zero-length, this matches all messages that
+         have a header line with the specified field-name regardless of
+         the contents.
+
+      KEYWORD <flag>
+         Messages with the specified keyword flag set.
+
+      LARGER <n>
+         Messages with an [RFC-2822] size larger than the specified
+         number of octets.
+
+      NEW
+         Messages that have the \Recent flag set but not the \Seen flag.
+         This is functionally equivalent to "(RECENT UNSEEN)".
+
+      NOT <search-key>
+         Messages that do not match the specified search key.
+
+      OLD
+         Messages that do not have the \Recent flag set.  This is
+         functionally equivalent to "NOT RECENT" (as opposed to "NOT
+         NEW").
+
+      ON <date>
+         Messages whose internal date (disregarding time and timezone)
+         is within the specified date.
+
+      OR <search-key1> <search-key2>
+         Messages that match either search key.
+
+      RECENT
+         Messages that have the \Recent flag set.
+
+      SEEN
+         Messages that have the \Seen flag set.
+
+      SENTBEFORE <date>
+         Messages whose [RFC-2822] Date: header (disregarding time and
+         timezone) is earlier than the specified date.
+
+      SENTON <date>
+         Messages whose [RFC-2822] Date: header (disregarding time and
+         timezone) is within the specified date.
+
+      SENTSINCE <date>
+         Messages whose [RFC-2822] Date: header (disregarding time and
+         timezone) is within or later than the specified date.
+
+      SINCE <date>
+         Messages whose internal date (disregarding time and timezone)
+         is within or later than the specified date.
+
+      SMALLER <n>
+         Messages with an [RFC-2822] size smaller than the specified
+         number of octets.
+
+      SUBJECT <string>
+         Messages that contain the specified string in the envelope
+         structure's SUBJECT field.
+
+      TEXT <string>
+         Messages that contain the specified string in the header or
+         body of the message.
+
+      TO <string>
+         Messages that contain the specified string in the envelope
+         structure's TO field.
+
+      UID <sequence set>
+         Messages with unique identifiers corresponding to the specified
+         unique identifier set.  Sequence set ranges are permitted.
+
+      UNANSWERED
+         Messages that do not have the \Answered flag set.
+
+      UNDELETED
+         Messages that do not have the \Deleted flag set.
+
+      UNDRAFT
+         Messages that do not have the \Draft flag set.
+
+      UNFLAGGED
+         Messages that do not have the \Flagged flag set.
+
+      UNKEYWORD <flag>
+         Messages that do not have the specified keyword flag set.
+
+      UNSEEN
+         Messages that do not have the \Seen flag set. 
+
+=======================================================================
+=======================================================================
+
