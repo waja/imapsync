@@ -1,5 +1,5 @@
 dist: xenial
-sudo: required
+os: linux
 language: c
 
 before_install:
@@ -41,7 +41,7 @@ after_success:
 
 deploy:
   provider: releases
-  api_key:
+  token:
     secure: "dg0wtJ+/H6kk4W8dFHehnnOxCoUOFmKcDFK15einqqVNSrGsut1dv2D2b5SMDiMCAXXhTxbRE413vt4+6XNVl8YxQOrBmU1bXgbcUAf7wqI3yo5Sh0y4f6kWLx46ngHtdF+yxGN00ko6+yZPXHgpx2Dz6T2PFgHmxNhiLEkIY8s="
   file: '${RELEASE_PKG_FILE}'
   skip_cleanup: true
