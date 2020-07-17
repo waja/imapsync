@@ -1,3 +1,31 @@
+imapsync (1.945-1) unstable; urgency=medium
+
+  * [d5f351f] New github token
+  * [ddb8b1b] travis-ci: Use xenial image
+  * [6c9594a] New upstream version 1.945
+  * [d56fbca] d/control: Update dependencies accordinly to
+    INSTALL.d/INSTALL.Debian.txt
+  * [7329759] Raising debhelper compatibility level to 10
+  * [5bde626] Remove W/RECORD.txt from docs
+  * [fdd7a63] travis-ci: Build on xenial
+  * [cb279b4] travis: not using old trusty ppa
+  * [3b69215] travis-ci: Adding ppa:mc-1/stream-schedule for
+    libjson-webtoken-perl backport
+  * [1a57d31] travis-ci: Installing debhelper from backports ti fulfill
+    build-deps
+  * [97616ca] travis-ci: Make mk-build-deps more informative
+  * [03f67da] d/control: Adding libpackage-stash-xs-perl and libtest-fatal-perl
+    as (build)dependencies
+  * [49c1c51] travis-ci: Update token
+  * [59e9d3f] travis-ci: Adding deployment
+  * [47b12b0] travis-ci: exporting release files to use this later on when
+    uploading
+  * [aabcda5] travis-ci: updating secure string
+  * [ffd9f1d] travis-ci: make lint happy
+  * [021e5ac] travis-ci: using file_glob
+
+ -- Jan Wagner <waja@cyconet.org>  Fri, 17 Jul 2020 18:03:10 +0200
+
 imapsync (1.678-1) unstable; urgency=medium
 
   * [8a27ff7] Imported Upstream version 1.592
