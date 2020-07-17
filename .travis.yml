@@ -9,6 +9,8 @@ before_install:
 install:
     # install packages needed for mk-build-deps
     - sudo apt-get install -qq --no-install-recommends devscripts equivs
+    # install debhelper 10 (from backports)
+    - sudo apt-get install -qq --no-install-recommends -t xenial-backports debhelper
     # pull build deps from debian/control
     - sudo mk-build-deps -ir -t "apt-get --yes --no-install-recommends"
     # remove packages needed for mk-build-deps
