@@ -4,7 +4,7 @@ Priority: optional
 Maintainer: Jan Wagner <waja@cyconet.org>
 Vcs-Browser: https://github.com/waja/imapsync
 Vcs-Git: https://github.com/waja/imapsync.git
-Build-Depends: cdbs, debhelper (>= 10)
+Build-Depends: cdbs, debhelper-compat (= 12)
 Build-Depends-Indep: cpanminus,
                      libauthen-ntlm-perl,
                      libcgi-pm-perl,
