@@ -43,7 +43,7 @@ Build-Depends-Indep: cpanminus,
                      libtest-warn-perl,
                      perl
 Homepage: http://imapsync.lamiral.info/
-Standards-Version: 3.9.8
+Standards-Version: 4.5.1
 
 Package: imapsync
 Architecture: all
