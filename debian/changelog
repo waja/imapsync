@@ -1,3 +1,9 @@
+imapsync (1.977-1~1.gbpa3b6c9) UNRELEASED; urgency=medium
+
+  * [ecc2000] New upstream version 1.977
+
+ -- Jan Wagner <waja@cyconet.org>  Tue, 29 Dec 2020 21:35:00 +0100
+
 imapsync (1.945-1) unstable; urgency=medium
 
   * [d5f351f] New github token
