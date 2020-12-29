@@ -1,8 +1,14 @@
-imapsync (1.977-1~1.gbpa3b6c9) UNRELEASED; urgency=medium
+imapsync (1.977-1~1) unstable; urgency=medium
 
   * [ecc2000] New upstream version 1.977
+  * [5209db2] Adding CI
+  * [913d6a2] d/control: Bump Standards-Version to 4.5.1, no changes needed
+  * [067e9a2] Migrating over to debhelper
+  * [247ac3e] d/rules: Make use of override_dh_clean:
+  * [ffc5674] d/rules: Add override_dh_auto_test
+  * [170fa9b] d/control: Drop cdbs from build-deps
 
- -- Jan Wagner <waja@cyconet.org>  Tue, 29 Dec 2020 21:35:00 +0100
+ -- Jan Wagner <waja@cyconet.org>  Tue, 29 Dec 2020 22:30:33 +0100
 
 imapsync (1.945-1) unstable; urgency=medium
 
