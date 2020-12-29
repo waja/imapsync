@@ -6,3 +6,4 @@
 
 override_dh_auto_clean:
 	make clean_tilde clean_man clean_log clean_bak
+override_dh_auto_test:
